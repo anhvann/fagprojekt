@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>HelloWorld</title>
+<meta http-equiv="Content-Type"
+content="text/html; charset=ISO-8859-1">
+<script src="http://code.jquery.com/jquery-1.10.1.min.js">
+</script>
+</head>
+<body>
+<!-- Results from the AJAX response go here -->
+<div id="result"> No results yet! </div>
+<script>
+$( document ).ready(function() {
+ $.ajax({
+ type: 'GET',
+ url: 'http://localhost:9080/Uniccol_Bank/HelloWorld',
+ success: function(data) {
+ $("#result").empty();
+ $("#result").html(data);
+ }
+ });
+ });
+</script>
+</body>
+</html>

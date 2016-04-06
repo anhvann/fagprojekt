@@ -115,7 +115,7 @@ form {
 	<div id="header">
 		<nav class="navbar navbar-default">
 			<div id="links">
-				<a href="index.html"><img class="img-center img-logo"
+				<a href="index.jsp"><img class="img-center img-logo"
 					src="http://i.imgur.com/RlR7g0c.png"></a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
@@ -143,7 +143,7 @@ form {
 	</div>
 	<div id="body">
 		<div class="container">
-			<form action="search.html" method="post" target="_self">
+			<form action="search.jsp" method="post" target="_self">
 				<legend>Login to Uniccol Bank</legend>
 				E-mail address:<br> <input type="text" name="email"><br>
 				Password:<br> <input type="text" name="password"><br>
