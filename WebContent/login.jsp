@@ -143,11 +143,11 @@ form {
 	</div>
 	<div id="body">
 		<div class="container">
-			<form action="search.jsp" method="post" target="_self">
+			<form action="Login" method="post" target="_self">
 				<legend>Login to Uniccol Bank</legend>
 				E-mail address:<br> <input type="text" name="email"><br>
 				Password:<br> <input type="text" name="password"><br>
-				<br> <input type="submit" value="Login">
+				<br> <input type="submit" name="loginButton" value="Login">
 			</form>
 		</div>
 	</div>
