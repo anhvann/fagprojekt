@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//WebContent/HelloWorld.html=ISO-8859-1
+encoding//WebContent/Register.jsp=ISO-8859-1
 encoding//WebContent/index.jsp=ISO-8859-1
 encoding//WebContent/login.jsp=ISO-8859-1
 encoding//WebContent/search.jsp=UTF-8
