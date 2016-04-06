@@ -21,17 +21,35 @@ public class Login extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-		String submit = request.getParameter("loginButton");
-		
-		Connection con;
-		Statement stmt;
-		ResultSet rs;
-		
-		if (submit != null) {
-			System.out.print(email+" "+password);
+		try {
+			Class.forName("com.ibm.db2.jdbc.app.DB2Driver");
+		} catch (ClassNotFoundException e) {
+			System.out.println("Driver not found");
+			e.printStackTrace();
 		}
+		System.out.println("Driver found");
+//		String email = request.getParameter("email");
+//		String password = request.getParameter("password");
+//		String submit = request.getParameter("loginButton");
+//		String url = "jdbc:db2:DALLASB";
+		
+//		Connection connection;
+//		
+//		try {
+//			connection = DriverManager.getConnection("jdbc:db2://localhost:9080/Uniccol Bank", "DTU12", "FAGP2016");
+//		} catch (SQLException e) {
+//			System.out.println("Connection could not be established");
+//		}
+//		PreparedStatement pStatement = null;;
+//		ResultSet resultSet = null;
+//		boolean found = false;
+		
+		
+		
+		
+//		if (submit != null) {
+//			System.out.print(email+" "+password);
+//		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -18,5 +18,7 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Anh Van/OneDrive/02122 Fagprojekt/db2jcc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Anh Van/OneDrive/02122 Fagprojekt/db2jcc_license_cisuz.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
