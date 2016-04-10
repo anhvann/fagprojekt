@@ -41,6 +41,7 @@ public class Login extends HttpServlet {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet rs = null;
+		Boolean val = false;
 		try {
 			connection = DriverManager.getConnection(url, properties);
 			//statement = connection.createStatement();
@@ -48,7 +49,8 @@ public class Login extends HttpServlet {
 			statement.setString(1, email);
 			statement.setString(2, password);
 			rs = statement.executeQuery();
-			
+			val = rs.next();
+			System.out.println(val);
 			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
