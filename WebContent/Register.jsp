@@ -7,7 +7,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>RegisterCostumer</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -57,7 +57,9 @@ and open the template in the editor.
                     <div class="col-sm-2">          
                         <input type="number" class="form-control" id="zipcode">
                     </div>
-                    <label class="control-label col-sm-offset-4">City</label>
+                </div>    
+                <div>    
+                    <label class="control-label col-sm-offset-4">City:</label>
                     <div class="col-sm-offset-6">
                         <input type="text" class="form-control" id="city">
                     </div>

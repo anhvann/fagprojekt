@@ -34,24 +34,29 @@ public class Login extends HttpServlet {
 			e.printStackTrace();
 		}		
 
-//		Properties properties = new Properties();
-//		properties.put("user", "DTU12");
-//		properties.put("password", "FAGP2016");
-//		String url = "jdbc:db2://192.86.32.65:5040/DALLASB:retrieveMessagesFromServerOnGetMessage=true;emulateParameterMetaDataForZCalls=1;";
-//		Connection connection = null;
-//		Statement statement = null;
-//		try {
-//			connection = DriverManager.getConnection(url, properties);
-//			statement = connection.createStatement();
-//			
-//			statement.close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
+		Properties properties = new Properties();
+		properties.put("user", "DTU12");
+		properties.put("password", "FAGP2016");
+		String url = "jdbc:db2://192.86.32.65:5040/DALLASB:retrieveMessagesFromServerOnGetMessage=true;emulateParameterMetaDataForZCalls=1;";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet rs = null;
+		try {
+			connection = DriverManager.getConnection(url, properties);
+			//statement = connection.createStatement();
+			statement = connection.prepareStatement("select * from USERINFO where email=? and password=?");
+			statement.setString(1, email);
+			statement.setString(2, password);
+			rs = statement.executeQuery();
+			
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-//		if (submit != null) {
-//			System.out.print(email+" "+password);
-//		}
+		if (submit != null) {
+			System.out.print(email+" "+password);
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
