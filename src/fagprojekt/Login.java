@@ -1,15 +1,16 @@
 package fagprojekt;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.sql.*;
 import java.util.Properties;
 
+import javax.management.relation.Role;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 /**
  * Servlet implementation class Login
@@ -22,17 +23,24 @@ public class Login extends HttpServlet {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		String submit = request.getParameter("loginButton");
+		String role = "";
 
 		try {
 			Class.forName("com.ibm.db2.jcc.DB2Driver");
 		} catch (ClassNotFoundException e) {
 			System.out.println("Driver not found");
 			e.printStackTrace();
-		}	
+		}
 
 		Properties properties = new Properties();
 		properties.put("user", "DTU12");
@@ -44,25 +52,30 @@ public class Login extends HttpServlet {
 		Boolean validate = false;
 		try {
 			connection = DriverManager.getConnection(url, properties);
-			//statement = connection.createStatement();
-			statement = connection.prepareStatement("select * from DTUGRP05.USERINFO where \"Email\"=? and \"Password\"=?");
+			statement = connection.prepareStatement("SELECT * FROM DTUGRP05.USERINFO WHERE \"Email\"=?");
 			statement.setString(1, email);
-			statement.setString(2, password);
 			rs = statement.executeQuery();
-			validate = rs.next();
-			System.out.println(validate);
+			while (!validate && rs.next()) {
+				if (rs.getString("Email").equals(email) && rs.getString("Password").equals(password)) {
+					validate = true;
+					role = rs.getString("Role");
+				}
+			}
+			rs.close();
 			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		if (submit != null) {
-			System.out.print(email+" "+password);
+		if (validate) {
+			if (role.equals("Employee")) {
+				response.sendRedirect("search.jsp");
+			} else {
+				response.sendRedirect("activity.jsp");
+			}
+		} else {
+			String message = "E-mail address or password was incorrect";
+			response.sendRedirect("login.jsp?message=" + URLEncoder.encode(message, "UTF-8"));
 		}
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 	}
 
 }

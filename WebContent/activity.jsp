@@ -92,10 +92,9 @@ html, body {
 	margin-bottom: 10px;
 }
 
-.searchbar input {
+.content {
 	box-sizing: border-box;
 	padding: 20px;
-	font-style: italic;
 	border: none;
 	background: #F0F0F0;
 	font-size: 20px;
@@ -146,15 +145,8 @@ html, body {
 		</nav>
 	</div>
 	<div id="body">
-		<div class="searchbar">
-			<form action="results" method="post" target="_self">
-				<input type="submit" value="Search" style="float: right" />
-				<div style="overflow: hidden">
-					<input type="text" name="search"
-						placeholder="Search by name, cpr or account number"
-						style="width: 100%" />
-				</div>​
-			</form>
+		<div class="content">
+			<p>Activity<p>
 		</div>
 	</div>
 	<div id="footer">
