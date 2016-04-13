@@ -147,16 +147,31 @@ html, body {
 	</div>
 	<div id="body">
 		<div class="searchbar">
-			<form action="results" method="post" target="_self">
+			<form action="Search" method="get" target="_self">
 				<input type="submit" value="Search" style="float: right" />
 				<div style="overflow: hidden">
-					<input type="text" name="search"
+					<input type="text" name="Search"
 						placeholder="Search by name, cpr or account number"
 						style="width: 100%" />
 				</div>​
 			</form>
 		</div>
 	</div>
+	<script>
+		$( document ).ready(function() {
+		$("#submit").click(function() {
+		var queryData = $("#input").val();
+		$.ajax({
+		type: 'GET',
+		url: 'http://localhost:9080/Uniccol Bank/Search',
+		data: {query: queryData}, success: function(data) {
+		$("#result").empty();
+		$("#result").html(data);
+		}
+		});
+		 });
+		});
+	</script>
 	<div id="footer">
 		<p>Uniccol Bank A/S licensed 2016</p>
 	</div>

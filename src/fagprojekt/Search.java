@@ -1,12 +1,16 @@
 package fagprojekt;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.servlet.ServletException;
@@ -15,13 +19,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Controller.BankApp;
+
 /**
  * Servlet implementation class Search
  */
 @WebServlet("/Search")
 public class Search extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+     
+	ResultSet rs;
+	Statement statement;
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -34,40 +43,52 @@ public class Search extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Properties properties = new Properties();
-		properties.put("user", "DTU12");
-		properties.put("password", "FAGP2016");
-		String url = "jdbc:db2://192.86.32.54:5040/DALLASB:retrieveMessagesFromServerOnGetMessage=true;emulateParameterMetaDataForZCalls=1;";
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet rs = null;
-		Boolean validate = false;
+		
+		BankApp app = new BankApp();
+		Login2 login = new Login2();
+//		try {
+//			rs = app.getDatabase();
+//		} catch (SQLException e1) {
+//			System.out.println("ResultSet Empty");
+//			e1.printStackTrace();
+//		}
+		String search = request.getParameter("Search");
+		System.out.println("search = " + search);
+		
+		ResultSetMetaData rsmd = null;
+		int numCols;
+		ArrayList<String> colNames = new ArrayList<String>();
+		System.out.println("dafuq");
 		try {
-			connection = DriverManager.getConnection(url, properties);
-			statement = connection.prepareStatement("SELECT * FROM DTUGRP05.USERINFO WHERE \"Email\"=?");
-			statement.setString(1, email);
-			rs = statement.executeQuery();
-			while (!validate && rs.next()) {
-				if (rs.getString("Email").equals(email) && rs.getString("Password").equals(password)) {
-					validate = true;
-					role = rs.getString("Role");
-				}
-			}
-			rs.close();
-			statement.close();
+			System.out.println("SELECT * FROM DTUGRP05.USERS WHERE \"UserName\" LIKE '%" + search + "%' OR \"Address\" LIKE '%" + search + "%' OR \"Email\" LIKE '%" + search + "%' OR \"Phone\" LIKE '%" + search + "%'");
+			rs = statement.executeQuery("SELECT * FROM DTUGRP05.USERINFO");
+    		System.out.println("hej");
+			rsmd = rs.getMetaData();
+    		numCols = rsmd.getColumnCount();
+    		for (int i = 1; i <= numCols; i++) {
+    			colNames.add(rsmd.getColumnName(i));
+    		}
+    		PrintWriter out = response.getWriter();
+    		out.println("<table><thead><tr>");
+    		for (String name : colNames) {
+    			out.println("<td>"+name+"</td>");
+    		}
+    		out.println("</tr></thead>");
+    		out.println("<tbody>");
+    		while(rs.next()) {
+	    		out.println("<tr>");
+	    		for (int i = 1; i <= numCols; i++) {
+	    		out.println("<td>"+rs.getString(i)+"</td>");
+	    		}
+	    		out.println("</tr>");
+    		}
+    		out.println("</tbody></table>");
 		} catch (SQLException e) {
+			System.out.println("fuck lortet");
 			e.printStackTrace();
 		}
-		if (validate) {
-			if (role.equals("Employee")) {
-				response.sendRedirect("search.jsp");
-			} else {
-				response.sendRedirect("activity.jsp");
-			}
-		} else {
-			String message = "E-mail address or password was incorrect";
-			response.sendRedirect("login.jsp?message=" + URLEncoder.encode(message, "UTF-8"));
-		}
+		
+		
 	}
 
 	/**
