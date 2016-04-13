@@ -2,7 +2,11 @@ package fagprojekt;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import javax.servlet.ServletException;
@@ -12,35 +16,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class Login
+ * Servlet implementation class Search
  */
-@WebServlet("/Login")
-public class Login extends HttpServlet {
+@WebServlet("/Search")
+public class Search extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public Search() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
-	public Login() {
-		super();
-	}
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-		String role = "";
-
-		try {
-			Class.forName("com.ibm.db2.jcc.DB2Driver");
-		} catch (ClassNotFoundException e) {
-			System.out.println("Driver not found");
-			e.printStackTrace();
-		}
-
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Properties properties = new Properties();
 		properties.put("user", "DTU12");
 		properties.put("password", "FAGP2016");
@@ -75,6 +68,14 @@ public class Login extends HttpServlet {
 			String message = "E-mail address or password was incorrect";
 			response.sendRedirect("login.jsp?message=" + URLEncoder.encode(message, "UTF-8"));
 		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }
