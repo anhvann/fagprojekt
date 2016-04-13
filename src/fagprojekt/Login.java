@@ -51,7 +51,7 @@ public class Login extends HttpServlet {
 		Boolean validate = false;
 		try {
 			connection = DriverManager.getConnection(url, properties);
-			statement = connection.prepareStatement("SELECT * FROM DTUGRP05.USERINFO WHERE \"Email\"=?");
+			statement = connection.prepareStatement("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"Email\"=?");
 			statement.setString(1, email);
 			rs = statement.executeQuery();
 			while (!validate && rs.next()) {

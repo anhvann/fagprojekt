@@ -1,9 +1,5 @@
 @CHARSET "ISO-8859-1";
 
-.carousel-inner img {
-	margin: auto;
-}
-
 .navbar {
 	font-family: Verdana;
 	font-size: 16px;
@@ -29,24 +25,28 @@
 	background: #012231;
 }
 
-html, body {
+* {
 	margin: 0;
 	padding: 0;
+}
+
+html, body {
 	height: 100%;
+	width: 100%;
 }
 
-#container {
+.container {
 	min-height: 100%;
+	width: 100%;
+	padding: 0px auto;
+	margin-bottom: 50px;
+}
+
+.footer {
 	position: relative;
-}
-
-#body {
-	padding-bottom: 50px;
-}
-
-#footer {
-	position: absolute;
-	bottom: 0;
+	margin-top: -50px;
+	clear: both;
+	line-height: 50px;
 	height: 50px;
 	width: 100%;
 	background: url("http://i.imgur.com/Uf3PuDg.png");
@@ -54,7 +54,6 @@ html, body {
 	color: #959595;
 	text-align: center;
 	font-size: 12px;
-	padding-top: 15px;
 }
 
 .img-bar {
@@ -85,6 +84,7 @@ html, body {
 	width: 1000px;
 	margin: 0 auto;
 }
+
 /* On small screens, set height to 'auto' for sidenav and grid */
 @media screen and (max-width: 767px) {
 	.sidenav {
@@ -94,4 +94,25 @@ html, body {
 	.row.content {
 		height: auto;
 	}
+}
+
+.carousel-inner img {
+	margin: auto;
+}
+#loginform {
+	margin: 100px auto;
+	width: 250px;
+}
+
+#searchbar input {
+	box-sizing: border-box;
+	padding: 20px;
+	font-style: italic;
+	border: none;
+	background: #F0F0F0;
+	font-size: 20px;
+}
+
+#search {
+	width: 500 px;
 }
