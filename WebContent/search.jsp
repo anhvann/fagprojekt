@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<%@include file="header.jsp"%>
-<body>
-			<div id="searchbar">
+<html>
+<div class="container">
+	<%@include file="header.jsp"%>
+	<div class="main">
+		<div id="searchbar">
 				<form id=searchform action="results" method="post" target="_self">
 					<input id=searchbutton type="submit" value="Search"
 						style="float: right" />
@@ -29,7 +31,7 @@
 					});
 				});
 			</script>
-		
-</body>
-<%@include file="footer.jsp"%>
+	</div>
+	<%@include file="footer.jsp"%>
+</div>
 </html>

@@ -26,16 +26,16 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
-
+		System.out.println("yeh");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String role = "";
 
 		try {
 			Class.forName("com.ibm.db2.jcc.DB2Driver");
+
 		} catch (ClassNotFoundException e) {
 			System.out.println("Driver not found");
 			e.printStackTrace();
@@ -48,7 +48,7 @@ public class Login extends HttpServlet {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet rs = null;
-		Boolean validate = false;
+		Boolean validate = false;			
 		try {
 			connection = DriverManager.getConnection(url, properties);
 			statement = connection.prepareStatement("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"Email\"=?");
@@ -62,8 +62,10 @@ public class Login extends HttpServlet {
 			}
 			rs.close();
 			statement.close();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
+
 		}
 		if (validate) {
 			if (role.equals("Employee")) {

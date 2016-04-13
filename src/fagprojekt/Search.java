@@ -31,19 +31,12 @@ public class Search extends HttpServlet {
 	ResultSet rs;
 	Statement statement;
 	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public Search() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		BankApp app = new BankApp();
 		Login2 login = new Login2();
 //		try {

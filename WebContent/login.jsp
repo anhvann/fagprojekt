@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<%@include file="header.jsp"%>
+<html>
 <div class="container">
+	<%@include file="header.jsp"%>
 	<div class="main">
 		<form id="loginform" action="Login" method="post" target="_self">
 			<legend>Login to Uniccol Bank</legend>
@@ -10,6 +11,6 @@
 			<input type="submit" name="loginButton" value="Login">
 		</form>
 	</div>
+	<%@include file="footer.jsp"%>
 </div>
-<%@include file="footer.jsp"%>
 </html>
