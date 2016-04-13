@@ -5,9 +5,9 @@
 	font-size: 16px;
 	background: #012231;
 	border: none;
-	margin-bottom: 0;
-	border-radius: 0;
+	margin-bottom: 0; border-radius : 0;
 	overflow-x: hidden;
+	border-radius: 0;
 }
 
 .navbar .nav>li>a {
@@ -25,11 +25,6 @@
 	background: #012231;
 }
 
-* {
-	margin: 0;
-	padding: 0;
-}
-
 html, body {
 	height: 100%;
 	width: 100%;
@@ -38,8 +33,10 @@ html, body {
 .container {
 	min-height: 100%;
 	width: 100%;
-	padding: 0px auto;
-	margin-bottom: 50px;
+}
+
+.main {
+	width: 100%;
 }
 
 .footer {
@@ -99,12 +96,17 @@ html, body {
 .carousel-inner img {
 	margin: auto;
 }
+
 #loginform {
 	margin: 100px auto;
 	width: 250px;
 }
 
-#searchbar input {
+#searchbar {
+	left: 0px;
+}
+
+#searchbar input#searchbox {
 	box-sizing: border-box;
 	padding: 20px;
 	font-style: italic;
@@ -113,6 +115,11 @@ html, body {
 	font-size: 20px;
 }
 
-#search {
-	width: 500 px;
+#searchbar input#searchbutton {
+	box-sizing: border-box;
+	padding: 17px;
+	font-style: italic;
+	border: none;
+	background: #F0F0F0;
+	font-size: 20px;
 }
