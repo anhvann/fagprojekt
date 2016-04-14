@@ -5,10 +5,10 @@
 	font-size: 16px;
 	background: #012231;
 	border: none;
-	margin-bottom: 0;
+	padding-top: -10px;
+	margin: 0;
 	border-radius: 0;
 	overflow-x: hidden;
-	border-radius: 0;
 }
 
 .navbar .nav>li>a {
@@ -25,7 +25,9 @@
 	color: #ffffff;
 	background: #012231;
 }
-
+.navigationarea{
+	margin-left: 120px;
+}
 .img-bar {
 	height: 80px;
 	width: auto;
@@ -36,9 +38,10 @@
 	position: absolute;
 	height: 65px;
 	width: auto;
+	top:25%;
 	bottom: 15%;
 	z-index: 99;
-	margin-left: -20px;
+	margin-left: 100px;
 	margin-bottom: 10px;
 }
 
@@ -59,6 +62,7 @@ html, body {
 	z-index: 1;
 	background: #ffffff;
 	overflow: autO;
+	min-height: 300px;
 }
 .footer {
 	z-index: -1;
@@ -73,35 +77,7 @@ html, body {
 	text-align: center;
 	font-size: 12px;
 }
-
-* /
-	/*
-.container {
-	width: 100%;
-	min-height: 100%;
-	margin-bottom: -50 px;
-
-}
-.footer {
-	position: absolute;
-	bottom: 0;
-	
-}
-*/
-	/*
-.content {
-	box-sizing: border-box;
-	padding: 20px;
-	border: none;
-	background: #F0F0F0;
-	font-size: 20px;
-}*/ 
-#links {
-	width: 1000px;
-	margin: 0 auto;
-}
-
-/* On small screens, set height to 'auto' for sidenav and grid */
+/* On small screens, set height to 'auto' for sidenav and grid 
 @media screen and (max-width: 767px) {
 	.sidenav {
 		height: auto;
@@ -114,31 +90,34 @@ html, body {
 
 .carousel-inner img {
 	margin: auto;
-}
+}*/
 
 #loginform {
 	margin: 100px auto;
 	width: 250px;
 }
+#searchbar{
+		background: #F0F0F0;
 
-#searchbar {
-	left: 0px;
 }
-
-#searchbar input#searchbox {
+#searchbar input#searchfield {
 	box-sizing: border-box;
-	padding: 20px;
 	font-style: italic;
 	border: none;
-	background: #F0F0F0;
+	background: none;
 	font-size: 20px;
+	padding: 20px;
 }
-
 #searchbar input#searchbutton {
 	box-sizing: border-box;
-	padding: 17px;
 	font-style: italic;
 	border: none;
-	background: #F0F0F0;
-	font-size: 20px;
+	font-size: 18px;
+	background: none;
+	height: 65px;
+	width: 65px;	
+}
+
+#table {
+	padding: 20px;
 }

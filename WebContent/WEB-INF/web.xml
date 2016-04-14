@@ -13,4 +13,15 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
+	
+	<servlet>
+		<description />
+		<display-name>Login Servlet</display-name>
+		<icon>
+			<small-icon>icons/small.gif</small-icon>
+			<large-icon>icons/small.gif</large-icon>
+		</icon>
+		<servlet-name>Login</servlet-name>
+		<servlet-class>Sample servlet class</servlet-class>
+	</servlet>
 </web-app>
