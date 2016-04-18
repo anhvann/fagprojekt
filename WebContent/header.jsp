@@ -27,7 +27,7 @@
 		</ul>
 		<div id="loginlink">
 			<ul class="nav navbar-nav pull-right">
-				<li><a href="login.html" text-align="right"><span
+				<li><a href="login.jsp" text-align="right"><span
 						class="glyphicon glyphicon-log-in"></span> Login</a></li>
 			</ul>
 		</div>

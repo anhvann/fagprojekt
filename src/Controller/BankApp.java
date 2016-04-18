@@ -12,59 +12,64 @@ public class BankApp {
 	private Statement statement;
 
 	protected String url = "jdbc:db2://192.86.32.54:5040/DALLASB:retrieveMessagesFromServerOnGetMessage=true;emulateParameterMetaDataForZCalls=1;";
-	// public ArrayList<String> getInfo(String password) throws SQLException {
-	// // Establish the connection to DB2
-	// connection = DriverManager.getConnection(url, "DTU10", "FAGP2016");
-	// statement = connection.createStatement();
-	//
-	// // Create the result set: receive and save all information from the
-	// // database
-	// ResultSet resultSet = null;
-	// int numCols;
-	//
-	// // This list is created for return statement
-	// ArrayList<String> infoList = new ArrayList<String>();
-	//
-	// try {
-	// resultSet = statement
-	// .executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"Email\" = '"
-	// + password + "' ");
-	//
-	// // ResultSetMetaData is for counting the number of column on the
-	// // table
-	// ResultSetMetaData rsm = resultSet.getMetaData();
-	// numCols = rsm.getColumnCount();
-	//
-	// // // Retrieve the names of the columns by the method:
-	// // getColumnName()
-	// // ArrayList<String> metaDataList = new ArrayList<String>();
-	// // for (int i = 1; i <= numCols; i++) {
-	// // metaDataList.add(rsm.getColumnName(i));
-	// // }
-	// //
-	// // // This loop is for doing something with the metaDataList:
-	// // for (String data : metaDataList) {
-	// // System.out.print(data);
-	// // }
-	//
-	// // Retrieve all informations from the resultSet
-	// while (resultSet.next()) {
-	// for (int k = 1; k <= numCols; k++) {
-	// infoList.add(resultSet.getString(k));
-	// }
-	// }
-	//
-	// } catch (SQLException e) {
-	// e.printStackTrace();
-	// }
-	//
-	// // Clear up enviroment
-	// resultSet.close();
-	// statement.close();
-	// connection.close();
-	//
-	// return infoList;
-	// }
+	
+	public BankApp() {
+		
+	}
+	
+	 public ArrayList<String> getInfo(String password) throws SQLException {
+	 // Establish the connection to DB2
+	 connection = DriverManager.getConnection(url, "DTU10", "FAGP2016");
+	 statement = connection.createStatement();
+	
+	 // Create the result set: receive and save all information from the
+	 // database
+	 ResultSet resultSet = null;
+	 int numCols;
+	
+	 // This list is created for return statement
+	 ArrayList<String> infoList = new ArrayList<String>();
+	
+	 try {
+	 resultSet = statement
+	 .executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"Email\" = '"
+	 + password + "' ");
+	
+	 // ResultSetMetaData is for counting the number of column on the
+	 // table
+	 ResultSetMetaData rsm = resultSet.getMetaData();
+	 numCols = rsm.getColumnCount();
+	
+	 // // Retrieve the names of the columns by the method:
+	 // getColumnName()
+	 // ArrayList<String> metaDataList = new ArrayList<String>();
+	 // for (int i = 1; i <= numCols; i++) {
+	 // metaDataList.add(rsm.getColumnName(i));
+	 // }
+	 //
+	 // // This loop is for doing something with the metaDataList:
+	 // for (String data : metaDataList) {
+	 // System.out.print(data);
+	 // }
+	
+	 // Retrieve all informations from the resultSet
+	 while (resultSet.next()) {
+		 for (int k = 1; k <= numCols; k++) {
+			 infoList.add(resultSet.getString(k));
+		 }
+	 }
+	
+	 } catch (SQLException e) {
+	 e.printStackTrace();
+	 }
+	
+	 // Clear up enviroment
+	 resultSet.close();
+	 statement.close();
+	 connection.close();
+	
+	 return infoList;
+	 }
 
 	public String getRole(String email, String password) throws SQLException {
 		connection = DriverManager.getConnection(url, "DTU10", "FAGP2016");

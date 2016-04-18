@@ -59,7 +59,7 @@ public class Search extends HttpServlet {
 		// LIKE '%" + search + "%' OR \"Address\" LIKE '%" + search + "%' OR
 		// \"Email\" LIKE '%" + search + "%' OR \"Phone\" LIKE '%" + search +
 		// "%'");
-		// rs = statement.executeQuery("SELECT * FROM DTUGRP05.USERINFO");
+		// rs = statement.executeQuery("SELECT * FROM DTUGRP05.USERS");
 		// System.out.println("hej");
 		// rsmd = rs.getMetaData();
 		// numCols = rsmd.getColumnCount();
