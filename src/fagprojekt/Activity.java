@@ -2,6 +2,7 @@ package fagprojekt;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,9 +36,23 @@ public class Activity extends HttpServlet {
 		if (bankApp == null) {
 			bankApp = new BankApp();
 		}
+		//TODO
+		//Get name from chosen row in search.jsp and set attribute
+		//Call getAccounts from bankApp at set attributes
+		int userID = 0;
+		LinkedList<String> accounts;
+		try {
+			accounts = bankApp.getAccounts(userID);
+		} catch (ClassNotFoundException | SQLException e) {
+			accounts = null;
+			e.printStackTrace();
+		}
 		
 		String name = "";
-		request.setAttribute(name, "value");
+		request.setAttribute(name, "name");
+		for (String account : accounts) {
+			request.setAttribute(account, "account");
+		}
 	}
 
 	/**

@@ -4,7 +4,7 @@
 	<div class="main" align="center">
 	<div>
 		<form action="Activity" id="AccountID" method="post">
-			<input type="text" value="${ requestScope.value}">
+			<input type="text" value="${ requestScope.name}">
 		</form> 
 	</div>
 	<table>

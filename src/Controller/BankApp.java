@@ -80,5 +80,26 @@ public class BankApp {
 		}
 		return IDs;
 	}
+	
+	public LinkedList<String> getAccounts(int userID) throws ClassNotFoundException, SQLException {
+		connect();
+		
+		LinkedList<String> accounts = new LinkedList<String>();
+		ResultSet resultSet = null;
+
+		try {
+			resultSet = statement.executeQuery("SELECT \"ACCOUNTS\" FROM \"DTUGRP05\".\"OWNERSHIP\" WHERE \"USER\" = '" + userID + "' ");
+			while (resultSet.next()) {
+				accounts.add(resultSet.getString(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		resultSet.close();
+		statement.close();
+		connection.close();
+		
+		return accounts;
+	}
 
 }
