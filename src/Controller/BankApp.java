@@ -81,7 +81,7 @@ public class BankApp {
 		return IDs;
 	}
 	
-	public LinkedList<String> getAccounts(int userID) throws ClassNotFoundException, SQLException {
+	public LinkedList<String> getAccounts(String userID) throws ClassNotFoundException, SQLException {
 		connect();
 		
 		LinkedList<String> accounts = new LinkedList<String>();
