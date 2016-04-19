@@ -40,26 +40,11 @@ public class Login extends HttpServlet {
 	/**
 	 * @see Servlet#init(ServletConfig)
 	 */
-	// public void init(ServletConfig config) throws ServletException {
-	// String DB_USER = "DTU11";
-	// String DB_PASSWORD = "FAGP2016";
-	// try {
-	// Class.forName("com.ibm.db2.jcc.DB2Driver");
-	// db2Conn =
-	// DriverManager.getConnection("jdbc:db2://192.86.32.54:5040/DALLASB:" +
-	// "user=" + DB_USER + ";"
-	// + "password=" + DB_PASSWORD + ";");
-	// } catch (SQLException | ClassNotFoundException e) {
-	// e.printStackTrace();
-	// }
-	// }
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		if (email.isEmpty() || password.isEmpty()) {
@@ -73,9 +58,9 @@ public class Login extends HttpServlet {
 		}
 		try {
 			String role = bankApp.getRole(email, password);
-			if (role.equals("employee")) {
+			if (role.equals("e")) {
 				response.sendRedirect("search.jsp");
-			} else if (role.equals("client")) {
+			} else if (role.equals("c")) {
 				response.sendRedirect("activity.jsp");
 			} else {
 				String message = "E-mail address or password was incorrect";
