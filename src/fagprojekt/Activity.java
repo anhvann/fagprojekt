@@ -32,14 +32,12 @@ public class Activity extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String userID = request.getParameter("ID");
 		
 		if (bankApp == null) {
 			bankApp = new BankApp();
 		}
-		//TODO
-		//Get name from chosen row in search.jsp and set attribute
-		//Call getAccounts from bankApp at set attributes
-		int userID = 0;
+
 		LinkedList<String> accounts;
 		try {
 			accounts = bankApp.getAccounts(userID);
@@ -59,7 +57,6 @@ public class Activity extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

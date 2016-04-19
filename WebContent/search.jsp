@@ -30,7 +30,7 @@
                		<th>Phone</th>
            		</tr>
            		<% while(resultset.next()){ %>
-           		<tr onclick="document.location = 'activity.jsp';">
+           		<tr onclick="document.location = 'Activity?ID=<%=resultset.getString("UserID") %>';">
                		<td> <%= resultset.getString("UserID") %></td>
                		<td> <%= resultset.getString("UserName") %></td>
                		<td> <%= resultset.getString("Address") %></td>
