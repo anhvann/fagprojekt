@@ -58,14 +58,14 @@ and open the template in the editor.
                         <input type="number" class="form-control" id="zipcode">
                     </div>
                 </div>    
-                <div>    
-                    <label class="control-label col-sm-offset-4">City:</label>
-                    <div class="col-sm-offset-6">
-                        <input type="text" class="form-control" id="city">
+                <div class="form-group">    
+                    <label class="control-label col-sm-2">City:</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="city" placeholder="Enter city">
                     </div>
                 </div>
                 
-                <div class="form-group">        
+                <div>        
                     <div class="col-sm-offset-2 col-sm-8">
                       <button type="submit" class="btn btn-default">Create</button>
                     </div>
