@@ -118,6 +118,21 @@ html, body {
 	width: 65px;	
 }
 
-#table {
-	padding: 20px;
+#message{
+	padding: 30px 0px 20px 35px;
 }
+
+table {
+    width:95%;
+    border: none;
+}
+th {
+    background-color: #b3cde5;
+    color: white;
+    font-size: 15px;
+}
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+tr:hover {background-color: #f5f5f5}
