@@ -1,4 +1,4 @@
-package fagprojekt;
+package servlets;
 
 import Controller.BankApp;
 

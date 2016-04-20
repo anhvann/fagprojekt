@@ -14,9 +14,6 @@
 			Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY);
 			String userID = request.getParameter("ID");
-			String name = "";
-			if (userID != null) {
-				ResultSet resultset = statement
 						.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + userID + "' ");
 				while (resultset.next()) {
 					name = resultset.getString("FullName");
