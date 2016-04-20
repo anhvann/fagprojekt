@@ -23,7 +23,8 @@ and open the template in the editor.
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="email">Email:</label>
                     <div class="col-sm-4">
-                        <input type="email" class="form-control" id="email" placeholder="Enter email" value=${email}>
+                    <%String email = (String) request.getAttribute("email");%>
+                        <input type="email" class="form-control" id="email" placeholder="Enter email" value="<%=email%>">
                     </div>
                 </div>
                 <div class="form-group">
@@ -53,7 +54,7 @@ and open the template in the editor.
                 <div class="form-group">    
                     <label class="control-label col-sm-2">City:</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="city" placeholder="Enter city" value=${city}>
+                        <input type="text" class="form-control" id="city" placeholder="Enter city">
                     </div>
                 </div>
                 

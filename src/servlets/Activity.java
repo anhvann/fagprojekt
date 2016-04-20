@@ -35,38 +35,38 @@ public class Activity extends HttpServlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String cpr = request.getParameter("ID");
-		User user = new User(cpr);
-
-		if (bankApp == null) {
+		String ID = request.getParameter("ID");
+		User user = new User(ID);
+		
+		
+		if (ID.length() == 10) {
 			bankApp = new BankApp();
-		}
-
-		String[] columns = {"CPRNo", "Email", "Password", "FullName", "Address", "Phone", "DateOfBirth", "Postcode", "RoleID"};
-		LinkedList<String> userInfo;
-		LinkedList<Account> accounts;
-		try {
-			userInfo = bankApp.queryExecution("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ", columns);
-			user.setInfo(userInfo);
-			accounts = bankApp.getAccounts(cpr);
-			user.setAccounts(accounts);
+	
+			String[] columns = {"CPRNo", "Email", "Password", "FullName", "Address", "Phone", "DateOfBirth", "Postcode", "RoleID"};
+			LinkedList<String> userInfo;
+			LinkedList<Account> accounts;
 			
-			request.setAttribute("accounts", user.getAccounts());
+			try {
+				userInfo = bankApp.queryExecution("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + ID + "' ", columns);
+				user.setInfo(userInfo);
+				accounts = bankApp.getAccounts(ID);
+				user.setAccounts(accounts);
+			
+				request.setAttribute("accounts", user.getAccounts());
+				request.setAttribute("fullname", user.getName());
+				request.setAttribute("cpr", ID);
+				request.getRequestDispatcher("activity.jsp").forward(request, response);
+			} catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			request.setAttribute("email", user.getEmail());
+			request.setAttribute("password", user.getPassword());
 			request.setAttribute("fullname", user.getName());
-			request.setAttribute("cpr", cpr);
-			request.getRequestDispatcher("activity.jsp").forward(request, response);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
+			request.setAttribute("address", user.getAddress());
+			request.setAttribute("postcode", user.getPostCode());
+			request.getRequestDispatcher("userInfo.jsp").forward(request, response);
 		}
-		
-		request.setAttribute("email", user.getEmail());
-		request.setAttribute("password", user.getPassword());
-		request.setAttribute("fullname", user.getName());
-		request.setAttribute("address", user.getAddress());
-		request.setAttribute("postcode", user.getPostCode());
-		request.setAttribute("city", user.getCity());
-		
-		request.getRequestDispatcher("userInfo.jsp").forward(request, response);
 	}
 
 	/**

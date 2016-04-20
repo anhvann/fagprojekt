@@ -22,7 +22,7 @@
 				<%
 				LinkedList<Account> acc = (LinkedList<Account>) request.getAttribute("accounts");
 				for (int i = 0; i < acc.size(); i++) {%>
-				<tr onclick="document.location = 'activity.jsp';">
+				<tr onclick="document.location = 'activity.jsp?ID=<%=acc.get(i).getAccountID() %>';">
 					<td> <%= acc.get(i).getAccountID() %></td>
 					<td> <%= acc.get(i).getBalance() %></td>
 				<tr />
