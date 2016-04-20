@@ -23,8 +23,7 @@ and open the template in the editor.
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="email">Email:</label>
                     <div class="col-sm-4">
-                    <%String email = (String) request.getAttribute("email");%>
-                        <input type="email" class="form-control" id="email" placeholder="Enter email" value="<%=email%>">
+                        <input type="email" class="form-control" id="email" placeholder="Enter email" value=${email}>
                     </div>
                 </div>
                 <div class="form-group">
