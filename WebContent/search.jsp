@@ -39,5 +39,9 @@
        		</table></div>
        		<% } %>	
 	</div>
+	<h3 align="center">
+		<a href="Register.jsp" align="center">Create new User</a>
+	</h3>
+	
 	<%@include file="footer.jsp"%>
 </html>

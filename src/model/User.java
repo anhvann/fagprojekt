@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class User {
 
-	private String userID, email, password, name, phone, address, dateOfBirth, postCode, roleID;
+	private String userID, email, password, name, phone, address, dateOfBirth, postCode, city, roleID;
 	
 	public User(String userID) {
 		this.userID = userID;
@@ -18,7 +18,8 @@ public class User {
 		address = info.get(5);
 		dateOfBirth = info.get(6);
 		postCode = info.get(7);
-		roleID = info.get(8);
+		city = info.get(8);
+		roleID = info.get(9);
 	}
 	
 	public String getEmail() {
@@ -47,6 +48,10 @@ public class User {
 	
 	public String getPostCode() {
 		return postCode;
+	}
+	
+	public String getCity() {
+		return city;
 	}
 	
 	public String getRoleID() {

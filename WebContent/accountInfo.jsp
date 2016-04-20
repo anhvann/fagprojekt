@@ -7,7 +7,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>RegisterCostumer</title>
+        <title>AccountInfo</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -18,13 +18,10 @@ and open the template in the editor.
     <body>
     	<%@include file="header.jsp"%>
         <div class="container" align="center">
-            <h2>Register Customer</h2>
-            <p>
-                Please enter all the required information for creating a new account for the customer
-            </p>
+            <h2>Account Information</h2>
             <form class="form-horizontal" role="form">
                 <div class="form-group">
-                    <label class="control-label col-sm-2" for="email">Email:</label>
+                    <label class="control-label col-sm-2" for="AccID">Account Number:</label>
                     <div class="col-sm-4">
                         <input type="email" class="form-control" id="email" placeholder="Enter email">
                     </div>
@@ -36,15 +33,9 @@ and open the template in the editor.
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2" for="firstname">First Name:</label>
+                    <label class="control-label col-sm-2" for="fullname">Full Name:</label>
                     <div class="col-sm-4">          
-                        <input type="text" class="form-control" id="name" placeholder="Enter first name">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="lastname">Last Name:</label>
-                    <div class="col-sm-4">          
-                        <input type="text" class="form-control" id="name" placeholder="Enter last name">
+                        <input type="text" class="form-control" id="name" placeholder="Enter full name">
                     </div>
                 </div>
                 <div class="form-group">

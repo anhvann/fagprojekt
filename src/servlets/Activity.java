@@ -33,7 +33,11 @@ public class Activity extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userID = request.getParameter("ID");
+		String userID = null;
+		if (!request.getParameter("ID").equals(null)) {
+			userID = request.getParameter("ID");
+		}
+		System.out.println(userID);
 		User user = new User(userID);
 		
 		if (bankApp == null) {
@@ -47,8 +51,16 @@ public class Activity extends HttpServlet {
 			info = null;
 			e.printStackTrace();
 		}
-		user.setInfo(info);
-		System.out.println(user.getEmail());
+		user.setInfo(info); 
+		
+		request.setAttribute("email", user.getEmail());
+		request.setAttribute("password", user.getPassword());
+		request.setAttribute("fullname", user.getName());
+		request.setAttribute("address", user.getAddress());
+		request.setAttribute("postcode", user.getPostCode());
+		request.setAttribute("city", user.getCity());
+		
+		request.getRequestDispatcher("userInfo.jsp").forward(request, response);
 		
 	}
 

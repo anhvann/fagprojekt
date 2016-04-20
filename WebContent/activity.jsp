@@ -25,14 +25,20 @@
 			<font size="4"><font color="grey"><%=name%> (<%=userID%>)</font></font>
 		</div>
 
+		<div>
+			<a href="userInfo.jsp">Edit User Information</a>
+		</div>
+		
 		<div align="center">
 			<table>
 				<tr>
+					<th></th>
 					<th>Account</th>
 					<th>Balance</th>
 				</tr>
 				<%while (resultset.next()) {%>
 				<tr onclick="document.location = 'activity.jsp?ID=<%=resultset.getString("AccID")%>';">
+					<td><a href="accountInfo.jsp">Edit</a>
 					<td> <%= resultset.getString("AccID") %></td>
 					<td> <%= resultset.getString("Balance") %></td>
 				<tr />
