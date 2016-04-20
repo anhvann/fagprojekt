@@ -1,4 +1,4 @@
-package fagprojekt;
+package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Controller.BankApp;
+import model.User;
 
 /**
  * Servlet implementation class Activity
@@ -33,24 +34,22 @@ public class Activity extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String userID = request.getParameter("ID");
+		User user = new User(userID);
 		
 		if (bankApp == null) {
 			bankApp = new BankApp();
 		}
 
-		LinkedList<String> accounts;
+		LinkedList<String> info;
 		try {
-			accounts = bankApp.getAccounts(userID);
+			info = bankApp.getInfo(userID);
 		} catch (ClassNotFoundException | SQLException e) {
-			accounts = null;
+			info = null;
 			e.printStackTrace();
 		}
+		user.setInfo(info);
+		System.out.println(user.getEmail());
 		
-		String name = "";
-		request.setAttribute(name, "name");
-		for (String account : accounts) {
-			request.setAttribute(account, "account");
-		}
 	}
 
 	/**

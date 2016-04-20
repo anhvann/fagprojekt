@@ -36,7 +36,6 @@ public class BankApp {
 			e.printStackTrace();
 		}
 		resultSet.close();
-		statement.close();
 		connection.close();
 		return "";
 	}
@@ -93,7 +92,7 @@ public class BankApp {
 
 		try {
 			resultSet = statement.executeQuery(
-					"SELECT \"ACCOUNTS\" FROM \"DTUGRP05\".\"OWNERSHIP\" WHERE \"CPRNo\" = '" + userID + "' ");
+					"SELECT \"ACCOUNTS\" FROM \"DTUGRP05\".\"OWNERSHIP\" WHERE \"CPRNo\" = '" + userID + "'");
 			while (resultSet.next()) {
 				accounts.add(resultSet.getString(1));
 			}
@@ -101,9 +100,30 @@ public class BankApp {
 			e.printStackTrace();
 		}
 		resultSet.close();
-		statement.close();
 		connection.close();
 
 		return accounts;
+	}
+	
+	public LinkedList<String> getInfo(String userID) throws ClassNotFoundException, SQLException {
+		connect();
+		
+		LinkedList<String> list = new LinkedList<>();
+		ResultSet rs = null;
+		int index = 2;
+		
+		try {
+			rs = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + userID + "'");
+			while (rs.next()) {
+				list.add(rs.getString(index));
+				index++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		rs.close();
+		connection.close();
+		
+		return list;
 	}
 }
