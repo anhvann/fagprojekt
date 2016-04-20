@@ -19,7 +19,7 @@
 				while (resultset.next()) {
 					name = resultset.getString("FullName");
 				}
-				resultset = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"ACCOUNTS\" INNER JOIN \"DTUGRP05\".\"OWNERSHIPS\" USING \"AccID\" WHERE \"CPRNo\" = '"  + userID + "' ");
+				resultset = statement.executeQuery("select * from \"DTUGRP05\".\"ACCOUNTS\" LEFT OUTER JOIN \"DTUGRP05\".\"OWNERSHIPS\" ON \"DTUGRP05\".\"ACCOUNTS\".\"AccID\" = \"DTUGRP05\".\"OWNERSHIPS\".\"AccID\" WHERE \"CPRNo\" = '"  + userID + "' ");
 		%>
 		<div id="message">
 			<font size="4"><font color="grey"><%=name%> (<%=userID%>)</font></font>
