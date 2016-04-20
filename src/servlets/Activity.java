@@ -38,28 +38,27 @@ public class Activity extends HttpServlet {
 		String ID = request.getParameter("ID");
 		User user = new User(ID);
 		
+		bankApp = new BankApp();
+
+		String[] columns = {"CPRNo", "Email", "Password", "FullName", "Address", "Phone", "DateOfBirth", "Postcode", "RoleID"};
+		LinkedList<String> userInfo;
+		LinkedList<Account> accounts;
 		
-		if (ID.length() == 10) {
-			bankApp = new BankApp();
-	
-			String[] columns = {"CPRNo", "Email", "Password", "FullName", "Address", "Phone", "DateOfBirth", "Postcode", "RoleID"};
-			LinkedList<String> userInfo;
-			LinkedList<Account> accounts;
-			
-			try {
-				userInfo = bankApp.queryExecution("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + ID + "' ", columns);
-				user.setInfo(userInfo);
-				accounts = bankApp.getAccounts(ID);
-				user.setAccounts(accounts);
-			
-				request.setAttribute("accounts", user.getAccounts());
-				request.setAttribute("fullname", user.getName());
-				request.setAttribute("cpr", ID);
-				request.getRequestDispatcher("activity.jsp").forward(request, response);
-			} catch (ClassNotFoundException | SQLException e) {
-				e.printStackTrace();
-			}
+		try {
+			userInfo = bankApp.queryExecution("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + ID + "' ", columns);
+			user.setInfo(userInfo);
+			accounts = bankApp.getAccounts(ID);
+			user.setAccounts(accounts);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		if (ID.length() == 10) {	
+			request.setAttribute("accounts", user.getAccounts());
+			request.setAttribute("fullname", user.getName());
+			request.setAttribute("cpr", ID);
+			request.getRequestDispatcher("activity.jsp").forward(request, response);
 		} else {
+			System.out.println(user.getEmail());
 			request.setAttribute("email", user.getEmail());
 			request.setAttribute("password", user.getPassword());
 			request.setAttribute("fullname", user.getName());
