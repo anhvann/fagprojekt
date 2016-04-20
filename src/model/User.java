@@ -51,6 +51,5 @@ public class User {
 	
 	public String getRoleID() {
 		return roleID;
-	}
-	
+	}	
 }
