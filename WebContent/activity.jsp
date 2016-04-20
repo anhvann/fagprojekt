@@ -10,7 +10,7 @@
 			<font size="4"><font color="grey">${fullname} (${cpr})</font></font>
 		</div>
 		<div>
-			<a href="userInfo.jsp">Edit User Information</a>
+			<a href="Activity?ID=${cpr}&action=edit">Edit User Information</a>
 		</div>
 		<div align="center">
 			<table>
