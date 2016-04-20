@@ -3,7 +3,9 @@ package Controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 import java.sql.*;
@@ -125,5 +127,34 @@ public class BankApp {
 		connection.close();
 		
 		return list;
+	}
+	
+	public Map<String, String> queryExecution(String database, String query) throws ClassNotFoundException, SQLException {
+		connect();
+		
+		Map<String, String> map = new HashMap<String, String>();
+		String[] names = null;
+		ResultSet rs = null;
+		int index = 1;
+		
+		switch (database) {
+			case "USERS": names = new String[]{"CPRNo", "Email", "Password", "FullName", "Phone", "Address", "DateOfBirth", "PostCode", "RoleID"};
+				break;
+			case "ACCOUNTS" : names = new String[]{"Balance", "Interest", "Status", "AccID", "TransID"};
+				break;
+		}
+		
+		try {
+			rs = statement.executeQuery(query);
+			while (rs.next()) {
+				map.put(names[index-1],rs.getString(index));
+				index++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		rs.close();
+		
+		return map;	
 	}
 }
