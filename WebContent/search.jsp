@@ -29,7 +29,7 @@
                		<th>Phone</th>
            		</tr>
            		<% while(resultset.next()){ %>
-           		<tr onclick="document.location = 'Activity?ID=<%=resultset.getString("CPRNo") %>';">
+           		<tr onclick="document.location = 'Activity?ID=<%=resultset.getString("CPRNo")%>&action=view ';">
                		<td> <%= resultset.getString("CPRNo") %></td>
                		<td> <%= resultset.getString("FullName") %></td>
                		<td> <%= resultset.getString("Address") %></td>
@@ -45,3 +45,4 @@
 	
 	<%@include file="footer.jsp"%>
 </html>
+

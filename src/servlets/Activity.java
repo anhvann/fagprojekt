@@ -35,8 +35,9 @@ public class Activity extends HttpServlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String ID = request.getParameter("ID");
-		User user = new User(ID);
+		String cpr = request.getParameter("ID");
+		String action = request.getParameter("action");
+		User user = new User(cpr);
 		
 		bankApp = new BankApp();
 
@@ -45,21 +46,22 @@ public class Activity extends HttpServlet {
 		LinkedList<Account> accounts;
 		
 		try {
-			userInfo = bankApp.queryExecution("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + ID + "' ", columns);
+			userInfo = bankApp.queryExecution("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ", columns);
 			user.setInfo(userInfo);
-			accounts = bankApp.getAccounts(ID);
+			accounts = bankApp.getAccounts(cpr);
 			user.setAccounts(accounts);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-		if (ID.length() == 10) {	
+		if (action.equals("view")) {	
 			request.setAttribute("accounts", user.getAccounts());
 			request.setAttribute("fullname", user.getName());
-			request.setAttribute("cpr", ID);
+			request.setAttribute("cpr", cpr);
 			request.getRequestDispatcher("activity.jsp").forward(request, response);
-		} else {
+		} else if (action.equals("edit")){
 			System.out.println(user.getEmail());
 			request.setAttribute("email", user.getEmail());
+			System.out.println(user.getEmail());
 			request.setAttribute("password", user.getPassword());
 			request.setAttribute("fullname", user.getName());
 			request.setAttribute("address", user.getAddress());
