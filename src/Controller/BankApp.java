@@ -19,12 +19,14 @@ public class BankApp {
 		connection = DriverManager.getConnection(url, "DTU10", "FAGP2016");
 		statement = connection.createStatement();
 	}
+
 	public String getRole(String email, String password) throws SQLException, ClassNotFoundException {
 		connect();
 		ResultSet resultSet = null;
 
 		try {
-			resultSet = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"Email\" = '" + email + "' ");
+			resultSet = statement
+					.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"Email\" = '" + email + "' ");
 			while (resultSet.next()) {
 				if (resultSet.getString("Password").equals(password)) {
 					return resultSet.getString("RoleID");
@@ -45,27 +47,29 @@ public class BankApp {
 		Scanner scanner = new Scanner(input);
 		LinkedList<String> IDs = new LinkedList<>();
 		LinkedList<String> IDs2 = new LinkedList<>();
-		
+
 		// Get first set
 		String keyword = scanner.next();
 		try {
-			resultSet = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE LOWER(\"UserName\") LIKE '%"
-					+ keyword + "%' OR LOWER(\"Address\") LIKE '%" + keyword + "%' OR LOWER(\"Email\") LIKE '%"
-					+ keyword + "%' OR \"Phone\" LIKE '%" + keyword + "%'");
-
+			resultSet = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" LIKE '%" + keyword
+					+ "%' OR LOWER(\"Email\") LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%" + keyword
+					+ "%' OR \"Phone\" LIKE '%" + keyword + "%' OR LOWER(\"Address\") LIKE '%" + keyword + "%'"
+					+ "OR \"Postcode\" LIKE '%" + keyword + "%'");
 			while (resultSet.next()) {
-				IDs.add(resultSet.getString("UserID"));
+				IDs.add(resultSet.getString("CPRNo"));
 			}
 			// Compare first set with other
 			while (scanner.hasNext()) {
 				keyword = scanner.next();
 				ResultSet otherResultSet = statement
-						.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE LOWER(\"UserName\") LIKE '%" + keyword
-								+ "%' OR LOWER(\"Address\") LIKE '%" + keyword + "%' OR LOWER(\"Email\") LIKE '%"
-								+ keyword + "%' OR \"Phone\" LIKE '%" + keyword + "%'");
+						.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" LIKE '%" + keyword
+								+ "%' OR LOWER(\"Email\") LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%"
+								+ keyword + "%' OR \"Phone\" LIKE '%" + keyword + "%' OR LOWER(\"Address\") LIKE '%"
+								+ keyword + "%'" + " OR \"Postcode\" LIKE '%" + keyword + "%'");
+
 				while (otherResultSet.next()) {
 					for (int i = 0; i < IDs.size(); i++) {
-						if (IDs.get(i).equals(otherResultSet.getString("UserID"))) {
+						if (IDs.get(i).equals(otherResultSet.getString("CPRNo"))) {
 							IDs2.add(IDs.get(i));
 							break;
 						}
@@ -74,21 +78,22 @@ public class BankApp {
 				IDs = (LinkedList<String>) IDs2.clone();
 				IDs2.clear();
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return IDs;
 	}
-	
+
 	public LinkedList<String> getAccounts(String userID) throws ClassNotFoundException, SQLException {
 		connect();
-		
+
 		LinkedList<String> accounts = new LinkedList<String>();
 		ResultSet resultSet = null;
 
 		try {
-			resultSet = statement.executeQuery("SELECT \"ACCOUNTS\" FROM \"DTUGRP05\".\"OWNERSHIP\" WHERE \"USER\" = '" + userID + "' ");
+			resultSet = statement.executeQuery(
+					"SELECT \"ACCOUNTS\" FROM \"DTUGRP05\".\"OWNERSHIP\" WHERE \"CPRNo\" = '" + userID + "' ");
 			while (resultSet.next()) {
 				accounts.add(resultSet.getString(1));
 			}
@@ -98,8 +103,7 @@ public class BankApp {
 		resultSet.close();
 		statement.close();
 		connection.close();
-		
+
 		return accounts;
 	}
-
 }

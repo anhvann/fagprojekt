@@ -15,13 +15,12 @@
 			</div>
 		</form>
 		<div id="message"><font size="4"><font color="grey">${message}</font></font></div>
-		
 		<%
 			Connection connection = DriverManager.getConnection("jdbc:db2://192.86.32.54:5040/DALLASB:retrieveMessagesFromServerOnGetMessage=true;emulateParameterMetaDataForZCalls=1;", "DTU12", "FAGP2016");
             Statement statement = connection.createStatement() ;
 		 	String sqlStatement = (String) request.getAttribute("resultlist"); 
   			if (sqlStatement != null){
-            ResultSet resultset = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"UserID\" IN "+sqlStatement+" ");%>
+            ResultSet resultset = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" IN "+sqlStatement+" ");%>
             <div align="center"><table>
             	<tr>
                 	<th>ID</th>
@@ -30,9 +29,9 @@
                		<th>Phone</th>
            		</tr>
            		<% while(resultset.next()){ %>
-           		<tr onclick="document.location = 'Activity?ID=<%=resultset.getString("UserID") %>';">
-               		<td> <%= resultset.getString("UserID") %></td>
-               		<td> <%= resultset.getString("UserName") %></td>
+           		<tr onclick="document.location = 'activity.jsp?ID=<%=resultset.getString("CPRNo") %>';">
+               		<td> <%= resultset.getString("CPRNo") %></td>
+               		<td> <%= resultset.getString("FullName") %></td>
                		<td> <%= resultset.getString("Address") %></td>
                		<td> <%= resultset.getString("Phone") %></td>
            		<tr/>
