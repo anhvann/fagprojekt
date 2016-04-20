@@ -5,7 +5,7 @@
 	<div class="main">
 		<form id="loginform" action="Login" method="post" target="_self">
 			<legend>Login to Uniccol Bank</legend>
-			E-mail address:<br> <input type="text" name="email"><br>
+			CPR Number:<br> <input type="text" name="cpr"><br>
 			Password:<br> <input type="text" name="password"><br>
 			<font size="2"><font color="red">${message}</font></font> <br>
 			<input type="submit" name="loginButton" value="Login">

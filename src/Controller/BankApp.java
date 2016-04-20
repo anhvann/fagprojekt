@@ -20,13 +20,13 @@ public class BankApp {
 		statement = connection.createStatement();
 	}
 
-	public String getRole(String email, String password) throws SQLException, ClassNotFoundException {
+	public String getRole(String cpr, String password) throws SQLException, ClassNotFoundException {
 		connect();
 		ResultSet resultSet = null;
 
 		try {
 			resultSet = statement
-					.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"Email\" = '" + email + "' ");
+					.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ");
 			while (resultSet.next()) {
 				if (resultSet.getString("Password").equals(password)) {
 					return resultSet.getString("RoleID");

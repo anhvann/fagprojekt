@@ -46,9 +46,9 @@ public class Login extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
-		String email = request.getParameter("email");
+		String cpr = request.getParameter("cpr");
 		String password = request.getParameter("password");
-		if (email.isEmpty() || password.isEmpty()) {
+		if (cpr.isEmpty() || password.isEmpty()) {
 			String message = "Please fill in all fields";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -58,13 +58,13 @@ public class Login extends HttpServlet {
 			bankApp = new BankApp();
 		}
 		try {
-			String role = bankApp.getRole(email, password);
+			String role = bankApp.getRole(cpr, password);
 			if (role.equals("e")) {
 				response.sendRedirect("search.jsp");
 			} else if (role.equals("c")) {
 				response.sendRedirect("activity.jsp");
 			} else {
-				String message = "E-mail address or password was incorrect";
+				String message = "CPR Number and password did not watch";
 				request.setAttribute("message", message);
 				request.getRequestDispatcher("login.jsp").forward(request, response);
 			}

@@ -34,10 +34,8 @@
 				</tr>
 				<%while (resultset.next()) {%>
 				<tr onclick="document.location = 'activity.jsp?ID=<%=resultset.getString("CPRNo")%>';">
-					<td><%=resultset.getString("CPRNo")%></td>
-					<td><%=resultset.getString("FullName")%></td>
-					<td><%=resultset.getString("Address")%></td>
-					<td><%=resultset.getString("Phone")%></td>
+					<td>acc</td>
+					<td>bal</td>
 				<tr />
 				<%}%>
 			</table>
