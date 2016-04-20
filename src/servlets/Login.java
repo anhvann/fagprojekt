@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.LinkedList;
 import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
@@ -45,7 +46,8 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String cpr = request.getParameter("cpr");
 		String password = request.getParameter("password");
 		if (cpr.isEmpty() || password.isEmpty()) {
@@ -58,7 +60,15 @@ public class Login extends HttpServlet {
 			bankApp = new BankApp();
 		}
 		try {
-			String role = bankApp.getRole(cpr, password);
+			String role = "";
+			String[] columns = { "Password", "RoleID" };
+			LinkedList<String> results = bankApp.queryExecution("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ", columns);
+			if (!results.isEmpty()) {
+				String dbpassword = results.get(0);
+				if (dbpassword.equals(password)) {
+					role = results.get(1);
+				}
+			}
 			if (role.equals("e")) {
 				response.sendRedirect("search.jsp");
 			} else if (role.equals("c")) {

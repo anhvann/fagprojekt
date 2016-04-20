@@ -22,26 +22,6 @@ public class BankApp {
 		statement = connection.createStatement();
 	}
 
-	public String getRole(String cpr, String password) throws SQLException, ClassNotFoundException {
-		connect();
-		ResultSet resultSet = null;
-
-		try {
-			resultSet = statement
-					.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ");
-			while (resultSet.next()) {
-				if (resultSet.getString("Password").equals(password)) {
-					return resultSet.getString("RoleID");
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		resultSet.close();
-		connection.close();
-		return "";
-	}
-
 	public LinkedList<String> searchFor(String input) throws SQLException, ClassNotFoundException {
 		connect();
 		ResultSet resultSet = null;
@@ -106,14 +86,14 @@ public class BankApp {
 
 		return accounts;
 	}
-	
+
 	public LinkedList<String> getInfo(String userID) throws ClassNotFoundException, SQLException {
 		connect();
-		
+
 		LinkedList<String> list = new LinkedList<>();
 		ResultSet rs = null;
 		int index = 2;
-		
+
 		try {
 			rs = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + userID + "'");
 			while (rs.next()) {
@@ -125,36 +105,28 @@ public class BankApp {
 		}
 		rs.close();
 		connection.close();
-		
+
 		return list;
 	}
-	
-	public Map<String, String> queryExecution(String database, String query) throws ClassNotFoundException, SQLException {
+
+	public LinkedList<String> queryExecution(String query, String[] columns)
+			throws ClassNotFoundException, SQLException {
 		connect();
-		
-		Map<String, String> map = new HashMap<String, String>();
-		String[] names = null;
-		ResultSet rs = null;
-		int index = 1;
-		
-		switch (database) {
-			case "USERS": names = new String[]{"CPRNo", "Email", "Password", "FullName", "Phone", "Address", "DateOfBirth", "PostCode", "RoleID"};
-				break;
-			case "ACCOUNTS" : names = new String[]{"Balance", "Interest", "Status", "AccID", "TransID"};
-				break;
-		}
-		
+
+		LinkedList<String> results = new LinkedList<>();
+
 		try {
-			rs = statement.executeQuery(query);
-			while (rs.next()) {
-				map.put(names[index-1],rs.getString(index));
-				index++;
+			ResultSet resultset = statement.executeQuery(query);
+			while (resultset.next()) {
+				for (int i = 0; i < columns.length; i++) {
+					results.add(resultset.getString(columns[i]));
+				}
 			}
+			resultset.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		rs.close();
-		
-		return map;	
+
+		return results;
 	}
 }
