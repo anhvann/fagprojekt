@@ -1,7 +1,7 @@
-package Controller;
+package controller;
 
 import java.io.IOException;
-
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,20 +15,23 @@ import model.User;
 
 import java.sql.*;
 
-public class BankApp {
+public class Database {
 	private Connection connection;
 	private Statement statement;
 
 	protected String url = "jdbc:db2://192.86.32.54:5040/DALLASB:retrieveMessagesFromServerOnGetMessage=true;emulateParameterMetaDataForZCalls=1;";
 
+	public Database() throws ClassNotFoundException, SQLException{
+		connect();
+	}
+	
 	private void connect() throws ClassNotFoundException, SQLException {
 		Class.forName("com.ibm.db2.jcc.DB2Driver");
 		connection = DriverManager.getConnection(url, "DTU10", "FAGP2016");
 		statement = connection.createStatement();
 	}
 
-	public LinkedList<String> searchFor(String input) throws SQLException, ClassNotFoundException {
-		connect();
+	public LinkedList<String> searchFor(String input){
 		ResultSet resultSet = null;
 		Scanner scanner = new Scanner(input);
 		LinkedList<String> IDs = new LinkedList<>();
@@ -44,6 +47,7 @@ public class BankApp {
 			while (resultSet.next()) {
 				IDs.add(resultSet.getString("CPRNo"));
 			}
+			resultSet.close();
 			// Compare first set with other
 			while (scanner.hasNext()) {
 				keyword = scanner.next();
@@ -61,6 +65,7 @@ public class BankApp {
 						}
 					}
 				}
+				otherResultSet.close();
 				IDs = (LinkedList<String>) IDs2.clone();
 				IDs2.clear();
 			}
@@ -71,32 +76,7 @@ public class BankApp {
 		return IDs;
 	}
 
-//	public LinkedList<String> getInfo(String userID) throws ClassNotFoundException, SQLException {
-//		connect();
-//
-//		LinkedList<String> list = new LinkedList<>();
-//		ResultSet rs = null;
-//		int index = 2;
-//
-//		try {
-//			rs = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + userID + "'");
-//			while (rs.next()) {
-//				list.add(rs.getString(index));
-//				index++;
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		rs.close();
-//		connection.close();
-//
-//		return list;
-//	}
-
-	public LinkedList<String> queryExecution(String query, String[] columns)
-			throws ClassNotFoundException, SQLException {
-		connect();
-
+	public LinkedList<String> getStrings(String query, String[] columns) {
 		LinkedList<String> results = new LinkedList<>();
 
 		try {
@@ -114,15 +94,14 @@ public class BankApp {
 		return results;
 	}
 
-	public LinkedList<Account> getAccounts(String cpr) throws ClassNotFoundException, SQLException {
-		connect();
-		
+	public LinkedList<Account> getAccounts(User user) {
+		String cpr = user.getCPR();
 		LinkedList<Account> accounts = new LinkedList<>();
 
 		try {
 			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"ACCOUNTS\" LEFT OUTER JOIN \"DTUGRP05\".\"OWNERSHIPS\" ON \"DTUGRP05\".\"ACCOUNTS\".\"AccID\" = \"DTUGRP05\".\"OWNERSHIPS\".\"AccID\" WHERE \"CPRNo\" = '"  + cpr + "' ");
 			while (resultset.next()) {
-				Account acc = new Account(resultset.getString("AccID"), resultset.getDouble("Balance"));
+				Account acc = new Account(user, resultset.getString("AccID"), resultset.getDouble("Balance"), resultset.getBigDecimal("Interest"), resultset.getString("Status"));
 				accounts.add(acc);
 			}
 			resultset.close();
@@ -131,5 +110,21 @@ public class BankApp {
 		}
 
 		return accounts;
+	}
+
+	public void newAccount(Account account) throws SQLException {
+		String cpr = account.getOwner().getCPR();
+		String ID = account.getAccountID();
+		Double balance = account.getBalance();
+		BigDecimal interest = account.getInterest();
+		String status = account.getStatus();
+		
+		statement.executeUpdate("INSERT INTO \"DTUGRP05\".\"ACCOUNTS\" VALUES("+ID+", "+balance+", "+interest+", "+status+")");
+		statement.executeUpdate("INSERT INTO \"DTUGRP05\".\"OWNERSHIPS\" VALUES("+cpr+", "+ID+")");
+	}
+
+	public void closeAccount(String accountID) throws SQLException {
+		statement.executeUpdate("DELETE FROM \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '"  + accountID + "' ");
+		statement.executeUpdate("DELETE FROM \"DTUGRP05\".\"OWNERSHIPS\" WHERE \"AccID\" = '"  + accountID + "' ");
 	}
 }

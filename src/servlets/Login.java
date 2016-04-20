@@ -1,7 +1,5 @@
 package servlets;
 
-import Controller.BankApp;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
@@ -24,6 +22,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controller.BankApp;
+import controller.Database;
+
 /**
  * Servlet implementation class Login
  */
@@ -33,7 +34,7 @@ public class Login extends HttpServlet {
 
 	private static Connection db2Conn;
 	private static Statement stmt;
-	BankApp bankApp = null;
+	Database db = null;
 
 	public Login() {
 		super();
@@ -46,8 +47,7 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String cpr = request.getParameter("cpr");
 		String password = request.getParameter("password");
 		if (cpr.isEmpty() || password.isEmpty()) {
@@ -56,17 +56,16 @@ public class Login extends HttpServlet {
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 			return;
 		}
-		if (bankApp == null) {
-			bankApp = new BankApp();
-		}
 		try {
+			db = new Database();
 			String role = "";
-			String[] columns = { "Password", "RoleID" };
-			LinkedList<String> results = bankApp.queryExecution("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ", columns);
+			String[] columns = { "FullName", "Password", "RoleID" };
+			LinkedList<String> results = db
+					.getStrings("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ", columns);
 			if (!results.isEmpty()) {
-				String dbpassword = results.get(0);
+				String dbpassword = results.get(1);
 				if (dbpassword.equals(password)) {
-					role = results.get(1);
+					role = results.get(2);
 				}
 			}
 			if (role.equals("e")) {

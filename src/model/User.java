@@ -1,14 +1,19 @@
 package model;
 
+import java.sql.SQLException;
 import java.util.LinkedList;
+
+import controller.Database;
 
 public class User {
 
-	private String userID, email, password, name, phone, address, dateOfBirth, postCode, roleID;
+	private String cpr, email, password, name, phone, address, dateOfBirth, postCode, roleID;
 	private LinkedList<Account> accounts;
-	
-	public User(String userID) {
-		this.userID = userID;
+	private Database bank;
+
+	public User(Database bank, String cpr) {
+		this.bank = bank;
+		this.cpr = cpr;
 		this.accounts = new LinkedList<>();
 	}
 
@@ -22,44 +27,76 @@ public class User {
 		postCode = info.get(7);
 		roleID = info.get(8);
 	}
-	
-	public LinkedList<Account> getAccounts(){
+
+	public LinkedList<Account> getAccounts() {
 		return accounts;
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
-	
+
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public String getPhone() {
 		return phone;
 	}
-	
+
 	public String getAddress() {
 		return address;
 	}
-	
+
 	public String getDateOfBirth() {
 		return dateOfBirth;
 	}
-	
+
 	public String getPostCode() {
 		return postCode;
 	}
-	
+
 	public String getRoleID() {
 		return roleID;
 	}
 
 	public void setAccounts(LinkedList<Account> accounts) {
 		this.accounts = accounts;
-	}	
+	}
+
+	public void addAccount(Account account) throws ClassNotFoundException, SQLException {
+		accounts.add(account);
+		bank.newAccount(account);
+	}
+
+	public String getCPR() {
+		return cpr;
+	}
+
+	public void closeAccount(String accID) throws SQLException {
+		for (int i = 0; i < accounts.size(); i++) {
+			if (accounts.get(i).getAccountID().equals(accID)) {
+				if (accounts.get(i).getBalance() == 0) {
+					accounts.remove(i);
+					bank.closeAccount(accID);
+					break;
+				} else {
+					break;
+				}
+			}
+		}
+	}
+
+	public Account getAccount(String accID) {
+		for (int i = 0; i < accounts.size(); i++) {
+			if (accounts.get(i).getAccountID().equals(accID)) {
+				return accounts.get(i);
+			}
+		}
+		return null;
+	}
 }
