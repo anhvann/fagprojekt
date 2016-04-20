@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Controller.BankApp;
+import model.Account;
 import model.User;
 
 /**
@@ -19,43 +20,51 @@ import model.User;
 @WebServlet("/Activity")
 public class Activity extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	private BankApp bankApp = null;
-	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Activity() {
-        super();
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public Activity() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userID = request.getParameter("ID");
-		User user = new User(userID);
-		
+		String cpr = request.getParameter("ID");
+		User user = new User(cpr);
 		if (bankApp == null) {
 			bankApp = new BankApp();
 		}
 
-		LinkedList<String> info;
+		String[] columns = {"CPRNo", "Email", "Password", "FullName", "Address", "Phone", "DateOfBirth", "Postcode", "RoleID"};
+		LinkedList<String> userInfo;
+		LinkedList<Account> accounts;
 		try {
-			info = bankApp.getInfo(userID);
+			userInfo = bankApp.queryExecution("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ", columns);
+			user.setInfo(userInfo);
+			accounts = bankApp.getAccounts(cpr);
+			user.setAccounts(accounts);
+			
+			request.setAttribute("accounts", user.getAccounts());
+			request.setAttribute("fullname", user.getName());
+			request.setAttribute("cpr", cpr);
+			request.getRequestDispatcher("activity.jsp").forward(request, response);
 		} catch (ClassNotFoundException | SQLException e) {
-			info = null;
 			e.printStackTrace();
 		}
-		user.setInfo(info);
-		System.out.println(user.getEmail());
-		
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 

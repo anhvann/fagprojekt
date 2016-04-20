@@ -1,6 +1,7 @@
 package Controller;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,6 +9,10 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
+
+import model.Account;
+import model.User;
+
 import java.sql.*;
 
 public class BankApp {
@@ -66,48 +71,27 @@ public class BankApp {
 		return IDs;
 	}
 
-	public LinkedList<String> getAccounts(String userID) throws ClassNotFoundException, SQLException {
-		connect();
-
-		LinkedList<String> accounts = new LinkedList<String>();
-		ResultSet resultSet = null;
-
-		try {
-			resultSet = statement.executeQuery(
-					"SELECT \"ACCOUNTS\" FROM \"DTUGRP05\".\"OWNERSHIP\" WHERE \"CPRNo\" = '" + userID + "'");
-			while (resultSet.next()) {
-				accounts.add(resultSet.getString(1));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		resultSet.close();
-		connection.close();
-
-		return accounts;
-	}
-
-	public LinkedList<String> getInfo(String userID) throws ClassNotFoundException, SQLException {
-		connect();
-
-		LinkedList<String> list = new LinkedList<>();
-		ResultSet rs = null;
-		int index = 2;
-
-		try {
-			rs = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + userID + "'");
-			while (rs.next()) {
-				list.add(rs.getString(index));
-				index++;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		rs.close();
-		connection.close();
-
-		return list;
-	}
+//	public LinkedList<String> getInfo(String userID) throws ClassNotFoundException, SQLException {
+//		connect();
+//
+//		LinkedList<String> list = new LinkedList<>();
+//		ResultSet rs = null;
+//		int index = 2;
+//
+//		try {
+//			rs = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + userID + "'");
+//			while (rs.next()) {
+//				list.add(rs.getString(index));
+//				index++;
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		rs.close();
+//		connection.close();
+//
+//		return list;
+//	}
 
 	public LinkedList<String> queryExecution(String query, String[] columns)
 			throws ClassNotFoundException, SQLException {
@@ -128,5 +112,24 @@ public class BankApp {
 		}
 
 		return results;
+	}
+
+	public LinkedList<Account> getAccounts(String cpr) throws ClassNotFoundException, SQLException {
+		connect();
+		
+		LinkedList<Account> accounts = new LinkedList<>();
+
+		try {
+			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"ACCOUNTS\" LEFT OUTER JOIN \"DTUGRP05\".\"OWNERSHIPS\" ON \"DTUGRP05\".\"ACCOUNTS\".\"AccID\" = \"DTUGRP05\".\"OWNERSHIPS\".\"AccID\" WHERE \"CPRNo\" = '"  + cpr + "' ");
+			while (resultset.next()) {
+				Account acc = new Account(resultset.getString("AccID"), resultset.getDouble("Balance"));
+				accounts.add(acc);
+			}
+			resultset.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return accounts;
 	}
 }
