@@ -1,0 +1,43 @@
+FOR TABLE TRANSACTIONS:
+
+
+FOR TABLE OWNERSHIPS:
+	delete a row on this table does not effect on any other tables
+	PRE-CAUTIONS:
+		DELETE one row must has BOTH AccID and CPRNo as inputs !!!!
+
+FOR TABLE CONCURRENCIES:
+	 
+	 
+	 
+LIST OF PROCEDURES and the DATABASE must do:
++) Money Transaction Procedure:
+	1. Pull money out from account 1
+	2. Put money on to account 2
+	3. ( Check if it is ok )
+	4. If the process is well done --> This transaction must be insert to TRANSACTIONS table 
+
+	==> SQL query from Servlet:
+		"CALL ...";
+			
++) CREATE AN USER:
+	NOTES: 
+		./ an user cannot be created if the postcode does not exist ==> TRIGGER
+			BEFORE INSERT an user, must check if the city is on the list
+			
+		==> Database: extra TRIGGER
+		==> Servlet: extra AddCity() method (already have a big database of CITY)
+	
++) CREATE AN ACCOUNT: 
+	NOTES:
+		./ am account must belong to an user
+		./ If a account is created and we already know which user it belongs to
+		   then ==> PROCEDURE:
+				1. Insert a new legit row on ACCOUNTS table
+				2. Insert a new legit row on OWNERSHIPS table with it's corresponding CPRNo
+				
+		==> Database: as above
+		==> Servlet: 
+			SQL query = "CALL ... "
+			
++) 
