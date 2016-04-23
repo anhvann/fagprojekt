@@ -87,3 +87,14 @@ LIST OF PROCEDURES and the DATABASE must do:
 		*****************************************************************************************************	
 		*	CALL DTUGRP05.CreateAccount('CPRNo', 'AccID', Balance(INT), Interest(DECIMAL(5,2)), '0 or 1');	*
 		*****************************************************************************************************
+		
+		
++) CLOSE DOWN AN ACCOUNT:
+	NOTES: 
+		./ Database only checks if the current balance != 0 AND the alternative AccID is not valid
+		
+		==> Servlet (SQL Query):
+		
+		*****************************************************************************************************	
+		*	CALL DTUGRP05.CloseDownAccount('this AccID', 'Alternative AccID');								*
+		*****************************************************************************************************
