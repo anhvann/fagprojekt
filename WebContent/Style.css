@@ -25,9 +25,11 @@
 	color: #ffffff;
 	background: #012231;
 }
-.navigationarea{
+
+.navigationarea {
 	margin-left: 120px;
 }
+
 .img-bar {
 	height: 80px;
 	width: auto;
@@ -38,7 +40,7 @@
 	position: absolute;
 	height: 65px;
 	width: auto;
-	top:25%;
+	top: 25%;
 	bottom: 15%;
 	z-index: 99;
 	margin-left: 100px;
@@ -49,25 +51,28 @@
 	margin: 0;
 	padding: 0;
 }
+
 html, body {
-  height: 100%;
-}
-.container{
-	width: 100%;
-	padding:0;
 	height: 100%;
 }
 
-.main{
+.container {
+	width: 100%;
+	padding: 0;
+	height: 100%;
+}
+
+.main {
 	z-index: 1;
 	background: #ffffff;
 	overflow: autO;
 	min-height: 300px;
 }
+
 .footer {
 	z-index: -1;
 	position: absolute;
-    bottom: 0;
+	bottom: 0;
 	line-height: 50px;
 	height: 50px;
 	width: 100%;
@@ -91,15 +96,15 @@ html, body {
 .carousel-inner img {
 	margin: auto;
 }*/
-
 #loginform {
 	margin: 100px auto;
 	width: 250px;
 }
-#searchbar{
-		background: #F0F0F0;
 
+#searchbar {
+	background: #F0F0F0;
 }
+
 #searchbar input#searchfield {
 	box-sizing: border-box;
 	font-style: italic;
@@ -108,6 +113,7 @@ html, body {
 	font-size: 20px;
 	padding: 20px;
 }
+
 #searchbar input#searchbutton {
 	box-sizing: border-box;
 	font-style: italic;
@@ -115,30 +121,70 @@ html, body {
 	font-size: 18px;
 	background: none;
 	height: 65px;
-	width: 65px;	
+	width: 65px;
 }
 
-#message{
+#message {
 	padding: 30px 0px 20px 35px;
+}
+.pagetitle {
+	color: #404040;
+	padding: 30px 0px 20px 35px;
+	font-size: 20px;
+}
+.pagesubtitle {
+	padding: 0px 0px 20px 35px;
+}
+
+.pagesubtitle2 {
+	padding: 0px 40px 10px 0px;
 }
 
 table {
-    width:95%;
-    border: none;
+	border-collapse:separate;
+    border:solid black 1px;
+    border-radius:6px;
+    -moz-border-radius:6px;
+	width: 95%;
+	border: none;
 }
+
 th {
-    background-color: #b3cde5;
-    color: white;
-    font-size: 15px;
+	background-color: #012231;
+	color: white;
+	font-size: 15px;
 }
+
 th, td {
-    padding: 15px;
-    text-align: left;
+	padding: 15px;
 }
-tr:first-of-type:hover {
+td{
+	border-bottom: 1px solid;
+	border-color: #d9d9d9;
+}
+
+.clickable tr:first-of-type:hover {
 	cursor: default;
 }
-tr:hover {
+
+.clickable tr:hover {
 	cursor: pointer;
 	background-color: #f5f5f5
+}
+
+label {
+	display: inline-block;
+	width: 140px;
+	text-align: right;
+}
+
+#inputfield {
+	width: 100px;
+}
+
+.form-control {
+	width: 300px;
+}
+input[type="radio"] {
+  margin-top: -3px;
 }

@@ -6,23 +6,25 @@
 <div class="container">
 	<%@include file="header.jsp"%>
 	<div class="main">
-		<div id="message">
-			<font size="4"><font color="grey">${fullname} (${cpr})</font></font>
+		<div class="pagetitle">
+			${fullname} (${cpr})
 		</div>
-		<div>
-			<a href="Activity?ID=${cpr}&action=edit">Edit User Information</a>
+		<div class="pagesubtitle">
+			<a href="Activity?ID=${cpr}&action=edit">Edit User Information</a><br>
+			<a href="Activity?ID=${cpr}&action=newaccount">Create New Account</a>
 		</div>
 		<div align="center">
-			<table>
+			<table class="clickable">
+			    <col width="70%">
+		  		<col width="30%">
 				<tr>
-					<th></th>
 					<th>Account</th>
 					<th>Balance</th>
 				</tr>
 				<%
 				LinkedList<Account> acc = (LinkedList<Account>) request.getAttribute("accounts");
 				for (int i = 0; i < acc.size(); i++) {%>
-				<tr onclick="document.location = 'activity.jsp?ID=<%=acc.get(i).getAccountID() %>';">
+				<tr onclick="document.location = 'Activity?ID=${cpr}&action=viewaccount&accountID=<%=acc.get(i).getAccountID()%>';">
 					<td> <%= acc.get(i).getAccountID() %></td>
 					<td> <%= acc.get(i).getBalance() %></td>
 				<tr />
