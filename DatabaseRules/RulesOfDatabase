@@ -1,3 +1,33 @@
+			*********************************************************************************************
+			*********************************************************************************************
+			*********************************************************************************************
+			*	FOR TABLE CITIES:																		*
+			*		If you delete a row on this table:													*
+			*			The Postcode value on all users (on USERS table) will be set to NULL			*
+			*																							*
+			*	FOR TABLE ROLES:																		*
+			*		If you delete a role on this table													*
+			*			THE RoleID value on all users (on USERS table) will be set to NULL				*
+			*																							*
+			*	FOR TABLE CURRENCIES:																	*
+			*												 											*
+			*			Hvad bruger vi denne tabel endelig til ?										*
+			*																							*
+			*********************************************************************************************
+			*			DO NOT DELETE ANY ROW ON THESE 3 TABLES SINCE THEY ARE KINDA THE ROOTS			*
+			*********************************************************************************************
+
+
+	
+FOR TABLE USERS:
+	delete a row can be seen as deleting an user
+	by delete an user, we automatically delete all his belongings (accouts, transactions, etc.)
+		This deletion does not effect on ROLES or CITIES
+
+FOR TABLE ACCOUNTS
+	delete a row = delete an account = delete all the transactions belong to this deleted account
+	This deletion doesn't effect on USER
+	
 FOR TABLE TRANSACTIONS:
 
 
@@ -6,7 +36,7 @@ FOR TABLE OWNERSHIPS:
 	PRE-CAUTIONS:
 		DELETE one row must has BOTH AccID and CPRNo as inputs !!!!
 
-FOR TABLE CONCURRENCIES:
+
 	 
 	 
 	 
@@ -17,8 +47,19 @@ LIST OF PROCEDURES and the DATABASE must do:
 	3. ( Check if it is ok )
 	4. If the process is well done --> This transaction must be insert to TRANSACTIONS table 
 
-	==> SQL query from Servlet:
-		"CALL ...";
+	==> Procedure form:
+		MoneyTransfer (	vTransfer DECIMAL(9,2),
+						vTransName VARCHAR(45), 
+						vAccID1 CHAR(10), 
+						vAccID2 CHAR(10),
+						vCurrency CHAR(3),
+						OUT vStatus VARCHAR(45))
+			
+	==> SQL query from Servlet: { NOTE: ' ? ' er default, skal bare være der }
+	
+	*********************************************************************************************
+	*	CALL DTUGRP05.MoneyTransfer(amount, 'TransName', 'AccID From', 'AccID To', 'DKK', ?);	*
+	*********************************************************************************************
 			
 +) CREATE AN USER:
 	NOTES: 
@@ -28,6 +69,10 @@ LIST OF PROCEDURES and the DATABASE must do:
 		==> Database: extra TRIGGER
 		==> Servlet: extra AddCity() method (already have a big database of CITY)
 	
+	
+			*********************************************************************
+			
+			
 +) CREATE AN ACCOUNT: 
 	NOTES:
 		./ am account must belong to an user
@@ -37,7 +82,8 @@ LIST OF PROCEDURES and the DATABASE must do:
 				2. Insert a new legit row on OWNERSHIPS table with it's corresponding CPRNo
 				
 		==> Database: as above
-		==> Servlet: 
-			SQL query = "CALL ... "
-			
-+) 
+		==> Servlet (SQL Query: 
+		
+		*****************************************************************************************************	
+		*	CALL DTUGRP05.CreateAccount('CPRNo', 'AccID', Balance(INT), Interest(DECIMAL(5,2)), '0 or 1');	*
+		*****************************************************************************************************
