@@ -12,6 +12,7 @@
 			*	FOR TABLE CURRENCIES:																	*
 			*												 											*
 			*			Hvad bruger vi denne tabel endelig til ?										*
+			*			- Til når vi indføre valuta-overførsler, at man kan se kursen.
 			*																							*
 			*********************************************************************************************
 			*			DO NOT DELETE ANY ROW ON THESE 3 TABLES SINCE THEY ARE KINDA THE ROOTS			*
@@ -20,8 +21,8 @@
 
 	
 FOR TABLE USERS:
-	delete a row can be seen as deleting an user
-	by delete an user, we automatically delete all his belongings (accouts, transactions, etc.)
+	delete a row can be seen as deleting a user
+	by delete a user, we automatically delete all his belongings (accounts, transactions, etc.)
 		This deletion does not effect on ROLES or CITIES
 
 FOR TABLE ACCOUNTS
@@ -75,7 +76,7 @@ LIST OF PROCEDURES and the DATABASE must do:
 			
 +) CREATE AN ACCOUNT: 
 	NOTES:
-		./ am account must belong to an user
+		./ an account must belong to a user
 		./ If a account is created and we already know which user it belongs to
 		   then ==> PROCEDURE:
 				1. Insert a new legit row on ACCOUNTS table

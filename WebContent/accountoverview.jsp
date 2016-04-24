@@ -1,4 +1,7 @@
 <!DOCTYPE HTML><%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page import="java.sql.*"%>
+<%@ page import="java.util.LinkedList"%>
+<%@ page import="model.Transaction" %>
 <html>
 <div class="container">
 	<%@include file="header.jsp"%>
@@ -18,18 +21,16 @@
                 	<th>Amount</th>
                		<th>Balance</th>
            		</tr>
-           		<tr>
-               		<td> 10-10-2016</td>
-               		<td> Salary </td>
-					<td align="right"> +1534.00</td>
-               		<td align="right"> 63,542.11</td>
-           		<tr/>
-           		<tr>
-               		<td> 10-10-2016</td>
-               		<td> Salary </td>
-					<td align="right"> +1534.00</td>
-               		<td align="right"> 63,542.11</td>
-           		<tr/>
+           		<%
+				LinkedList<Transaction> tran = (LinkedList<Transaction>) request.getAttribute("transactions");
+				for (int i = 0; i < tran.size(); i++) {%>
+				<tr>
+					<td> <%= tran.get(i).getDate() %></td>
+					<td> <%= tran.get(i).getName() %></td>
+					<td> <%= tran.get(i).getAmmount() %></td>
+					<td> </td>
+				<tr />
+				<%}%>
        		</table></div>	
 	</div>
 </div>

@@ -92,9 +92,9 @@ public class User {
 	}
 
 	public Account getAccount(String accID) {
-		for (int i = 0; i < accounts.size(); i++) {
-			if (accounts.get(i).getAccountID().equals(accID)) {
-				return accounts.get(i);
+		for (Account account : accounts) {
+			if (account.getAccountID().equals(accID)) {
+				return account;
 			}
 		}
 		return null;

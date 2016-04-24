@@ -34,6 +34,7 @@ public class Activity extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String cpr = request.getParameter("ID");
 		String action = request.getParameter("action");
+		String accountID;
 		try {
 			db = new Database();
 			User user = new User(db, cpr);
@@ -44,53 +45,59 @@ public class Activity extends HttpServlet {
 			user.setInfo(userInfo);
 			accounts = db.getAccounts(user);
 			user.setAccounts(accounts);
-
-			if (action.equals("viewuser")) {
-				request.setAttribute("accounts", user.getAccounts());
-				request.setAttribute("fullname", user.getName());
-				request.setAttribute("cpr", cpr);
-				request.getRequestDispatcher("activity.jsp").forward(request, response);
-			} else if (action.equals("edit")) {
-				request.setAttribute("email", user.getEmail());
-				request.setAttribute("password", user.getPassword());
-				request.setAttribute("fullname", user.getName());
-				request.setAttribute("address", user.getAddress());
-				request.setAttribute("postcode", user.getPostCode());
-				request.getRequestDispatcher("userInfo.jsp").forward(request, response);
-			} else if (action.equals("viewaccount")){
-				String accountID = request.getParameter("accountID");
-				request.setAttribute("cpr", cpr);
-				request.setAttribute("accountID", accountID);
-				request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
-			} else if (action.equals("newaccount")) {
-				request.setAttribute("cpr", cpr);
-				request.setAttribute("user", user);
-				request.getRequestDispatcher("newaccount.jsp").forward(request, response);
-			} else if (action.equals("createaccount")) {
-				String value = request.getParameter("interest");
-				String status = request.getParameter("status");
-
-				DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-				symbols.setDecimalSeparator('.');
-				String pattern = "#.###";
-				DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
-				decimalFormat.setParseBigDecimal(true);
-				BigDecimal interest;
-				try {
-					interest = (BigDecimal) decimalFormat.parse(value);
-					String accountID = generateAccountID(user);
-					Account account = new Account(user, accountID, 0, interest, status);
-					user.addAccount(account);
-					
+			
+			switch (action) {
+				case "viewuser" :
+					request.setAttribute("accounts", user.getAccounts());
+					request.setAttribute("fullname", user.getName());
+					request.setAttribute("cpr", cpr);
+					request.getRequestDispatcher("activity.jsp").forward(request, response);
+					break;
+				case "edit" :
+					request.setAttribute("email", user.getEmail());
+					request.setAttribute("password", user.getPassword());
+					request.setAttribute("fullname", user.getName());
+					request.setAttribute("address", user.getAddress());
+					request.setAttribute("postcode", user.getPostCode());
+					request.getRequestDispatcher("userInfo.jsp").forward(request, response);
+					break;
+				case "viewaccount" :
+	 				accountID = request.getParameter("accountID");
 					request.setAttribute("cpr", cpr);
 					request.setAttribute("accountID", accountID);
 					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
-				} catch (ParseException | ClassNotFoundException | SQLException e) {
-					e.printStackTrace();
-				}
-			} else if (action.equals("closeaccount")){
-				String accID = request.getParameter("accountID");
-				user.closeAccount(accID);
+					break;
+				case "newaccount" :
+					request.setAttribute("cpr", cpr);
+					request.setAttribute("user", user);
+					request.getRequestDispatcher("newaccount.jsp").forward(request, response);
+					break;
+				case "createaccount" :
+					String value = request.getParameter("interest");
+					String status = request.getParameter("status");
+	
+					DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+					symbols.setDecimalSeparator('.');
+					String pattern = "#.###";
+					DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+					decimalFormat.setParseBigDecimal(true);
+					BigDecimal interest;
+					try {
+						interest = (BigDecimal) decimalFormat.parse(value);
+						accountID = generateAccountID(user);
+						Account account = new Account(user, accountID, 0, interest, status);
+						user.addAccount(account);
+						
+						request.setAttribute("cpr", cpr);
+						request.setAttribute("accountID", accountID);
+						request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+					} catch (ParseException | ClassNotFoundException | SQLException e) {
+						e.printStackTrace();
+					}
+				case "closeaccount" :
+					String accID = request.getParameter("accountID");
+					user.closeAccount(accID);
+					break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
