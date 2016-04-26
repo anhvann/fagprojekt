@@ -51,7 +51,7 @@ public class Activity extends HttpServlet {
 					request.setAttribute("accounts", user.getAccounts());
 					request.setAttribute("fullname", user.getName());
 					request.setAttribute("cpr", cpr);
-					request.getRequestDispatcher("activity.jsp").forward(request, response);
+					request.getRequestDispatcher("accounts.jsp").forward(request, response);
 					break;
 				case "edit" :
 					request.setAttribute("email", user.getEmail());
@@ -65,6 +65,7 @@ public class Activity extends HttpServlet {
 	 				accountID = request.getParameter("accountID");
 					request.setAttribute("cpr", cpr);
 					request.setAttribute("accountID", accountID);
+					request.setAttribute("transactions", user.getTransactions());
 					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 					break;
 				case "newaccount" :

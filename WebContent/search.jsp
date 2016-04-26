@@ -3,7 +3,7 @@
 <% Class.forName("com.ibm.db2.jcc.DB2Driver"); %>
 <html>
 <div class="container">
-	<%@include file="header.jsp"%>
+	<%@include file="employeeheader.jsp"%>
 	<div class="main">
 		<form id=searchbar action="Search" method="post" target="_self">
 			<input id=searchbutton type="submit" value="Search"
@@ -44,10 +44,6 @@
        		</table></div>
        		<% } %>	
 	</div>
-	<h3 align="center">
-		<a href="Register.jsp" align="center">Create new User</a>
-	</h3>
-	
 	<%@include file="footer.jsp"%>
 </html>
 

@@ -2,32 +2,84 @@
 
 .navbar {
 	font-family: Verdana;
-	font-size: 16px;
-	background: #012231;
+	font-size: 14px;
+	background: white;
 	border: none;
 	padding-top: -10px;
 	margin: 0;
 	border-radius: 0;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.19);
 	overflow-x: hidden;
+	position:relative;
+	z-index:1000;
+}
+
+
+.navbar-collapse.in {
+overflow: hidden;
 }
 
 .navbar .nav>li>a {
 	line-height: 15px;
-	padding: 10px;
-	padding-left: 20px;
-	padding-right: 20px;
+	padding:20px;
 	color: #45a3bb;
 }
 
 .navbar .nav>li>a:hover, .navbar .nav>li>a:focus, .navbar-default .navbar-nav>.active>a,
 	.navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus
 	{
-	color: #ffffff;
-	background: #012231;
+	color: #b6b6b6;
+	background: transparent;
 }
 
 .navigationarea {
 	margin-left: 120px;
+}
+.dropbtn {
+    background-color: transparent;
+    font-family: Verdana;
+	font-size: 14px;
+    padding: 17px;
+    border: none;
+    cursor: pointer;
+    color: #45a3bb;
+}
+.expand {
+    transition:height 0.5s;
+    -webkit-transition:height 0.5s;
+}
+.expand:hover {
+    height: 150px;
+}
+.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: transparent;
+    min-width: 200px;
+}
+
+.dropdown-content a {
+    color: #45a3bb;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+button:focus {outline:0;}
+
+.dropdown-content a:hover {
+	color: #b6b6b6
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    color: #b6b6b6;
 }
 
 .img-bar {
@@ -40,17 +92,12 @@
 	position: absolute;
 	height: 65px;
 	width: auto;
-	top: 25%;
-	bottom: 15%;
-	z-index: 99;
+	top: 30px;
+	z-index: 1;
 	margin-left: 100px;
 	margin-bottom: 10px;
 }
 
-* {
-	margin: 0;
-	padding: 0;
-}
 
 html, body {
 	height: 100%;
@@ -67,6 +114,7 @@ html, body {
 	background: #ffffff;
 	overflow: autO;
 	min-height: 300px;
+	padding-bottom: 100px;
 }
 
 .footer {
@@ -123,17 +171,16 @@ html, body {
 	height: 65px;
 	width: 65px;
 }
-
-#message {
-	padding: 30px 0px 20px 35px;
+.message {
+	padding: 50px 0px 15px 35px;
 }
 .pagetitle {
-	color: #404040;
-	padding: 30px 0px 20px 35px;
-	font-size: 20px;
+	color: grey;
+	padding: 50px 0px 0px 100px;
+	font-size: 23px;
 }
 .pagesubtitle {
-	padding: 0px 0px 20px 35px;
+	padding: 0px 0px 20px 100px;
 }
 
 .pagesubtitle2 {

@@ -1,21 +1,19 @@
 package model;
-
 import java.sql.Date;
 
 public class Transaction {
 
-	private String transID, name, otherAccountID;
-	private double ammount;
+	private String accountID, transID, name;
+	private double amount;
 	private Date date;
 	
-	public Transaction(String transID, String name, double ammount, String otherAccountID, Date date) {
+	public Transaction(String transID, String name, String accountID, double amount, Date date) {
 		this.transID = transID;
 		this.name = name;
-		this.ammount = ammount;
-		this.otherAccountID = otherAccountID;
+		this.amount = amount;
 		this.date = date;
+		this.accountID = accountID;
 	}
-	
 	public String getTransID() {
 		return transID;
 	}
@@ -24,16 +22,15 @@ public class Transaction {
 		return name;
 	}
 	
-	public String getOtherAccountID() {
-		return otherAccountID;
-	}
-	
-	public double getAmmount() {
-		return ammount;
+	public double getAmount() {
+		return amount;
 	}
 	
 	public Date getDate() {
 		return date;
 	}
 	
+	public String getAccountID(){
+		return accountID;
+	}
 }

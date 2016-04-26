@@ -67,7 +67,7 @@ public class User {
 	public void setAccounts(LinkedList<Account> accounts) {
 		this.accounts = accounts;
 	}
-
+	
 	public void addAccount(Account account) throws ClassNotFoundException, SQLException {
 		accounts.add(account);
 		bank.newAccount(account);
@@ -97,6 +97,11 @@ public class User {
 				return account;
 			}
 		}
+		return null;
+	}
+
+	public LinkedList<Account> getTransactions() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

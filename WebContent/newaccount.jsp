@@ -1,19 +1,18 @@
 <!DOCTYPE HTML><%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html>
 <div class="container">
-	<%@include file="header.jsp"%>
+	<%@include file="employeeheader.jsp"%>
 	<div class="main">
-		<div id="message">
-			<font size="5"><font color="grey">Create New Account</font></font>
-		</div>
+		<div class="pagetitle">Create new account</div>
+		<hr width="95%" noshade>
 			<form action="Activity?ID=${cpr}&action=createaccount" method="post" target="_self">
-				<label class="control-label col-sm-4">Interest:</label>
-				<div class="col-sm-8"><input type="text" class="form-control" name="interest" placeholder="Enter interest"/></div>
+				<label class="control-label col-sm-5">Interest:</label>
+				<div class="col-sm-5"><input type="text" class="form-control" name="interest" placeholder="Enter interest"/></div>
 				<br><br>
-				<label class="control-label col-sm-4">Status:</label>
-				<div class="col-sm-8"><input type="radio" name="status" value="1" checked/> Active <input type="radio" name="status" value="0"/> Inactive</div>
+				<label class="control-label col-sm-5">Status:</label>
+				<div class="col-sm-5"><input type="radio" name="status" value="1" checked/> Active <input type="radio" name="status" value="0"/> Inactive</div>
 				<br><br>
-				<div class="col-sm-offset-4 col-sm-8"><input type="submit" class="btn btn-default" name="createButton" value="Create"></div>
+				<div class="col-sm-offset-5 col-sm-5"><input type="submit" class="btn btn-default" name="createButton" value="Create"></div>
 			</form>		
 	</div>
 </div>

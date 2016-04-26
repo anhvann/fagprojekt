@@ -4,11 +4,10 @@
 <%@ page import="model.Account" %>
 <html>
 <div class="container">
-	<%@include file="header.jsp"%>
+	<%@include file="employeeheader.jsp"%>
 	<div class="main">
-		<div class="pagetitle">
-			${fullname} (${cpr})
-		</div>
+		<div class="pagetitle">	${fullname} (${cpr})</div>
+		<hr width="95%" noshade>
 		<div class="pagesubtitle">
 			<a href="Activity?ID=${cpr}&action=edit">Edit User Information</a><br>
 			<a href="Activity?ID=${cpr}&action=newaccount">Create New Account</a>

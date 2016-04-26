@@ -4,34 +4,11 @@
 <%@ page import="model.Transaction" %>
 <html>
 <div class="container">
-	<%@include file="header.jsp"%>
+	<%@include file="employeeheader.jsp"%>
 	<div class="main">
-		<div class="pagetitle">
-			<div class="col-sm-10">Activity for ${accountID}</div>
-		</div>
+		<div class="pagetitle">Activity for ${accountID}</div>
+		<hr width="95%" noshade>
 		<div class="pagesubtitle2" align="right"><a href="Activity?ID=${cpr}&action=closeaccount&accountID=${accountID}">Close Account</a></div>
-		<div align="center"><table>
-		  		<col width="15%">
-		  		<col width="50%">
-		  		<col width="15%">
-		  		<col width="20%">
-            	<tr>
-                	<th>Date</th>
-                	<th>Category</th>
-                	<th>Amount</th>
-               		<th>Balance</th>
-           		</tr>
-           		<%
-				LinkedList<Transaction> tran = (LinkedList<Transaction>) request.getAttribute("transactions");
-				for (int i = 0; i < tran.size(); i++) {%>
-				<tr>
-					<td> <%= tran.get(i).getDate() %></td>
-					<td> <%= tran.get(i).getName() %></td>
-					<td> <%= tran.get(i).getAmmount() %></td>
-					<td> </td>
-				<tr />
-				<%}%>
-       		</table></div>	
 	</div>
 </div>
 <%@include file="footer.jsp"%>
