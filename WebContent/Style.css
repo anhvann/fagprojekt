@@ -68,7 +68,9 @@ overflow: hidden;
     text-decoration: none;
     display: block;
 }
-button:focus {outline:0;}
+button:focus {
+	outline:0;
+}
 
 .dropdown-content a:hover {
 	color: #b6b6b6
@@ -171,6 +173,9 @@ html, body {
 	height: 65px;
 	width: 65px;
 }
+#searchbar input#searchbutton:focus {
+	outline:0;
+}
 .message {
 	padding: 50px 0px 15px 35px;
 }
@@ -197,7 +202,7 @@ table {
 }
 
 th {
-	background-color: #012231;
+	background-color: #9ec6d8;
 	color: white;
 	font-size: 15px;
 }

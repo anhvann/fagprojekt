@@ -6,15 +6,14 @@
 	<%@include file="employeeheader.jsp"%>
 	<div class="main">
 		<form id=searchbar action="Search" method="post" target="_self">
-			<input id=searchbutton type="submit" value="Search"
-				style="float: right" />
+			<input id=searchbutton type="submit" value="Search"	style="float: right" />
 			<div style="overflow: hidden">
 				<input id="searchfield" type="text" name="searchfield"
 					placeholder="Search by name, cpr or account number"
 					style="width: 100%" />
 			</div>
 		</form>
-		<div class="pagetitle"><font size="4"><font color="grey">${message}</font></font></div>
+		<div class="pagetitle"><font size="4"><font color="grey">${message}</font></font></div><br>
 		<%
 			Connection connection = DriverManager.getConnection("jdbc:db2://192.86.32.54:5040/DALLASB:retrieveMessagesFromServerOnGetMessage=true;emulateParameterMetaDataForZCalls=1;", "DTU12", "FAGP2016");
             Statement statement = connection.createStatement() ;
