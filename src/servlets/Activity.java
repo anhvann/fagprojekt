@@ -111,8 +111,9 @@ public class Activity extends HttpServlet {
 		int max = 9;
 		String ID = "";
 		Boolean generated = false;
+		ID += 0 + (int) (Math.random()*max);
 		while (!generated) {
-			for (int i = 0; i < 14; i++) {
+			for (int i = 0; i < 13; i++) {
 				ID += min + (int) (Math.random() * max);
 			}
 			generated = true;

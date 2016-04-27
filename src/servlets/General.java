@@ -37,7 +37,7 @@ public class General extends HttpServlet {
 		String accountID = request.getParameter("accountID");
 		String accountID2 = request.getParameter("accountID2");
 		String amountString = request.getParameter("amount");
-		if (accountID.isEmpty() || amountString.isEmpty() || action.equals("transfer") && accountID2.isEmpty()) {
+		if (accountID.isEmpty() || amountString.isEmpty() || (action.equals("transfer") && accountID2.isEmpty())) {
 			String message = "Please fill in all fields";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("deposit.jsp").forward(request, response);
@@ -61,7 +61,7 @@ public class General extends HttpServlet {
 		    } else if (action.equals("withdraw")){
 		    	
 		    } else if (action.equals("transfer")){
-		    	Transaction t = new Transaction(db.getTransID(), "Deposit", accountID, accountID2, amount , sqlDate);
+		    	Transaction t = new Transaction(db.getTransID(), "Transfer", accountID, accountID2, amount , sqlDate);
 				db.processTransaction(t);
 		    }
 		} catch (ClassNotFoundException | SQLException e) {
