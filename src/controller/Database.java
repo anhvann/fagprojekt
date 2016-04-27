@@ -103,7 +103,7 @@ public class Database {
 		try {
 			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"ACCOUNTS\" LEFT OUTER JOIN \"DTUGRP05\".\"OWNERSHIPS\" ON \"DTUGRP05\".\"ACCOUNTS\".\"AccID\" = \"DTUGRP05\".\"OWNERSHIPS\".\"AccID\" WHERE \"CPRNo\" = '"  + cpr + "' ");
 			while (resultset.next()) {
-				Account acc = new Account(user, resultset.getString("AccID"), resultset.getString("AccName"), resultset.getDouble("Balance"), resultset.getBigDecimal("Interest"), resultset.getString("Status"));
+				Account acc = new Account(user, resultset.getString("AccID"), resultset.getString("AccName"), resultset.getBigDecimal("Balance"), resultset.getBigDecimal("Interest"), resultset.getString("Status"));
 				accounts.add(acc);
 			}
 			resultset.close();
@@ -118,11 +118,11 @@ public class Database {
 		String cpr = account.getOwner().getCPR();
 		String ID = account.getAccountID();
 		String name = account.getName();
-		Double balance = account.getBalance();
+		BigDecimal balance = account.getBalance();
 		BigDecimal interest = account.getInterest();
 		String status = account.getStatus();
 		
-		statement.executeUpdate("CALL DTUGRP05.CreateAccount(" + cpr + ", " + ID + ", " + balance + ", " + interest + ", " + name + ", " + status + ")");
+		statement.executeUpdate("CALL \"DTUGRP05\".CreateAccount(" + cpr + ", " + ID + ", " + balance + ", " + interest + ", " + name + ", " + status + ")");
 		//statement.executeUpdate("INSERT INTO \"DTUGRP05\".\"ACCOUNTS\" VALUES("+ID+", "+balance+", "+interest+", "+name+", "+status+")");
 		//statement.executeUpdate("INSERT INTO \"DTUGRP05\".\"OWNERSHIPS\" VALUES("+cpr+", "+ID+")");
 	}

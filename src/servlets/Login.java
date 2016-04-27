@@ -70,7 +70,7 @@ public class Login extends HttpServlet {
 			if (role.equals("e")) {
 				response.sendRedirect("search.jsp");
 			} else if (role.equals("c")) {
-				response.sendRedirect("activity.jsp");
+				response.sendRedirect("accounts.jsp");
 			} else {
 				String message = "CPR Number and password did not watch";
 				request.setAttribute("message", message);

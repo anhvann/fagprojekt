@@ -34,9 +34,9 @@ public class Activity extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String cpr = request.getParameter("ID");
 		String action = request.getParameter("action");
-		String accountID, name, value, status, pattern;
+		String accountID, name, value, status, pattern, pattern2;
 		DecimalFormatSymbols symbols;
-		DecimalFormat decimalFormat;
+		DecimalFormat decimalFormat, decimalFormat2;
 		BigDecimal interest;
 		
 		try {
@@ -85,12 +85,16 @@ public class Activity extends HttpServlet {
 					symbols = new DecimalFormatSymbols();
 					symbols.setDecimalSeparator('.');
 					pattern = "#.###";
+					pattern2 = "#.##";
 					decimalFormat = new DecimalFormat(pattern, symbols);
+					decimalFormat2 = new DecimalFormat(pattern2, symbols);
 					decimalFormat.setParseBigDecimal(true);
+					decimalFormat2.setParseBigDecimal(true);
 					try {
 						interest = (BigDecimal) decimalFormat.parse(value);
 						accountID = generateAccountID(user);
-						Account account = new Account(user, accountID, name, 0, interest, status);
+						BigDecimal balance = (BigDecimal) decimalFormat2.parse("0");
+						Account account = new Account(user, accountID, name, balance, interest, status);
 						user.addAccount(account);
 						
 						request.setAttribute("accounts", user.getAccounts());
@@ -111,9 +115,15 @@ public class Activity extends HttpServlet {
 					break;
 				case "editaccount" :
 					accountID = request.getParameter("accountID");
+					boolean boolStatus;
+					if (user.getAccount(accountID).getStatus().equals("1")) {
+						boolStatus = true;
+					} else {
+						boolStatus = false;
+					}
 					request.setAttribute("name", user.getAccount(accountID).getName());
 					request.setAttribute("interest", user.getAccount(accountID).getInterest());
-					request.setAttribute("status", user.getAccount(accountID).getStatus());
+					request.setAttribute("status", boolStatus);
 					
 					request.getRequestDispatcher("editaccount.jsp").forward(request, response);
 					break;

@@ -84,13 +84,9 @@ public class User {
 	public void closeAccount(String accID) throws SQLException {
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountID().equals(accID)) {
-				if (accounts.get(i).getBalance() == 0) {
-					accounts.remove(i);
-					bank.closeAccount(accID);
-					break;
-				} else {
-					break;
-				}
+				accounts.remove(i);
+				bank.closeAccount(accID);
+				break;
 			}
 		}
 	}
