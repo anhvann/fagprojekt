@@ -117,12 +117,12 @@ public class Database {
 	public void newAccount(Account account) throws SQLException {
 		String cpr = account.getOwner().getCPR();
 		String ID = account.getAccountID();
+		String name = account.getName();
 		BigDecimal balance = account.getBalance();
 		BigDecimal interest = account.getInterest();
 		String status = account.getStatus();
 		
-		statement.executeUpdate("INSERT INTO \"DTUGRP05\".\"ACCOUNTS\" VALUES("+ID+", "+balance+", "+interest+", "+status+")");
-		statement.executeUpdate("INSERT INTO \"DTUGRP05\".\"OWNERSHIPS\" VALUES("+cpr+", "+ID+")");
+		statement.executeUpdate("CALL \"DTUGRP05\".CreateAccount(" + cpr + ", " + ID + ", " + balance + ", " + interest + ", " + name + ", " + status + ")");
 	}
 
 	public void closeAccount(String accountID) throws SQLException {

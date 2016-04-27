@@ -7,7 +7,7 @@ public class Account {
 
 	private String accountID, status, name;
 	private User user;
-	private BigDecimal interest, balance;
+	private BigDecimal balance, interest;
 	private LinkedList<Transaction> transactions;
 	
 	public Account(User user, String accountID, String name, BigDecimal balance, BigDecimal interest, String status) {
