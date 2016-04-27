@@ -5,15 +5,16 @@ import java.util.LinkedList;
 
 public class Account {
 
-	private String accountID, status;
+	private String accountID, status, name;
 	private double balance;
 	private User user;
 	private BigDecimal interest;
 	private LinkedList<Transaction> transactions;
 	
-	public Account(User user, String accountID, double balance, BigDecimal interest, String status) {
+	public Account(User user, String accountID, String name, double balance, BigDecimal interest, String status) {
 		this.user = user;
 		this.accountID = accountID;
+		this.name = name;
 		this.interest = interest;
 		this.status = status;
 		this.transactions = new LinkedList<>();
@@ -28,12 +29,28 @@ public class Account {
 		return accountID;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public BigDecimal getInterest() {
 		return interest;
 	}
 	
+	public void setInterest(BigDecimal interest) {
+		this.interest = interest;
+	}
+	
 	public String getStatus() {
 		return status;
+	}
+	
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	public User getOwner() {

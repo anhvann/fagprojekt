@@ -6,6 +6,9 @@
 		<div class="pagetitle">Create new account</div>
 		<hr width="95%" noshade>
 			<form action="Activity?ID=${cpr}&action=createaccount" method="post" target="_self">
+				<label class="control-label col-sm-5">Name:</label>
+				<div class="col-sm-5"><input type="text" class="form-control" name="name" placeholder="Enter name"/></div>
+				<br><br>
 				<label class="control-label col-sm-5">Interest:</label>
 				<div class="col-sm-5"><input type="text" class="form-control" name="interest" placeholder="Enter interest"/></div>
 				<br><br>

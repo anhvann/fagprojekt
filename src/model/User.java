@@ -68,6 +68,10 @@ public class User {
 		this.accounts = accounts;
 	}
 	
+	public void editAccount(Account account) throws ClassNotFoundException, SQLException {
+		bank.editAccount(account);
+	}
+	
 	public void addAccount(Account account) throws ClassNotFoundException, SQLException {
 		accounts.add(account);
 		bank.newAccount(account);

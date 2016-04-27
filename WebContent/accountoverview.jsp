@@ -10,6 +10,8 @@
 		<hr width="95%" noshade>
 		<div class="pagesubtitle2" align="right">
 			<a href="Activity?ID=${cpr}&action=closeaccount&accountID=${accountID}">Close Account</a>
+			<br>
+			<a href="Activity?ID=${cpr}&action=editaccount&accountID=${accountID}">Edit Account</a>
 		</div>
 	</div>
 </div>
