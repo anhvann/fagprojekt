@@ -103,7 +103,7 @@ public class Database {
 		try {
 			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"ACCOUNTS\" LEFT OUTER JOIN \"DTUGRP05\".\"OWNERSHIPS\" ON \"DTUGRP05\".\"ACCOUNTS\".\"AccID\" = \"DTUGRP05\".\"OWNERSHIPS\".\"AccID\" WHERE \"CPRNo\" = '"  + cpr + "' ");
 			while (resultset.next()) {
-				Account acc = new Account(user, resultset.getString("AccID"), cpr, resultset.getBigDecimal("Balance"), resultset.getBigDecimal("Interest"), resultset.getString("Status"));
+				Account acc = new Account(user, resultset.getString("AccID"), resultset.getString("AccName"), resultset.getBigDecimal("Balance"), resultset.getBigDecimal("Interest"), resultset.getString("Status"));
 				accounts.add(acc);
 			}
 			resultset.close();
@@ -131,7 +131,15 @@ public class Database {
 
 	public void processTransaction(String type, String accountID, BigDecimal amount, String currency) throws SQLException {
 		if(type.equals("Deposit")){
-			statement.executeUpdate("CALL \"DTUGRP05\".deposit('"+accountID+", "+amount+", '"+currency+"')");
+//			CallableStatement proc =
+//			    connection.prepareCall("{ \"DTUGRP05\".deposit(?, ?, ?) }");
+//			    proc.setString(1, accoundID);
+//			    proc.setInt(2, amount);
+//			    proc.setBigDecimal(2, currency);
+//			    cs.execute();
+//			    
+//			System.out.println(amount);
+//			connection.prepareCall("{ CALL \"DTUGRP05\".deposit('"+accountID+", "+amount+", '"+currency+"') }");
 		} else if (type.equals("Withdraw")){
 			
 		} else if(type.equals("Transfer")){
