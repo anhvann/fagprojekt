@@ -1,8 +1,12 @@
 package servlets;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 import java.sql.Date;
 import java.util.LinkedList;
 
@@ -43,10 +47,16 @@ public class General extends HttpServlet {
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("deposit.jsp").forward(request, response);
 		}
-		Double amount = null;
+		BigDecimal amount = null;
 		try {
-			amount = Double.parseDouble(amountString);
-	    } catch (NumberFormatException ignore) {
+			DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+			symbols.setGroupingSeparator(',');
+			symbols.setDecimalSeparator('.');
+			String pattern = "#.##";			
+			DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+			decimalFormat.setParseBigDecimal(true);
+			amount  = (BigDecimal) decimalFormat.parse(amountString);
+	    } catch (NumberFormatException | ParseException ignore) {
 	    	String message = "Please type in a valid amount";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("deposit.jsp").forward(request, response);
