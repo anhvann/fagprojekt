@@ -34,9 +34,9 @@ public class Activity extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String cpr = request.getParameter("ID");
 		String action = request.getParameter("action");
-		String accountID, name, value, status, pattern, pattern2;
+		String accountID, name, value, status, pattern;
 		DecimalFormatSymbols symbols;
-		DecimalFormat decimalFormat, decimalFormat2;
+		DecimalFormat decimalFormat;
 		BigDecimal interest;
 		
 		try {
@@ -75,28 +75,29 @@ public class Activity extends HttpServlet {
 				case "newaccount" :
 					request.setAttribute("cpr", cpr);
 					request.setAttribute("user", user);
+					System.out.println("hej");
 					request.getRequestDispatcher("newaccount.jsp").forward(request, response);
 					break;
 				case "createaccount" :
 					name = request.getParameter("name");
 					value = request.getParameter("interest");
 					status = request.getParameter("status");
-
+					
+					System.out.println("hejhej");
 					symbols = new DecimalFormatSymbols();
 					symbols.setDecimalSeparator('.');
 					pattern = "#.###";
-					pattern2 = "#.##";
 					decimalFormat = new DecimalFormat(pattern, symbols);
-					decimalFormat2 = new DecimalFormat(pattern2, symbols);
 					decimalFormat.setParseBigDecimal(true);
-					decimalFormat2.setParseBigDecimal(true);
 					try {
+						System.out.println("hejhejhej");
 						interest = (BigDecimal) decimalFormat.parse(value);
 						accountID = generateAccountID(user);
 						BigDecimal balance = new BigDecimal(String.valueOf(0));
 						Account account = new Account(user, accountID, name, balance, interest, status);
 						user.addAccount(account);
 						
+						System.out.println("hejhejhejhej");
 						request.setAttribute("accounts", user.getAccounts());
 						request.setAttribute("fullname", user.getName());
 						request.setAttribute("cpr", cpr);

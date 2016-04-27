@@ -122,11 +122,12 @@ public class Database {
 		BigDecimal interest = account.getInterest();
 		String status = account.getStatus();
 		
-		statement.executeUpdate("CALL \"DTUGRP05\".CreateAccount(" + cpr + ", " + ID + ", " + balance + ", " + interest + ", " + name + ", " + status + ")");
+		statement.executeUpdate("CALL CreateAccount(" + cpr + ", " + ID + ", " + balance + ", " + interest + ", " + name + ", " + status + ")");
 	}
 
 	public void closeAccount(String accountID) throws SQLException {
-		statement.executeUpdate("CALL \"DTUGRP05\".\"CloseDownAccount\"('"+accountID+"')");
+		statement.executeUpdate("CALL closedownaccountmain('"+accountID+"')");
+		//statement.executeUpdate("CALL \"DTUGRP05\".\"CloseDownAccount\"('"+accountID+"')");
 	}
 
 	public void processTransaction(String type, String accountID, BigDecimal amount, String currency) throws SQLException {
