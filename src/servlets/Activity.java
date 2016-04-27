@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import controller.Database;
 import model.Account;
+import model.Transaction;
 import model.User;
 
 /**
@@ -45,11 +46,13 @@ public class Activity extends HttpServlet {
 			String[] columns = { "CPRNo", "Email", "Password", "FullName", "Address", "Phone", "DateOfBirth","Postcode", "RoleID" };
 			LinkedList<String> userInfo;
 			LinkedList<Account> accounts;
+			LinkedList<Transaction> transactions;
 			userInfo = db.getStrings("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ", columns);
-			System.out.println("size:"+userInfo.size() + " cpr:" + cpr + " action:" +action);
 			user.setInfo(userInfo);
 			accounts = db.getAccounts(user);
-			user.setAccounts(accounts);
+			//transactions = db.getTransactions(user);
+			//user.setAccounts(accounts);
+			//user.setTransactions(transactions);
 			
 			switch (action) {
 				case "viewuser" :

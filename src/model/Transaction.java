@@ -1,39 +1,28 @@
 package model;
+import java.math.BigDecimal;
 import java.sql.Date;
 
 public class Transaction {
 
-	private String accountID, accountID2, transID, name;
-	private double amount;
+	private String name, currency, accountID, accountID2;
+	private BigDecimal amount;
 	private Date date;
 	
-	//Deposit
-	public Transaction(String transID, String name, String accountID, double amount, Date date) {
-		this.transID = transID;
-		this.name = name;
-		this.amount = amount;
-		this.date = date;
-		this.accountID = accountID;
-	}
 	//Transfer
-	public Transaction(String transID, String name, String accountID, String accountID2, double amount, Date date) {
-		this.transID = transID;
+	public Transaction(String name, Date date, BigDecimal amount, String currency, String accountID, String accountID2) {
 		this.name = name;
 		this.amount = amount;
+		this.currency = currency;
 		this.date = date;
 		this.accountID = accountID;
 		this.accountID2 = accountID2;
-	}
-	
-	public String getTransID() {
-		return transID;
 	}
 	
 	public String getName() {
 		return name;
 	}
 	
-	public double getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
 	

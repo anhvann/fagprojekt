@@ -116,17 +116,20 @@ public class Database {
 
 		return accounts;
 	}
-	
 
-	private LinkedList<Account> getTransactions(User user) {
+	public LinkedList<Transaction> getTransactions(User user) {
 		String cpr = user.getCPR();
-		LinkedList<Account> transactions = new LinkedList<>();
+		LinkedList<Transaction> transactions = new LinkedList<>();
 
 		try {
-			ResultSet resultset = statement.executeQuery("SELECT * from \"DTUGRP05\".\"TRANSACTIONS\" WHERE \"CPRNo\" = '" + cpr + "' ");
+			ResultSet resultset = statement.executeQuery(
+					"select * from \"DTUGRP05\".\"TRANSACTIONS\" LEFT OUTER JOIN \"DTUGRP05\".\"OWNERSHIPS\" ON \"DTUGRP05\".\"ACCOUNTS\".\"AccID\" = \"DTUGRP05\".\"OWNERSHIPS\".\"AccID\" WHERE \"CPRNo\" = '"
+							+ cpr + "' ");
 			while (resultset.next()) {
-				//Transaction trans = new Transaction()
-				//transactions.add(acc);
+				Transaction trans = new Transaction(resultset.getString("TransName"), resultset.getDate("TransDate"),
+						resultset.getBigDecimal("Amount"), resultset.getString("ISOCode"), resultset.getString("AccID"),
+						resultset.getString("AccIDTracing"));
+				transactions.add(trans);
 			}
 			resultset.close();
 		} catch (SQLException e) {
@@ -143,7 +146,7 @@ public class Database {
 		BigDecimal balance = account.getBalance();
 		BigDecimal interest = account.getInterest();
 		String status = account.getStatus();
-		
+
 		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".CreateAccount(?, ?, ?, ?, ?, ?) }");
 		call.setString("vCPRNo", cpr);
 		call.setString("vAccID", ID);
@@ -153,12 +156,13 @@ public class Database {
 		call.setString("vStatus", status);
 		call.execute();
 	}
+
 	public void closeAccount(String accountID) throws SQLException {
 		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".closedownaccountmain(?) }");
 		call.setString("vAccID", accountID);
 		call.execute();
 	}
-	
+
 	public void editAccount(Account account) throws SQLException {
 		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditAccount(?, ?, ?, ?) }");
 		call.setString("vAccID", account.getAccountID());
@@ -168,8 +172,8 @@ public class Database {
 		call.execute();
 	}
 
-	public void processTransaction(String type, String accountID, String accountID2, BigDecimal amount, String currency, String transactionName)
-			throws SQLException {
+	public void processTransaction(String type, String accountID, String accountID2, BigDecimal amount, String currency,
+			String transactionName) throws SQLException {
 		if (type.equals("Deposit")) {
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".deposit(?, ?, ?) }");
 			call.setString("vAccID", accountID);
@@ -183,12 +187,13 @@ public class Database {
 			call.setString("vISOCode", currency);
 			call.execute();
 		} else if (type.equals("Transfer")) {
-			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".MoneyTransfer(?, ?, ?, ?, ?) }");
+			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".MoneyTransfer(?, ?, ?, ?, ?, ?) }");
+			call.setBigDecimal("vTransfer", amount);
 			call.setString("vTransName", transactionName);
 			call.setString("vAccID1", accountID);
 			call.setString("vAccID2", accountID2);
-			call.setBigDecimal("vAmount", amount);
 			call.setString("vCurrency", currency);
+			call.setString("vStatus", "?");
 			call.execute();
 		}
 	}
@@ -197,7 +202,8 @@ public class Database {
 		ResultSet resultset = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "' ");
 		String[] columns = { "CPRNo", "Email", "Password", "FullName", "Address", "Phone", "DateOfBirth", "Postcode", "RoleID" };
 		LinkedList<String> userInfo;
-		LinkedList<Account> accounts, transactions;
+		LinkedList<Account> accounts;
+		LinkedList<Transaction> transactions;
 		User user = null;
 		try {
 			userInfo = getStrings("SELECT * FROM \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "' ",columns);

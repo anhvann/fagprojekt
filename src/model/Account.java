@@ -63,13 +63,4 @@ public class Account {
 	public void setTransactions(LinkedList<Transaction> transactions) {
 		this.transactions = transactions;
 	}
-	
-	public Transaction getTransaction(String transID) {
-		for (Transaction transaction : transactions) {
-			if (transaction.getTransID().equals(transID)) {
-				return transaction;
-			}
-		}
-		return null;
-	}
 }

@@ -3,9 +3,9 @@
 <div class="container">
 	<%@include file="employeeheader.jsp"%>
 	<div class="main">
-		<div class="pagetitle">Deposit money</div>
+		<div class="pagetitle">Transfer money</div>
 		<hr width="95%" noshade>
-			<form class="form-inline" action="Transactionsl?action=deposit" method="post" target="_self">
+			<form class="form-inline" action="Transactions?action=transfer" method="post" target="_self">
 				<label class="control-label col-sm-5">Transaction name:</label>
 				<div class="col-sm-5"><input type="text" class="form-control" name="transName" placeholder="Enter transaction name"/></div>
 				<br><br>
@@ -48,7 +48,7 @@
   				</select>
   				</div>
 				<div class="col-sm-offset-5 col-sm-5"><font size="2"><font color="red">${message}</font></font><br>
-				<input type="submit" class="btn btn-default" name="depositButton" value="Deposit"></div>
+				<input type="submit" class="btn btn-default" name="transferButton" value="Transfer"></div>
 			</form>		
 	</div>
 </div>
