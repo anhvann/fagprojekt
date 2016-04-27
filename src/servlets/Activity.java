@@ -76,7 +76,7 @@ public class Activity extends HttpServlet {
 				case "createaccount" :
 					String value = request.getParameter("interest");
 					String status = request.getParameter("status");
-	
+
 					DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 					symbols.setDecimalSeparator('.');
 					String pattern = "#.###";
@@ -90,14 +90,24 @@ public class Activity extends HttpServlet {
 						user.addAccount(account);
 						
 						request.setAttribute("cpr", cpr);
-						request.setAttribute("accountID", accountID);
-						request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+						request.setAttribute("accounts", user.getAccounts());
+						request.setAttribute("fullname", user.getName());
+						request.getRequestDispatcher("accounts.jsp").forward(request, response);
 					} catch (ParseException | ClassNotFoundException | SQLException e) {
 						e.printStackTrace();
 					}
+					break;
 				case "closeaccount" :
+					System.out.println("system1");
 					String accID = request.getParameter("accountID");
 					user.closeAccount(accID);
+					System.out.println("system2");
+					request.setAttribute("accounts", user.getAccounts());
+					request.setAttribute("fullname", user.getName());
+					request.setAttribute("cpr", cpr);
+					System.out.println("system3");
+					request.getRequestDispatcher("accounts.jsp").forward(request, response);
+					System.out.println("system4");
 					break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {

@@ -126,8 +126,9 @@ public class Database {
 	}
 
 	public void closeAccount(String accountID) throws SQLException {
-		statement.executeUpdate("DELETE FROM \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '"  + accountID + "' ");
-		statement.executeUpdate("DELETE FROM \"DTUGRP05\".\"OWNERSHIPS\" WHERE \"AccID\" = '"  + accountID + "' ");
+		//statement.executeUpdate("DELETE FROM \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '"  + accountID + "' ");
+		//statement.executeUpdate("DELETE FROM \"DTUGRP05\".\"OWNERSHIPS\" WHERE \"AccID\" = '"  + accountID + "' ");
+		statement.executeUpdate("CALL closedownaccountmain(" + accountID + ")");
 	}
 
 	public String getTransID() throws SQLException {
