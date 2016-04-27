@@ -129,26 +129,13 @@ public class Database {
 		statement.executeUpdate("CALL \"DTUGRP05\".\"CloseDownAccount\"('"+accountID+"')");
 	}
 
-	public String getTransID() throws SQLException {
-		int count = 0;
-		ResultSet resultset = statement.executeQuery("SELECT COUNT(*) FROM TRANSACTIONS");
-		while (resultset.next()) {
-			resultset.last();
-		    count = resultset.getRow();
-		}
-		return Integer.toString(count++);
-	}
-
-	public void processTransaction(Transaction t) throws SQLException {
-		if(t.getName().equals("Deposit")){
+	public void processTransaction(String type, String accountID, Double amount, String currency) throws SQLException {
+		if(type.equals("Deposit")){
+			statement.executeUpdate("CALL \"DTUGRP05\".deposit('"+accountID+"', "+amount+", '"+currency+")");
+		} else if (type.equals("Withdraw")){
 			
-		} else if (t.getName().equals("Withdraw")){
+		} else if(type.equals("Transfer")){
 			
-		} else if(t.getName().equals("Transfer")){
-			ResultSet resultset = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccountID\" = '"+t.getAccountID()+"' ");
-			while(resultset.next()){
-				//resultset.updateString("Balance", t.getAmount().toString());
-			}
 		}
 	}
 }

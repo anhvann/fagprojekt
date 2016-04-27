@@ -237,6 +237,10 @@ label {
 .form-control {
 	width: 300px;
 }
+.currency{
+	border-radius:4px;
+	border:1px solid #AAAAAA;
+}
 input[type="radio"] {
   margin-top: -3px;
 }

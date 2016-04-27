@@ -37,6 +37,7 @@ public class General extends HttpServlet {
 		String accountID = request.getParameter("accountID");
 		String accountID2 = request.getParameter("accountID2");
 		String amountString = request.getParameter("amount");
+		String currency = request.getParameter("currency");
 		if (accountID.isEmpty() || amountString.isEmpty() || (action.equals("transfer") && accountID2.isEmpty())) {
 			String message = "Please fill in all fields";
 			request.setAttribute("message", message);
@@ -57,12 +58,11 @@ public class General extends HttpServlet {
 		    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 			
 		    if(action.equals("deposit")){
-		    	
+				db.processTransaction("Deposit", accountID, amount, currency);
 		    } else if (action.equals("withdraw")){
-		    	
+		    	//db.processTransaction("Withdraw", accountID, amount);
 		    } else if (action.equals("transfer")){
-		    	Transaction t = new Transaction(db.getTransID(), "Transfer", accountID, accountID2, amount , sqlDate);
-				db.processTransaction(t);
+		    	//db.processTransaction("Transfer", accountID, accountID2, amount);
 		    }
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
