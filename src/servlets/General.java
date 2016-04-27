@@ -33,9 +33,11 @@ public class General extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String action = request.getParameter("action");
 		String accountID = request.getParameter("accountID");
-		String amountString = request.getParameter("depositAmount");
-		if (accountID.isEmpty() || amountString.isEmpty()) {
+		String accountID2 = request.getParameter("accountID2");
+		String amountString = request.getParameter("amount");
+		if (accountID.isEmpty() || amountString.isEmpty() || action.equals("transfer") && accountID2.isEmpty()) {
 			String message = "Please fill in all fields";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("deposit.jsp").forward(request, response);
@@ -53,8 +55,15 @@ public class General extends HttpServlet {
 			Database db = new Database();
 			java.util.Date utilDate = new java.util.Date();
 		    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-			Transaction t = new Transaction(db.getTransID(), "Deposit", accountID, amount , sqlDate);
-			db.processTransaction(t);
+			
+		    if(action.equals("deposit")){
+		    	
+		    } else if (action.equals("withdraw")){
+		    	
+		    } else if (action.equals("transfer")){
+		    	Transaction t = new Transaction(db.getTransID(), "Deposit", accountID, accountID2, amount , sqlDate);
+				db.processTransaction(t);
+		    }
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}

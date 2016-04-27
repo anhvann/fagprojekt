@@ -3,10 +3,11 @@ import java.sql.Date;
 
 public class Transaction {
 
-	private String accountID, transID, name;
+	private String accountID, accountID2, transID, name;
 	private double amount;
 	private Date date;
 	
+	//Deposit
 	public Transaction(String transID, String name, String accountID, double amount, Date date) {
 		this.transID = transID;
 		this.name = name;
@@ -14,6 +15,16 @@ public class Transaction {
 		this.date = date;
 		this.accountID = accountID;
 	}
+	//Transfer
+	public Transaction(String transID, String name, String accountID, String accountID2, double amount, Date date) {
+		this.transID = transID;
+		this.name = name;
+		this.amount = amount;
+		this.date = date;
+		this.accountID = accountID;
+		this.accountID2 = accountID;
+	}
+	
 	public String getTransID() {
 		return transID;
 	}
