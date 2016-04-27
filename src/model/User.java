@@ -8,7 +8,8 @@ import controller.Database;
 public class User {
 
 	private String cpr, email, password, name, phone, address, dateOfBirth, postCode, roleID;
-	private LinkedList<Account> accounts, transactions;
+	private LinkedList<Account> accounts;
+	private LinkedList<Transaction> transactions;
 	private Database bank;
 
 	public User(Database bank, String cpr) {
@@ -68,7 +69,7 @@ public class User {
 		this.accounts = accounts;
 	}
 
-	public void setTransactions(LinkedList<Account> transactions) {
+	public void setTransactions(LinkedList<Transaction> transactions) {
 		this.transactions = transactions;
 	}
 	
@@ -104,7 +105,7 @@ public class User {
 		return null;
 	}
 
-	public LinkedList<Account> getTransactions() {
+	public LinkedList<Transaction> getTransactions() {
 		return transactions;
 	}
 }

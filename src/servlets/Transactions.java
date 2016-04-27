@@ -74,14 +74,15 @@ public class Transactions extends HttpServlet {
 				String message = "Deposit completed";
 				accountID = request.getParameter("accountID");
 				
-				User user = db.findOwner(accountID);
-				request.setAttribute("cpr", user.getCPR());
-				request.setAttribute("accountID", accountID);
-				request.setAttribute("transactions", user.getTransactions());
-				request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+//				User user = db.findOwner(accountID);
+//				request.setAttribute("cpr", user.getCPR());
+//				request.setAttribute("accountID", accountID);
+//				request.setAttribute("transactions", user.getTransactions());
+//				request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 		    } else if (action.equals("withdraw")){
 		    	db.processTransaction("Withdraw", accountID, accountID2, amount, currency, transactionName);
 		    } else if (action.equals("transfer")){
+		    	System.out.println(accountID2);
 		    	db.processTransaction("Transfer", accountID, accountID2, amount, currency, transactionName);
 		    }
 		} catch (ClassNotFoundException | SQLException e) {
@@ -89,7 +90,6 @@ public class Transactions extends HttpServlet {
 		}
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 }
