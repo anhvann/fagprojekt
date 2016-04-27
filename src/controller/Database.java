@@ -147,7 +147,7 @@ public class Database {
 		} else if(t.getName().equals("Transfer")){
 			ResultSet resultset = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccountID\" = '"+t.getAccountID()+"' ");
 			while(resultset.next()){
-				statement.executeUpdate("");
+				//resultset.updateString("Balance", t.getAmount().toString());
 			}
 		}
 	}

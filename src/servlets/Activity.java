@@ -89,12 +89,14 @@ public class Activity extends HttpServlet {
 						Account account = new Account(user, accountID, 0, interest, status);
 						user.addAccount(account);
 						
+						request.setAttribute("accounts", user.getAccounts());
+						request.setAttribute("fullname", user.getName());
 						request.setAttribute("cpr", cpr);
-						request.setAttribute("accountID", accountID);
-						request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+						request.getRequestDispatcher("accounts.jsp").forward(request, response);
 					} catch (ParseException | ClassNotFoundException | SQLException e) {
 						e.printStackTrace();
 					}
+					break;
 				case "closeaccount" :
 					String accID = request.getParameter("accountID");
 					user.closeAccount(accID);
