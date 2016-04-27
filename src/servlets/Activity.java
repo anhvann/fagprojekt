@@ -34,7 +34,11 @@ public class Activity extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String cpr = request.getParameter("ID");
 		String action = request.getParameter("action");
-		String accountID;
+		String accountID, name, value, status, pattern;
+		DecimalFormatSymbols symbols;
+		DecimalFormat decimalFormat;
+		BigDecimal interest;
+		
 		try {
 			db = new Database();
 			User user = new User(db, cpr);
@@ -74,19 +78,19 @@ public class Activity extends HttpServlet {
 					request.getRequestDispatcher("newaccount.jsp").forward(request, response);
 					break;
 				case "createaccount" :
-					String value = request.getParameter("interest");
-					String status = request.getParameter("status");
+					name = request.getParameter("name");
+					value = request.getParameter("interest");
+					status = request.getParameter("status");
 
-					DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+					symbols = new DecimalFormatSymbols();
 					symbols.setDecimalSeparator('.');
-					String pattern = "#.###";
-					DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+					pattern = "#.###";
+					decimalFormat = new DecimalFormat(pattern, symbols);
 					decimalFormat.setParseBigDecimal(true);
-					BigDecimal interest;
 					try {
 						interest = (BigDecimal) decimalFormat.parse(value);
 						accountID = generateAccountID(user);
-						Account account = new Account(user, accountID, 0, interest, status);
+						Account account = new Account(user, accountID, name, 0, interest, status);
 						user.addAccount(account);
 						
 						request.setAttribute("accounts", user.getAccounts());
@@ -98,16 +102,47 @@ public class Activity extends HttpServlet {
 					}
 					break;
 				case "closeaccount" :
-					System.out.println("system1");
-					String accID = request.getParameter("accountID");
-					user.closeAccount(accID);
-					System.out.println("system2");
+					accountID = request.getParameter("accountID");
+					user.closeAccount(accountID);
 					request.setAttribute("accounts", user.getAccounts());
 					request.setAttribute("fullname", user.getName());
 					request.setAttribute("cpr", cpr);
-					System.out.println("system3");
 					request.getRequestDispatcher("accounts.jsp").forward(request, response);
-					System.out.println("system4");
+					break;
+				case "editaccount" :
+					accountID = request.getParameter("accountID");
+					request.setAttribute("name", user.getAccount(accountID).getName());
+					request.setAttribute("interest", user.getAccount(accountID).getInterest());
+					request.setAttribute("status", user.getAccount(accountID).getStatus());
+					
+					request.getRequestDispatcher("editaccount.jsp").forward(request, response);
+					break;
+				case "changeaccount" : 
+					accountID = request.getParameter("accountID");
+					name = request.getParameter("name");
+					value = request.getParameter("interest");
+					status = request.getParameter("status");
+
+					symbols = new DecimalFormatSymbols();
+					symbols.setDecimalSeparator('.');
+					pattern = "#.###";
+					decimalFormat = new DecimalFormat(pattern, symbols);
+					decimalFormat.setParseBigDecimal(true);
+					try {
+						interest = (BigDecimal) decimalFormat.parse(value);
+						Account account = user.getAccount(accountID);
+						account.setName(name);
+						account.setInterest(interest);
+						account.setStatus(status);
+						user.editAccount(account);
+						
+						request.setAttribute("accounts", user.getAccounts());
+						request.setAttribute("fullname", user.getName());
+						request.setAttribute("cpr", cpr);
+						request.getRequestDispatcher("accounts.jsp").forward(request, response);
+					} catch (ParseException | ClassNotFoundException | SQLException e) {
+						e.printStackTrace();
+					}
 					break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {

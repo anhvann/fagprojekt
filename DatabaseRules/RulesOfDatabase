@@ -86,7 +86,7 @@ LIST OF PROCEDURES and the DATABASE must do:
 		==> Servlet (SQL Query: 
 		
 		*****************************************************************************************************	
-		*	CALL DTUGRP05.CreateAccount('CPRNo', 'AccID', Balance(INT), Interest(DECIMAL(5,2)), '0 or 1');	*
+		*	CALL DTUGRP05.CreateAccount('CPRNo', 'AccID', Balance(INT), Interest(DECIMAL(5,2)), 'AccName', '0 or 1');	*
 		*****************************************************************************************************
 		
 		

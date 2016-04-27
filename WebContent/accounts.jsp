@@ -14,10 +14,12 @@
 		</div>
 		<div align="center">
 			<table class="clickable">
-			    <col width="70%">
+			    <col width="20%">
+		  		<col width="50%">
 		  		<col width="30%">
 				<tr>
 					<th>Account</th>
+					<th>Name</th>
 					<th>Balance</th>
 				</tr>
 				<%
@@ -25,6 +27,7 @@
 				for (int i = 0; i < acc.size(); i++) {%>
 				<tr onclick="document.location = 'Activity?ID=${cpr}&action=viewaccount&accountID=<%=acc.get(i).getAccountID()%>';">
 					<td> <%= acc.get(i).getAccountID() %></td>
+					<td> <%= acc.get(i).getName() %></td>
 					<td> <%= acc.get(i).getBalance() %></td>
 				<tr />
 				<%}%>
