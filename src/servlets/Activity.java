@@ -46,6 +46,7 @@ public class Activity extends HttpServlet {
 			LinkedList<String> userInfo;
 			LinkedList<Account> accounts;
 			userInfo = db.getStrings("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ", columns);
+			System.out.println("size:"+userInfo.size() + " cpr:" + cpr + " action:" +action);
 			user.setInfo(userInfo);
 			accounts = db.getAccounts(user);
 			user.setAccounts(accounts);
@@ -75,7 +76,6 @@ public class Activity extends HttpServlet {
 				case "newaccount" :
 					request.setAttribute("cpr", cpr);
 					request.setAttribute("user", user);
-					System.out.println("hej");
 					request.getRequestDispatcher("newaccount.jsp").forward(request, response);
 					break;
 				case "createaccount" :
@@ -83,21 +83,18 @@ public class Activity extends HttpServlet {
 					value = request.getParameter("interest");
 					status = request.getParameter("status");
 					
-					System.out.println("hejhej");
 					symbols = new DecimalFormatSymbols();
 					symbols.setDecimalSeparator('.');
 					pattern = "#.###";
 					decimalFormat = new DecimalFormat(pattern, symbols);
 					decimalFormat.setParseBigDecimal(true);
 					try {
-						System.out.println("hejhejhej");
 						interest = (BigDecimal) decimalFormat.parse(value);
 						accountID = generateAccountID(user);
 						BigDecimal balance = new BigDecimal(String.valueOf(0));
 						Account account = new Account(user, accountID, name, balance, interest, status);
 						user.addAccount(account);
 						
-						System.out.println("hejhejhejhej");
 						request.setAttribute("accounts", user.getAccounts());
 						request.setAttribute("fullname", user.getName());
 						request.setAttribute("cpr", cpr);
@@ -116,20 +113,18 @@ public class Activity extends HttpServlet {
 					break;
 				case "editaccount" :
 					accountID = request.getParameter("accountID");
-					boolean boolStatus;
-					if (user.getAccount(accountID).getStatus().equals("1")) {
-						boolStatus = true;
-					} else {
-						boolStatus = false;
-					}
+					request.setAttribute("accountID", accountID);
+					request.setAttribute("cpr", cpr);
 					request.setAttribute("name", user.getAccount(accountID).getName());
 					request.setAttribute("interest", user.getAccount(accountID).getInterest());
-					request.setAttribute("status", boolStatus);
-					
+					request.setAttribute("status", user.getAccount(accountID).getStatus());
+					System.out.println("edit");
 					request.getRequestDispatcher("editaccount.jsp").forward(request, response);
 					break;
-				case "changeaccount" : 
+				case "changeaccount" :
+					System.out.println("change");
 					accountID = request.getParameter("accountID");
+					System.out.println("accountID " + accountID);
 					name = request.getParameter("name");
 					value = request.getParameter("interest");
 					status = request.getParameter("status");

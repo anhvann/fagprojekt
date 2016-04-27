@@ -143,15 +143,29 @@ public class Database {
 		BigDecimal balance = account.getBalance();
 		BigDecimal interest = account.getInterest();
 		String status = account.getStatus();
-
-		statement.executeUpdate("CALL CreateAccount(" + cpr + ", " + ID + ", " + balance + ", " + interest + ", " + name
-				+ ", " + status + ")");
+		
+		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".CreateAccount(?, ?, ?, ?, ?, ?) }");
+		call.setString("vCPRNo", cpr);
+		call.setString("vAccID", ID);
+		call.setBigDecimal("vAmount", balance);
+		call.setBigDecimal("vInterest", interest);
+		call.setString("vAccName", name);
+		call.setString("vStatus", status);
+		call.execute();
 	}
-
 	public void closeAccount(String accountID) throws SQLException {
-		statement.executeUpdate("CALL closedownaccountmain('" + accountID + "')");
-		// statement.executeUpdate("CALL
-		// \"DTUGRP05\".\"CloseDownAccount\"('"+accountID+"')");
+		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".closedownaccountmain(?) }");
+		call.setString("vAccID", accountID);
+		call.execute();
+	}
+	
+	public void editAccount(Account account) throws SQLException {
+		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditAccount(?, ?, ?, ?) }");
+		call.setString("vAccID", account.getAccountID());
+		call.setString("vAccName", account.getName());
+		call.setBigDecimal("vInterest", account.getInterest());
+		call.setString("vStatus", account.getStatus());
+		call.execute();
 	}
 
 	public void processTransaction(String type, String accountID, String accountID2, BigDecimal amount, String currency, String transactionName)

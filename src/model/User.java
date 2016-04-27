@@ -73,7 +73,7 @@ public class User {
 	}
 	
 	public void editAccount(Account account) throws ClassNotFoundException, SQLException {
-		//bank.editAccount(account);
+		bank.editAccount(account);
 	}
 
 	public void addAccount(Account account) throws ClassNotFoundException, SQLException {
