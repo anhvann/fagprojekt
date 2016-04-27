@@ -8,10 +8,16 @@
 	<div class="main">
 		<div class="pagetitle">Activity for ${accountID}</div>
 		<hr width="95%" noshade>
-		<div class="pagesubtitle2" align="right">
+		<div class="pagesubtitle2">
 			<a href="Activity?ID=${cpr}&action=closeaccount&accountID=${accountID}">Close Account</a>
 			<br>
 			<a href="Activity?ID=${cpr}&action=editaccount&accountID=${accountID}">Edit Account</a>
+			<br>
+			<a href="Activity?ID=${cpr}&action=deposit&accountID=${accountID}">Deposit Money</a>
+			<br>
+			<a href="Activity?ID=${cpr}&action=withdraw&accountID=${accountID}">Withdraw Money</a>
+			<br>
+			<a href="Activity?ID=${cpr}&action=transfer&accountID=${accountID}">Transfer Money</a>
 		</div>
 	</div>
 </div>

@@ -122,9 +122,7 @@ public class Activity extends HttpServlet {
 					request.getRequestDispatcher("editaccount.jsp").forward(request, response);
 					break;
 				case "changeaccount" :
-					System.out.println("change");
 					accountID = request.getParameter("accountID");
-					System.out.println("accountID " + accountID);
 					name = request.getParameter("name");
 					value = request.getParameter("interest");
 					status = request.getParameter("status");
@@ -149,6 +147,11 @@ public class Activity extends HttpServlet {
 					} catch (ParseException | ClassNotFoundException | SQLException e) {
 						e.printStackTrace();
 					}
+					break;
+				case "deposit" : 
+					accountID = request.getParameter("accountID");
+					request.setAttribute("account", accountID);
+					request.getRequestDispatcher("deposit.jsp").forward(request, response);
 					break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {

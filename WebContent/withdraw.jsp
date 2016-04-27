@@ -5,7 +5,7 @@
 	<div class="main">
 		<div class="pagetitle">Withdraw money</div>
 		<hr width="95%" noshade>
-			<form class="form-inline" action="General?action=withdraw" method="post" target="_self">
+			<form class="form-inline" action="Transactions?action=withdraw" method="post" target="_self">
 				<label class="control-label col-sm-5">Account:</label>
 				<div class="col-sm-5"><input type="text" class="form-control" name="accountID" placeholder="Enter account ID"/></div>
 				<br><br>

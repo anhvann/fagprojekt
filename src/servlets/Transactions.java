@@ -23,7 +23,7 @@ import model.User;
 /**
  * Servlet implementation class Transaction
  */
-@WebServlet("/General")
+@WebServlet("/Transactions")
 public class Transactions extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -69,20 +69,23 @@ public class Transactions extends HttpServlet {
 			java.util.Date utilDate = new java.util.Date();
 		    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 			
-		    if(action.equals("deposit")){
-				db.processTransaction("Deposit", accountID, accountID2, amount, currency, transactionName);
-				String message = "Deposit completed";
-				accountID = request.getParameter("accountID");
-				
-				User user = db.findOwner(accountID);
-				request.setAttribute("cpr", user.getCPR());
-				request.setAttribute("accountID", accountID);
-				request.setAttribute("transactions", user.getTransactions());
-				request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
-		    } else if (action.equals("withdraw")){
-		    	db.processTransaction("Withdraw", accountID, accountID2, amount, currency, transactionName);
-		    } else if (action.equals("transfer")){
-		    	db.processTransaction("Transfer", accountID, accountID2, amount, currency, transactionName);
+		    switch (action) {
+		    	case "deposit" :
+					db.processTransaction("Deposit", accountID, accountID2, amount, currency, transactionName);
+					String message = "Deposit completed";
+					accountID = request.getParameter("accountID");
+					
+					User user = db.findOwner(accountID);
+					request.setAttribute("cpr", user.getCPR());
+					request.setAttribute("accountID", accountID);
+					request.setAttribute("transactions", user.getTransactions());
+					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+		    	case "withdraw" :
+		    		db.processTransaction("Withdraw", accountID, accountID2, amount, currency, transactionName);
+		    		request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+		    	case "transfer" :
+		    		db.processTransaction("Transfer", accountID, accountID2, amount, currency, transactionName);
+		    		request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 		    }
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();

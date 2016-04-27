@@ -198,13 +198,18 @@ public class Database {
 		String[] columns = { "CPRNo", "Email", "Password", "FullName", "Address", "Phone", "DateOfBirth", "Postcode", "RoleID" };
 		LinkedList<String> userInfo;
 		LinkedList<Account> accounts, transactions;
-		userInfo = getStrings("SELECT * FROM \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "' ",columns);
-		User user = new User(this, userInfo.get(0));
-		user.setInfo(userInfo);
-		accounts = getAccounts(user);
-		transactions = getTransactions(user);
-		user.setAccounts(accounts);
-		user.setTransactions(transactions);
+		User user = null;
+		try {
+			userInfo = getStrings("SELECT * FROM \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "' ",columns);
+			user = new User(this, userInfo.get(0));
+			user.setInfo(userInfo);
+			accounts = getAccounts(user);
+			transactions = getTransactions(user);
+			user.setAccounts(accounts);
+			user.setTransactions(transactions);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return user;
 	}
 
