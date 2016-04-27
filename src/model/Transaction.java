@@ -22,7 +22,7 @@ public class Transaction {
 		this.amount = amount;
 		this.date = date;
 		this.accountID = accountID;
-		this.accountID2 = accountID;
+		this.accountID2 = accountID2;
 	}
 	
 	public String getTransID() {
@@ -43,5 +43,9 @@ public class Transaction {
 	
 	public String getAccountID(){
 		return accountID;
+	}
+	
+	public String getAccountID2() {
+		return accountID2;
 	}
 }

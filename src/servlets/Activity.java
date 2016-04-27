@@ -89,9 +89,9 @@ public class Activity extends HttpServlet {
 						Account account = new Account(user, accountID, 0, interest, status);
 						user.addAccount(account);
 						
-						request.setAttribute("cpr", cpr);
 						request.setAttribute("accounts", user.getAccounts());
 						request.setAttribute("fullname", user.getName());
+						request.setAttribute("cpr", cpr);
 						request.getRequestDispatcher("accounts.jsp").forward(request, response);
 					} catch (ParseException | ClassNotFoundException | SQLException e) {
 						e.printStackTrace();
@@ -121,8 +121,9 @@ public class Activity extends HttpServlet {
 		int max = 9;
 		String ID = "";
 		Boolean generated = false;
+		ID += 0 + (int) (Math.random()*max);
 		while (!generated) {
-			for (int i = 0; i < 14; i++) {
+			for (int i = 0; i < 13; i++) {
 				ID += min + (int) (Math.random() * max);
 			}
 			generated = true;

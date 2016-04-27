@@ -126,8 +126,6 @@ public class Database {
 	}
 
 	public void closeAccount(String accountID) throws SQLException {
-		//statement.executeUpdate("DELETE FROM \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '"  + accountID + "' ");
-		//statement.executeUpdate("DELETE FROM \"DTUGRP05\".\"OWNERSHIPS\" WHERE \"AccID\" = '"  + accountID + "' ");
 		statement.executeUpdate("CALL closedownaccountmain(" + accountID + ")");
 	}
 
@@ -142,6 +140,15 @@ public class Database {
 	}
 
 	public void processTransaction(Transaction t) throws SQLException {
-		statement.executeUpdate("CALL DTUGRP05.MONEYTRANSFER("+t.getAmount()+", '"+ t.getName()+"', "+ t.getAccountID() +"', 'DKK', ?)");
+		if(t.getName().equals("Deposit")){
+			
+		} else if (t.getName().equals("Withdraw")){
+			
+		} else if(t.getName().equals("Transfer")){
+			ResultSet resultset = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccountID\" = '"+t.getAccountID()+"' ");
+			while(resultset.next()){
+				//resultset.updateString("Balance", t.getAmount().toString());
+			}
+		}
 	}
 }
