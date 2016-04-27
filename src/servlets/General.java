@@ -69,6 +69,10 @@ public class General extends HttpServlet {
 			
 		    if(action.equals("deposit")){
 				db.processTransaction("Deposit", accountID, amount, currency);
+				String message = "Deposit completed";
+				request.setAttribute("message", message);
+				request.getRequestDispatcher("deposit.jsp").forward(request, response);
+				
 		    } else if (action.equals("withdraw")){
 		    	//db.processTransaction("Withdraw", accountID, amount);
 		    } else if (action.equals("transfer")){

@@ -32,7 +32,7 @@ public class Search extends HttpServlet {
 		
 		try {
 			db = new Database();
-			results = db.searchFor(input);
+			results = db.searchFor(input.toLowerCase());
 			if(results != null && !results.isEmpty()){
 				//Create one long string of IDs for SQL
 				String IDs = "(";

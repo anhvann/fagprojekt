@@ -131,15 +131,11 @@ public class Database {
 
 	public void processTransaction(String type, String accountID, BigDecimal amount, String currency) throws SQLException {
 		if(type.equals("Deposit")){
-//			CallableStatement proc =
-//			    connection.prepareCall("{ \"DTUGRP05\".deposit(?, ?, ?) }");
-//			    proc.setString(1, accoundID);
-//			    proc.setInt(2, amount);
-//			    proc.setBigDecimal(2, currency);
-//			    cs.execute();
-//			    
-//			System.out.println(amount);
-//			connection.prepareCall("{ CALL \"DTUGRP05\".deposit('"+accountID+", "+amount+", '"+currency+"') }");
+			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".deposit(?, ?, ?) }");
+			call.setString("vAccID", accountID);
+			call.setBigDecimal("vAmount", amount);
+			call.setString("vISOCode", currency);
+			call.execute();
 		} else if (type.equals("Withdraw")){
 			
 		} else if(type.equals("Transfer")){
