@@ -6,12 +6,11 @@ import java.util.LinkedList;
 public class Account {
 
 	private String accountID, status, name;
-	private double balance;
 	private User user;
-	private BigDecimal interest;
+	private BigDecimal interest, balance;
 	private LinkedList<Transaction> transactions;
 	
-	public Account(User user, String accountID, String name, double balance, BigDecimal interest, String status) {
+	public Account(User user, String accountID, String name, BigDecimal balance, BigDecimal interest, String status) {
 		this.user = user;
 		this.accountID = accountID;
 		this.name = name;
@@ -21,7 +20,7 @@ public class Account {
 		this.balance = balance;
 	}
 	
-	public double getBalance(){
+	public BigDecimal getBalance(){
 		return balance;
 	}
 	

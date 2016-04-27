@@ -67,11 +67,11 @@ public class User {
 	public void setAccounts(LinkedList<Account> accounts) {
 		this.accounts = accounts;
 	}
-	
+
 	public void editAccount(Account account) throws ClassNotFoundException, SQLException {
-		bank.editAccount(account);
+		//bank.editAccount(account);
 	}
-	
+
 	public void addAccount(Account account) throws ClassNotFoundException, SQLException {
 		accounts.add(account);
 		bank.newAccount(account);
@@ -84,13 +84,8 @@ public class User {
 	public void closeAccount(String accID) throws SQLException {
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountID().equals(accID)) {
-				if (accounts.get(i).getBalance() == 0) {
-					accounts.remove(i);
-					bank.closeAccount(accID);
-					break;
-				} else {
-					break;
-				}
+				bank.closeAccount(accID);
+				break;
 			}
 		}
 	}

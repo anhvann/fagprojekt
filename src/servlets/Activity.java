@@ -90,7 +90,8 @@ public class Activity extends HttpServlet {
 					try {
 						interest = (BigDecimal) decimalFormat.parse(value);
 						accountID = generateAccountID(user);
-						Account account = new Account(user, accountID, name, 0, interest, status);
+						java.math.BigDecimal balance = new java.math.BigDecimal(String.valueOf(0));
+						Account account = new Account(user, accountID, name, balance, interest, status);
 						user.addAccount(account);
 						
 						request.setAttribute("accounts", user.getAccounts());
