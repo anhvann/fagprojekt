@@ -16,7 +16,7 @@
 		<ul class="nav navbar-nav">
 			<li><a href="search.jsp">Search</a></li>
 			<li><a href="deposit.jsp">Deposit</a></li>
-			<li><a href="#">Withdraw</a></li>
+			<li><a href="withdraw.jsp">Withdraw</a></li>
 			<li><a href="#">Transfer</a></li>
 			<div class="dropdown">
 				<div class="expand">

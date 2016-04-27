@@ -7,7 +7,7 @@
 		<hr width="95%" noshade>
 			<form class="form-inline" action="General?action=deposit" method="post" target="_self">
 				<label class="control-label col-sm-5">Account:</label>
-				<div class="col-sm-5"><input type="text" class="form-control" name="accountID" placeholder="Enter account"/></div>
+				<div class="col-sm-5"><input type="text" class="form-control" name="accountID" placeholder="Enter account ID"/></div>
 				<br><br>
 				<label class="control-label col-sm-5">Amount:</label>
 				<div class="col-sm-5"><input type="text" class="form-control" name="amount" placeholder="Enter amount"/>

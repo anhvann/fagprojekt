@@ -18,18 +18,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import controller.Database;
 import model.Transaction;
+import model.User;
 
 /**
  * Servlet implementation class Transaction
  */
 @WebServlet("/General")
-public class General extends HttpServlet {
+public class Transactions extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public General() {
+    public Transactions() {
         super();
     }
 
@@ -40,9 +41,10 @@ public class General extends HttpServlet {
 		String action = request.getParameter("action");
 		String accountID = request.getParameter("accountID");
 		String accountID2 = request.getParameter("accountID2");
+		String transactionName = request.getParameter("transName");
 		String amountString = request.getParameter("amount");
 		String currency = request.getParameter("currency");
-		if (accountID.isEmpty() || amountString.isEmpty() || (action.equals("transfer") && accountID2.isEmpty())) {
+		if (accountID.isEmpty() || amountString.isEmpty() || (action.equals("transfer") && (accountID2.isEmpty() || transactionName.isEmpty()))) {
 			String message = "Please fill in all fields";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("deposit.jsp").forward(request, response);
@@ -68,27 +70,26 @@ public class General extends HttpServlet {
 		    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 			
 		    if(action.equals("deposit")){
-				db.processTransaction("Deposit", accountID, amount, currency);
+				db.processTransaction("Deposit", accountID, accountID2, amount, currency, transactionName);
 				String message = "Deposit completed";
-				request.setAttribute("message", message);
-				request.getRequestDispatcher("deposit.jsp").forward(request, response);
+				accountID = request.getParameter("accountID");
 				
+				User user = db.findOwner(accountID);
+				request.setAttribute("cpr", user.getCPR());
+				request.setAttribute("accountID", accountID);
+				request.setAttribute("transactions", user.getTransactions());
+				request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 		    } else if (action.equals("withdraw")){
-		    	//db.processTransaction("Withdraw", accountID, amount);
+		    	db.processTransaction("Withdraw", accountID, accountID2, amount, currency, transactionName);
 		    } else if (action.equals("transfer")){
-		    	//db.processTransaction("Transfer", accountID, accountID2, amount);
+		    	db.processTransaction("Transfer", accountID, accountID2, amount, currency, transactionName);
 		    }
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }

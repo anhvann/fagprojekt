@@ -8,7 +8,7 @@ import controller.Database;
 public class User {
 
 	private String cpr, email, password, name, phone, address, dateOfBirth, postCode, roleID;
-	private LinkedList<Account> accounts;
+	private LinkedList<Account> accounts, transactions;
 	private Database bank;
 
 	public User(Database bank, String cpr) {
@@ -68,6 +68,10 @@ public class User {
 		this.accounts = accounts;
 	}
 
+	public void setTransactions(LinkedList<Account> transactions) {
+		this.transactions = transactions;
+	}
+	
 	public void editAccount(Account account) throws ClassNotFoundException, SQLException {
 		//bank.editAccount(account);
 	}
@@ -101,7 +105,6 @@ public class User {
 	}
 
 	public LinkedList<Account> getTransactions() {
-		// TODO Auto-generated method stub
-		return null;
+		return transactions;
 	}
 }

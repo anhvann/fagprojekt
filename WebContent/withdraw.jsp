@@ -3,17 +3,11 @@
 <div class="container">
 	<%@include file="employeeheader.jsp"%>
 	<div class="main">
-		<div class="pagetitle">Deposit money</div>
+		<div class="pagetitle">Withdraw money</div>
 		<hr width="95%" noshade>
-			<form class="form-inline" action="General?action=deposit" method="post" target="_self">
-				<label class="control-label col-sm-5">Transaction name:</label>
-				<div class="col-sm-5"><input type="text" class="form-control" name="transName" placeholder="Enter transaction name"/></div>
-				<br><br>
-				<label class="control-label col-sm-5">Sending Account:</label>
+			<form class="form-inline" action="General?action=withdraw" method="post" target="_self">
+				<label class="control-label col-sm-5">Account:</label>
 				<div class="col-sm-5"><input type="text" class="form-control" name="accountID" placeholder="Enter account ID"/></div>
-				<br><br>
-				<label class="control-label col-sm-5">Receiving Account:</label>
-				<div class="col-sm-5"><input type="text" class="form-control" name="accountID2" placeholder="Enter account ID"/></div>
 				<br><br>
 				<label class="control-label col-sm-5">Amount:</label>
 				<div class="col-sm-5"><input type="text" class="form-control" name="amount" placeholder="Enter amount"/>
@@ -48,7 +42,7 @@
   				</select>
   				</div>
 				<div class="col-sm-offset-5 col-sm-5"><font size="2"><font color="red">${message}</font></font><br>
-				<input type="submit" class="btn btn-default" name="depositButton" value="Deposit"></div>
+				<input type="submit" class="btn btn-default" name="withdrawbutton" value="Withdraw"></div>
 			</form>		
 	</div>
 </div>
