@@ -23,7 +23,7 @@ import model.User;
 /**
  * Servlet implementation class Transaction
  */
-@WebServlet("/General")
+@WebServlet("/Transactions")
 public class Transactions extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
