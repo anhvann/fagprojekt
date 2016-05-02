@@ -75,6 +75,8 @@ public class Activity extends HttpServlet {
 					request.setAttribute("cpr", cpr);
 					request.setAttribute("accountID", accountID);
 					request.setAttribute("transactions", db.getTransactions(accountID));
+					System.out.println(user.getBalance(accountID));
+					request.setAttribute("balance", user.getBalance(accountID));
 					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 					break;
 				case "newaccount" :

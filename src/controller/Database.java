@@ -43,8 +43,7 @@ public class Database {
 		try {
 			resultSet = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" LIKE '%" + keyword
 					+ "%' OR LOWER(\"Email\") LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%" + keyword
-					+ "%' OR \"Phone\" LIKE '%" + keyword + "%' OR LOWER(\"Address\") LIKE '%" + keyword + "%'"
-					+ "OR \"Postcode\" LIKE '%" + keyword + "%'");
+					+ "%'");
 			while (resultSet.next()) {
 				IDs.add(resultSet.getString("CPRNo"));
 			}
@@ -52,11 +51,9 @@ public class Database {
 			// Compare first set with other
 			while (scanner.hasNext()) {
 				keyword = scanner.next();
-				ResultSet otherResultSet = statement
-						.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" LIKE '%" + keyword
-								+ "%' OR LOWER(\"Email\") LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%"
-								+ keyword + "%' OR \"Phone\" LIKE '%" + keyword + "%' OR LOWER(\"Address\") LIKE '%"
-								+ keyword + "%'" + " OR \"Postcode\" LIKE '%" + keyword + "%'");
+				ResultSet otherResultSet = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" LIKE '%" + keyword
+						+ "%' OR LOWER(\"Email\") LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%" + keyword
+						+ "%'");
 
 				while (otherResultSet.next()) {
 					for (int i = 0; i < IDs.size(); i++) {
@@ -130,7 +127,7 @@ public class Database {
 				}
 				Transaction trans = new Transaction(resultset.getString("TransName"), resultset.getDate("TransDate"),
 						amount, resultset.getString("ISOCode"), resultset.getString("AccID"),
-						resultset.getString("AccIDTracing"));
+						resultset.getString("AccIDTracing"), resultset.getBigDecimal("Balance"));
 				transactions.add(trans);
 			}
 			resultset.close();

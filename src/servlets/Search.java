@@ -13,9 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import controller.Database;
 
-/**
- * Servlet implementation class Search
- */
 @WebServlet("/Search")
 public class Search extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -23,7 +20,6 @@ public class Search extends HttpServlet {
 	
 	public Search() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -54,11 +50,7 @@ public class Search extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		doGet(request, response);
 	}

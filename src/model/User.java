@@ -1,5 +1,6 @@
 package model;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
@@ -107,5 +108,14 @@ public class User {
 
 	public LinkedList<Transaction> getTransactions() {
 		return transactions;
+	}
+
+	public BigDecimal getBalance(String accountID) {
+		for (Account acc : accounts){
+			if (acc.getAccountID().equals(accountID)){
+				return acc.getBalance();
+			}
+		}
+		return new BigDecimal(0);
 	}
 }

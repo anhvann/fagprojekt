@@ -8,11 +8,14 @@
 	<div class="main">
 		<div class="pagetitle">	${fullname} (${cpr})</div>
 		<hr width="95%" noshade>
-		<div class="pagesubtitle">
-			<a href="Activity?ID=${cpr}&action=edit">Edit User Information</a><br>
-			<a href="Activity?ID=${cpr}&action=newaccount">Create New Account</a>
-		</div>
 		<div align="center">
+			<div class="content">
+				<p style="text-align:left;">
+				<a href="Activity?ID=${cpr}&action=edit">Edit User Information</a><br>
+				<a href="Activity?ID=${cpr}&action=newaccount">Create New Account</a>
+				</p>
+			</div>
+		
 			<table class="clickable">
 			    <col width="20%">
 		  		<col width="50%">
