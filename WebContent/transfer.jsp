@@ -5,12 +5,16 @@
 	<div class="main">
 		<div class="pagetitle">Transfer money</div>
 		<hr width="95%" noshade>
+		<%String accID = request.getParameter("accountID");
+		if (accID == null){
+			accID = "\"\"";
+		} %>
 			<form class="form-inline" action="Transactions?action=transfer" method="post" target="_self">
 				<label class="control-label col-sm-5">Transaction name:</label>
 				<div class="col-sm-5"><input type="text" class="form-control" name="transName" placeholder="Enter transaction name"/></div>
 				<br><br>
 				<label class="control-label col-sm-5">Sending Account:</label>
-				<div class="col-sm-5"><input type="text" class="form-control" name="accountID" placeholder="Enter account ID"/></div>
+				<div class="col-sm-5"><input type="text" class="form-control" name="accountID" placeholder="Enter account ID" value="<%=accID%>"/></div>
 				<br><br>
 				<label class="control-label col-sm-5">Receiving Account:</label>
 				<div class="col-sm-5"><input type="text" class="form-control" name="accountID2" placeholder="Enter account ID"/></div>

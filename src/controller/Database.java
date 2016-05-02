@@ -117,17 +117,19 @@ public class Database {
 		return accounts;
 	}
 
-	public LinkedList<Transaction> getTransactions(User user) {
-		String cpr = user.getCPR();
+	public LinkedList<Transaction> getTransactions(String accountID) {
 		LinkedList<Transaction> transactions = new LinkedList<>();
 
 		try {
 			ResultSet resultset = statement.executeQuery(
-					"select * from \"DTUGRP05\".\"TRANSACTIONS\" LEFT OUTER JOIN \"DTUGRP05\".\"OWNERSHIPS\" ON \"DTUGRP05\".\"ACCOUNTS\".\"AccID\" = \"DTUGRP05\".\"OWNERSHIPS\".\"AccID\" WHERE \"CPRNo\" = '"
-							+ cpr + "' ");
+					"select * from \"DTUGRP05\".\"TRANSACTIONS\" WHERE \"AccID\" = '" + accountID + "' OR \"AccIDTracing\" = '" + accountID + "' " );
 			while (resultset.next()) {
+				BigDecimal amount = resultset.getBigDecimal("Amount");
+				if (resultset.getString("AccID").equals(accountID) && !resultset.getString("AccIDTracing").equals(accountID)){
+					amount = amount.negate();
+				}
 				Transaction trans = new Transaction(resultset.getString("TransName"), resultset.getDate("TransDate"),
-						resultset.getBigDecimal("Amount"), resultset.getString("ISOCode"), resultset.getString("AccID"),
+						amount, resultset.getString("ISOCode"), resultset.getString("AccID"),
 						resultset.getString("AccIDTracing"));
 				transactions.add(trans);
 			}
@@ -188,6 +190,7 @@ public class Database {
 			call.execute();
 		} else if (type.equals("Transfer")) {
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".MoneyTransfer(?, ?, ?, ?, ?, ?) }");
+			System.out.println(amount+" "+transactionName+" "+accountID+" "+accountID2+" "+currency);
 			call.setBigDecimal("vTransfer", amount);
 			call.setString("vTransName", transactionName);
 			call.setString("vAccID1", accountID);
@@ -198,25 +201,18 @@ public class Database {
 		}
 	}
 
-	public User findOwner(String accountID) throws SQLException {
-		ResultSet resultset = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "' ");
-		String[] columns = { "CPRNo", "Email", "Password", "FullName", "Address", "Phone", "DateOfBirth", "Postcode", "RoleID" };
-		LinkedList<String> userInfo;
-		LinkedList<Account> accounts;
-		LinkedList<Transaction> transactions;
-		User user = null;
+	public String getOwner(String accountID) {
+		String cpr = "";
 		try {
-			userInfo = getStrings("SELECT * FROM \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "' ",columns);
-			user = new User(this, userInfo.get(0));
-			user.setInfo(userInfo);
-			accounts = getAccounts(user);
-			transactions = getTransactions(user);
-			user.setAccounts(accounts);
-			user.setTransactions(transactions);
-		} catch (Exception e) {
+			ResultSet resultset = statement.executeQuery(
+					"select * from \"DTUGRP05\".\"OWNERSHIPS\" WHERE \"AccID\" = '" + accountID + "'" );
+			if (resultset.next()) {
+				cpr = resultset.getString("CPRNo");
+			}
+			resultset.close();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return user;
+		return cpr;
 	}
-
 }

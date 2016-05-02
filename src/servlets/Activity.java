@@ -35,7 +35,11 @@ public class Activity extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String cpr = request.getParameter("ID");
 		String action = request.getParameter("action");
-		String accountID, name, value, status, pattern;
+		String accountID = request.getParameter("accountID");
+		String name = request.getParameter("name");
+		String value = request.getParameter("interest");
+		String status = request.getParameter("status");
+		String pattern = "#.###";
 		DecimalFormatSymbols symbols;
 		DecimalFormat decimalFormat;
 		BigDecimal interest;
@@ -50,9 +54,7 @@ public class Activity extends HttpServlet {
 			userInfo = db.getStrings("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ", columns);
 			user.setInfo(userInfo);
 			accounts = db.getAccounts(user);
-			//transactions = db.getTransactions(user);
-			//user.setAccounts(accounts);
-			//user.setTransactions(transactions);
+			user.setAccounts(accounts);
 			
 			switch (action) {
 				case "viewuser" :
@@ -70,10 +72,9 @@ public class Activity extends HttpServlet {
 					request.getRequestDispatcher("userInfo.jsp").forward(request, response);
 					break;
 				case "viewaccount" :
-	 				accountID = request.getParameter("accountID");
 					request.setAttribute("cpr", cpr);
 					request.setAttribute("accountID", accountID);
-					request.setAttribute("transactions", user.getTransactions());
+					request.setAttribute("transactions", db.getTransactions(accountID));
 					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 					break;
 				case "newaccount" :
@@ -82,13 +83,8 @@ public class Activity extends HttpServlet {
 					request.getRequestDispatcher("newaccount.jsp").forward(request, response);
 					break;
 				case "createaccount" :
-					name = request.getParameter("name");
-					value = request.getParameter("interest");
-					status = request.getParameter("status");
-					
 					symbols = new DecimalFormatSymbols();
 					symbols.setDecimalSeparator('.');
-					pattern = "#.###";
 					decimalFormat = new DecimalFormat(pattern, symbols);
 					decimalFormat.setParseBigDecimal(true);
 					try {
@@ -107,7 +103,6 @@ public class Activity extends HttpServlet {
 					}
 					break;
 				case "closeaccount" :
-					accountID = request.getParameter("accountID");
 					user.closeAccount(accountID);
 					request.setAttribute("accounts", user.getAccounts());
 					request.setAttribute("fullname", user.getName());
@@ -115,7 +110,6 @@ public class Activity extends HttpServlet {
 					request.getRequestDispatcher("accounts.jsp").forward(request, response);
 					break;
 				case "editaccount" :
-					accountID = request.getParameter("accountID");
 					request.setAttribute("accountID", accountID);
 					request.setAttribute("cpr", cpr);
 					request.setAttribute("name", user.getAccount(accountID).getName());
@@ -125,14 +119,8 @@ public class Activity extends HttpServlet {
 					request.getRequestDispatcher("editaccount.jsp").forward(request, response);
 					break;
 				case "changeaccount" :
-					accountID = request.getParameter("accountID");
-					name = request.getParameter("name");
-					value = request.getParameter("interest");
-					status = request.getParameter("status");
-
 					symbols = new DecimalFormatSymbols();
 					symbols.setDecimalSeparator('.');
-					pattern = "#.###";
 					decimalFormat = new DecimalFormat(pattern, symbols);
 					decimalFormat.setParseBigDecimal(true);
 					try {
@@ -152,7 +140,6 @@ public class Activity extends HttpServlet {
 					}
 					break;
 				case "deposit" : 
-					accountID = request.getParameter("accountID");
 					request.setAttribute("account", accountID);
 					request.getRequestDispatcher("deposit.jsp").forward(request, response);
 					break;

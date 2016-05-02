@@ -72,24 +72,26 @@ public class Transactions extends HttpServlet {
 		    switch (action) {
 		    	case "deposit" :
 					db.processTransaction("Deposit", accountID, accountID2, amount, currency, transactionName);
-					String message = "Deposit completed";
-					accountID = request.getParameter("accountID");
-					
-					User user = db.findOwner(accountID);
-					request.setAttribute("cpr", user.getCPR());
-					request.setAttribute("accountID", accountID);
-					request.setAttribute("transactions", user.getTransactions());
-					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+					redirect(request, response, accountID, db);
 		    	case "withdraw" :
 		    		db.processTransaction("Withdraw", accountID, accountID2, amount, currency, transactionName);
 		    		request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+		    		redirect(request, response, accountID, db);
 		    	case "transfer" :
 		    		db.processTransaction("Transfer", accountID, accountID2, amount, currency, transactionName);
-		    		request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+		    		redirect(request, response, accountID, db);
 		    }
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void redirect(HttpServletRequest request, HttpServletResponse response, String accountID, Database db)throws ServletException, IOException {
+		request.setAttribute("cpr", db.getOwner(accountID));
+		request.setAttribute("action", "viewaccount");
+		request.setAttribute("accountID", accountID);
+		request.setAttribute("transactions", db.getTransactions(accountID));
+		request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

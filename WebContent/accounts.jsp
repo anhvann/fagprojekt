@@ -29,7 +29,7 @@
 					<td> <%= acc.get(i).getAccountID() %></td>
 					<td> <%= acc.get(i).getName() %></td>
 					<td> <%= acc.get(i).getBalance() %></td>
-				<tr />
+				</tr>
 				<%}%>
 			</table>
 		</div>
