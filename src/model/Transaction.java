@@ -29,6 +29,14 @@ public class Transaction {
 		return amount;
 	}
 	
+	public String getAmountString(){
+		DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+		symbols.setGroupingSeparator(',');
+		symbols.setDecimalSeparator('.');
+		DecimalFormat formatter = new DecimalFormat("###,##0.00", symbols);
+		return formatter.format(amount.longValue());
+	}
+	
 	public Date getDate() {
 		return date;
 	}

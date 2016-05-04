@@ -94,9 +94,9 @@ public class Transactions extends HttpServlet {
 
 	private void redirect(HttpServletRequest request, HttpServletResponse response, String accountID, Database db)throws ServletException, IOException {
 		request.setAttribute("cpr", db.getOwner(accountID));
-		request.setAttribute("action", "viewaccount");
 		request.setAttribute("accountID", accountID);
 		request.setAttribute("transactions", db.getTransactions(accountID));
+		request.setAttribute("balance", db.getTransactions(accountID).getLast().getBalanceString());
 		request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
