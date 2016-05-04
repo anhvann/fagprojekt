@@ -15,9 +15,9 @@
 	<div class="navigationarea">
 		<ul class="nav navbar-nav">
 			<li><a href="search.jsp">Search</a></li>
-			<li><a href="deposit.jsp">Deposit</a></li>
-			<li><a href="withdraw.jsp">Withdraw</a></li>
-			<li><a href="transfer.jsp">Transfer</a></li>
+			<li><a href="deposit.jsp?accountID=${accountID}">Deposit</a></li>
+			<li><a href="withdraw.jsp?accountID=${accountID}">Withdraw</a></li>
+			<li><a href="transfer.jsp?accountID=${accountID}">Transfer</a></li>
 			<div class="dropdown">
 				<div class="expand">
 					<button class="dropbtn" >Account</button>
