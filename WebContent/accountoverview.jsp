@@ -14,15 +14,10 @@
 				<font size="5"><font color="#01405b">Balance
 				<span style="float:right;"><%=request.getAttribute("balance")%> DKK</span></font></font>
 				<br><br>
-				<a href="deposit.jsp?accountID=${accountID}">Deposit Money</a>
 				<span style="float:right;">
-				<a href="Activity?ID=${cpr}&action=closeaccount&accountID=${accountID}">Close Account</a>
+				<a href="Activity?ID=action=editaccount&accountID=${accountID}">Edit Account</a> | <a href="Activity?action=closeaccount&accountID=${accountID}">Close Account</a>
 				</span>
-				<br><a href="withdraw.jsp?accountID=${accountID}">Withdraw Money</a>
-				<span style="float:right;">
-				<a href="Activity?ID=${cpr}&action=editaccount&accountID=${accountID}">Edit Account</a>
-				</span>
-				<br><a href="transfer.jsp?accountID=${accountID}">Transfer Money</a>
+				<br>
 			</p>
 		</div>
 		
@@ -49,7 +44,7 @@
 				<tr>
 					<td> <%= trans.get(i).getDate() %></td>
 					<td> <%= trans.get(i).getName() %></td>
-					<td> <font color="<%=color%>"><b><%= trans.get(i).getAmount() %></b></font></td>
+					<td> <font color="<%=color%>"><b><%= trans.get(i).getAmountString() %></b></font></td>
 					<td> <b><%=trans.get(i).getBalanceString() %></b> </td>
 				</tr>
 				<%}%>
