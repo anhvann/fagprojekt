@@ -166,7 +166,7 @@ public class Database {
 		call.setString("vAccID", accountID);
 		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
 		call.execute();
-		return call.getString("vOuput");
+		return call.getString("vOutput");
 	}
 
 	public String editAccount(Account account) throws SQLException {

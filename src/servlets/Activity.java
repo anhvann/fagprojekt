@@ -36,6 +36,7 @@ public class Activity extends HttpServlet {
 		String cpr = request.getParameter("ID");
 		String action = request.getParameter("action");
 		String accountID = request.getParameter("accountID");
+		String accountName = request.getParameter("accountName");
 		String name = request.getParameter("name");
 		String value = request.getParameter("interest");
 		String status = request.getParameter("status");
@@ -71,6 +72,7 @@ public class Activity extends HttpServlet {
 				case "viewaccount" :
 					request.setAttribute("cpr", cpr);
 					request.setAttribute("accountID", accountID);
+					request.setAttribute("accountName", accountName);
 					request.setAttribute("transactions", db.getTransactions(accountID));
 					request.setAttribute("balance", formatNumber(user.getBalance(accountID)));
 					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
@@ -104,6 +106,7 @@ public class Activity extends HttpServlet {
 					request.setAttribute("accounts", user.getAccounts());
 					request.setAttribute("fullname", user.getName());
 					request.setAttribute("cpr", cpr);
+					System.out.println("NOOOO");
 					request.getRequestDispatcher("accounts.jsp").forward(request, response);
 					break;
 				case "editaccount" :
@@ -149,7 +152,7 @@ public class Activity extends HttpServlet {
 		DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
 		symbols.setGroupingSeparator(',');
 		symbols.setDecimalSeparator('.');
-		DecimalFormat formatter = new DecimalFormat("###,###.00", symbols);
+		DecimalFormat formatter = new DecimalFormat("###,##0.00", symbols);
 		return formatter.format(value.longValue());
 	}
 

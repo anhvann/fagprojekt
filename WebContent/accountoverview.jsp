@@ -6,7 +6,7 @@
 <html>
 <div class="container">
 	<%@include file="employeeheader.jsp"%>
-	<div class="main"><div class="pagetitle">Activity for ${accountID}</div>
+	<div class="main"><div class="pagetitle">${accountName} (${accountID})</div>
 		<hr width="95%" noshade>
 		<div align="center">
 			<div class="content">
