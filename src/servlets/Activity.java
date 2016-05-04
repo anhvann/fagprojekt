@@ -96,7 +96,7 @@ public class Activity extends HttpServlet {
 						BigDecimal balance = new BigDecimal(String.valueOf(0));
 						Account account = new Account(user, accountID, name, balance, interest, status);
 						message = user.addAccount(account);
-						
+						System.out.println(message);
 						request.setAttribute("message", message);
 						request.setAttribute("accounts", user.getAccounts());
 						request.setAttribute("fullname", user.getName());
@@ -108,6 +108,7 @@ public class Activity extends HttpServlet {
 					break;
 				case "closeaccount" :
 					message = user.closeAccount(accountID);
+					System.out.println(message);
 					request.setAttribute("message", message);
 					request.setAttribute("accounts", user.getAccounts());
 					request.setAttribute("fullname", user.getName());
@@ -135,7 +136,7 @@ public class Activity extends HttpServlet {
 						account.setInterest(interest);
 						account.setStatus(status);
 						message = user.editAccount(account);
-						
+						System.out.println(message);
 						request.setAttribute("message", message);
 						request.setAttribute("accounts", user.getAccounts());
 						request.setAttribute("fullname", user.getName());

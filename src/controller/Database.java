@@ -159,7 +159,7 @@ public class Database {
 	}
 
 	public String closeAccount(String accountID) throws SQLException {
-		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".closedownaccountmain(?, ?) }");
+		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".DeleteAccount(?, ?) }");
 		call.setString("vAccID", accountID);
 		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
 		call.execute();

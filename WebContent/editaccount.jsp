@@ -27,14 +27,7 @@
 					<br><br>
 					
 					<div class="col-sm-offset-5 col-sm-5">
-					<script>
-						function clicked() {
-							if (!'${message}'.equals("")) {
-								alert('${message}');
-							}
-						}
-					</script>
-						<input type="submit" onclick="clicked()" class="btn btn-default" name="saveChanges" value="Save Changes">
+						<input type="submit" class="btn btn-default" name="saveChanges" value="Save Changes">
 					</div>
 				</form>	
 			</hr>
