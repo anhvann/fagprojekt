@@ -1,6 +1,8 @@
 package model;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 public class Transaction {
 
@@ -41,5 +43,13 @@ public class Transaction {
 	
 	public BigDecimal getBalance(){
 		return balance;
+	}
+	
+	public String getBalanceString(){
+		DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+		symbols.setGroupingSeparator(',');
+		symbols.setDecimalSeparator('.');
+		DecimalFormat formatter = new DecimalFormat("###,##0.00", symbols);
+		return formatter.format(balance.longValue());
 	}
 }

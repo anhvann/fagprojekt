@@ -127,7 +127,7 @@ public class Database {
 				}
 				Transaction trans = new Transaction(resultset.getString("TransName"), resultset.getDate("TransDate"),
 						amount, resultset.getString("ISOCode"), resultset.getString("AccID"),
-						resultset.getString("AccIDTracing"), resultset.getBigDecimal("Balance"));
+						resultset.getString("AccIDTracing"), resultset.getBigDecimal("ResultBalance"));
 				transactions.add(trans);
 			}
 			resultset.close();
@@ -174,16 +174,18 @@ public class Database {
 	public void processTransaction(String type, String accountID, String accountID2, BigDecimal amount, String currency,
 			String transactionName) throws SQLException {
 		if (type.equals("Deposit")) {
-			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".deposit(?, ?, ?) }");
+			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".Deposit(?, ?, ?, ?) }");
 			call.setString("vAccID", accountID);
 			call.setBigDecimal("vAmount", amount);
 			call.setString("vISOCode", currency);
+			call.setString("vOutput", "?");
 			call.execute();
 		} else if (type.equals("Withdraw")) {
-			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".withdraw(?, ?, ?) }");
+			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".withdraw(?, ?, ?, ?) }");
 			call.setString("vAccID", accountID);
 			call.setBigDecimal("vAmount", amount);
 			call.setString("vISOCode", currency);
+			call.setString("vOutput", "?");
 			call.execute();
 		} else if (type.equals("Transfer")) {
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".MoneyTransfer(?, ?, ?, ?, ?, ?) }");

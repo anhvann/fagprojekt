@@ -73,13 +73,16 @@ public class Transactions extends HttpServlet {
 		    	case "deposit" :
 					db.processTransaction("Deposit", accountID, accountID2, amount, currency, transactionName);
 					redirect(request, response, accountID, db);
+					break;
 		    	case "withdraw" :
 		    		db.processTransaction("Withdraw", accountID, accountID2, amount, currency, transactionName);
 		    		request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 		    		redirect(request, response, accountID, db);
+		    		break;
 		    	case "transfer" :
 		    		db.processTransaction("Transfer", accountID, accountID2, amount, currency, transactionName);
 		    		redirect(request, response, accountID, db);
+		    		break;
 		    }
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
