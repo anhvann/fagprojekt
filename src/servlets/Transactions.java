@@ -79,7 +79,6 @@ public class Transactions extends HttpServlet {
 		    	case "withdraw" :
 		    		message = db.processTransaction("Withdraw", accountID, accountID2, amount, currency, transactionName);
 					System.out.println(message);
-		    		request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 		    		redirect(request, response, accountID, db);
 		    		break;
 		    	case "transfer" :

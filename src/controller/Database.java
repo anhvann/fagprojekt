@@ -166,7 +166,7 @@ public class Database {
 		call.setString("vAccID", accountID);
 		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
 		call.execute();
-		return call.getString("vOuput");
+		return call.getString("vOutput");
 	}
 
 	public String editAccount(Account account) throws SQLException {
@@ -201,17 +201,16 @@ public class Database {
 			call.execute();
 			return call.getString("vOutput");
 		case "Transfer":
-			call = connection.prepareCall("{call \"DTUGRP05\".MoneyTransfer(?, ?, ?, ?, ?, ?, ?) }");
+			call = connection.prepareCall("{call \"DTUGRP05\".MoneyTransfer(?, ?, ?, ?, ?, ?) }");
 			System.out.println(amount + " " + transactionName + " " + accountID + " " + accountID2 + " " + currency);
 			call.setBigDecimal("vTransfer", amount);
 			call.setString("vTransName", transactionName);
 			call.setString("vAccID1", accountID);
 			call.setString("vAccID2", accountID2);
 			call.setString("vCurrency", currency);
-			call.setString("vStatus", "?");
-			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+			call.registerOutParameter("vStatus", java.sql.Types.VARCHAR);
 			call.execute();
-			return call.getString("vOutput");
+			return call.getString("vStatus");
 		}
 		return "";
 	}
