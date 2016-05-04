@@ -124,8 +124,8 @@ public class Database {
 							+ "' OR \"AccIDTracing\" = '" + accountID + "' ");
 			while (resultset.next()) {
 				BigDecimal amount = resultset.getBigDecimal("Amount");
-				if (resultset.getString("AccID").equals(accountID)
-						&& !resultset.getString("AccIDTracing").equals(accountID)) {
+				if (resultset.getString("AccID").equals(accountID) && !resultset.getString("AccIDTracing").equals(accountID)
+						|| resultset.getString("TransName").equals("Withdraw")) {
 					amount = amount.negate();
 				}
 				Transaction trans = new Transaction(resultset.getString("TransName"), resultset.getDate("TransDate"),
