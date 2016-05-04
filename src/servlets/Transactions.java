@@ -68,17 +68,18 @@ public class Transactions extends HttpServlet {
 			Database db = new Database();
 			java.util.Date utilDate = new java.util.Date();
 		    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-			
+			String message;
+		    
 		    switch (action) {
 		    	case "deposit" :
-					db.processTransaction("Deposit", accountID, accountID2, amount, currency, transactionName);
+					message = db.processTransaction("Deposit", accountID, accountID2, amount, currency, transactionName);
 					redirect(request, response, accountID, db);
 		    	case "withdraw" :
-		    		db.processTransaction("Withdraw", accountID, accountID2, amount, currency, transactionName);
+		    		message = db.processTransaction("Withdraw", accountID, accountID2, amount, currency, transactionName);
 		    		request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 		    		redirect(request, response, accountID, db);
 		    	case "transfer" :
-		    		db.processTransaction("Transfer", accountID, accountID2, amount, currency, transactionName);
+		    		message = db.processTransaction("Transfer", accountID, accountID2, amount, currency, transactionName);
 		    		redirect(request, response, accountID, db);
 		    }
 		} catch (ClassNotFoundException | SQLException e) {

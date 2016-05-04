@@ -74,27 +74,29 @@ public class User {
 		this.transactions = transactions;
 	}
 	
-	public void editAccount(Account account) throws ClassNotFoundException, SQLException {
-		bank.editAccount(account);
+	public String editAccount(Account account) throws ClassNotFoundException, SQLException {
+		return bank.editAccount(account);
 	}
 
-	public void addAccount(Account account) throws ClassNotFoundException, SQLException {
+	public String addAccount(Account account) throws ClassNotFoundException, SQLException {
 		accounts.add(account);
-		bank.newAccount(account);
+		return bank.newAccount(account);
 	}
 
 	public String getCPR() {
 		return cpr;
 	}
 
-	public void closeAccount(String accID) throws SQLException {
+	public String closeAccount(String accID) throws SQLException {
+		String message = "";
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountID().equals(accID)) {
 				accounts.remove(i);
-				bank.closeAccount(accID);
+				message = bank.closeAccount(accID);
 				break;
 			}
 		}
+		return message;
 	}
 
 	public Account getAccount(String accID) {

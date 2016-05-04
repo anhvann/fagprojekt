@@ -138,7 +138,7 @@ public class Database {
 		return transactions;
 	}
 
-	public void newAccount(Account account) throws SQLException {
+	public String newAccount(Account account) throws SQLException {
 		String cpr = account.getOwner().getCPR();
 		String ID = account.getAccountID();
 		String name = account.getName();
@@ -146,56 +146,71 @@ public class Database {
 		BigDecimal interest = account.getInterest();
 		String status = account.getStatus();
 
-		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".CreateAccount(?, ?, ?, ?, ?, ?) }");
+		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".CreateAccount(?, ?, ?, ?, ?, ?, ?) }");
 		call.setString("vCPRNo", cpr);
 		call.setString("vAccID", ID);
 		call.setBigDecimal("vAmount", balance);
 		call.setBigDecimal("vInterest", interest);
 		call.setString("vAccName", name);
 		call.setString("vStatus", status);
+		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
 		call.execute();
+		return call.getString("vOutput");
 	}
 
-	public void closeAccount(String accountID) throws SQLException {
-		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".closedownaccountmain(?) }");
+	public String closeAccount(String accountID) throws SQLException {
+		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".closedownaccountmain(?, ?) }");
 		call.setString("vAccID", accountID);
+		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
 		call.execute();
+		return call.getString("vOuput");
 	}
 
-	public void editAccount(Account account) throws SQLException {
-		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditAccount(?, ?, ?, ?) }");
+	public String editAccount(Account account) throws SQLException {
+		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditAccount(?, ?, ?, ?, ?) }");
 		call.setString("vAccID", account.getAccountID());
 		call.setString("vAccName", account.getName());
 		call.setBigDecimal("vInterest", account.getInterest());
 		call.setString("vStatus", account.getStatus());
+		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
 		call.execute();
+		return call.getString("vOutput");
 	}
 
-	public void processTransaction(String type, String accountID, String accountID2, BigDecimal amount, String currency,
+	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount, String currency,
 			String transactionName) throws SQLException {
-		if (type.equals("Deposit")) {
-			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".deposit(?, ?, ?) }");
-			call.setString("vAccID", accountID);
-			call.setBigDecimal("vAmount", amount);
-			call.setString("vISOCode", currency);
-			call.execute();
-		} else if (type.equals("Withdraw")) {
-			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".withdraw(?, ?, ?) }");
-			call.setString("vAccID", accountID);
-			call.setBigDecimal("vAmount", amount);
-			call.setString("vISOCode", currency);
-			call.execute();
-		} else if (type.equals("Transfer")) {
-			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".MoneyTransfer(?, ?, ?, ?, ?, ?) }");
-			System.out.println(amount+" "+transactionName+" "+accountID+" "+accountID2+" "+currency);
-			call.setBigDecimal("vTransfer", amount);
-			call.setString("vTransName", transactionName);
-			call.setString("vAccID1", accountID);
-			call.setString("vAccID2", accountID2);
-			call.setString("vCurrency", currency);
-			call.setString("vStatus", "?");
-			call.execute();
+		CallableStatement call;
+		switch (type) {
+			case "Deposit" :
+				call = connection.prepareCall("{call \"DTUGRP05\".deposit(?, ?, ?, ?) }");
+				call.setString("vAccID", accountID);
+				call.setBigDecimal("vAmount", amount);
+				call.setString("vISOCode", currency);
+				call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+				call.execute();
+				return call.getString("vOutput");
+			case "Withdraw" :
+				call = connection.prepareCall("{call \"DTUGRP05\".withdraw(?, ?, ?, ?) }");
+				call.setString("vAccID", accountID);
+				call.setBigDecimal("vAmount", amount);
+				call.setString("vISOCode", currency);
+				call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+				call.execute();
+				return call.getString("vOutput");
+			case "Transfer" :
+				call = connection.prepareCall("{call \"DTUGRP05\".MoneyTransfer(?, ?, ?, ?, ?, ?, ?) }");
+				System.out.println(amount+" "+transactionName+" "+accountID+" "+accountID2+" "+currency);
+				call.setBigDecimal("vTransfer", amount);
+				call.setString("vTransName", transactionName);
+				call.setString("vAccID1", accountID);
+				call.setString("vAccID2", accountID2);
+				call.setString("vCurrency", currency);
+				call.setString("vStatus", "?");
+				call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+				call.execute();
+				return call.getString("vOutput");
 		}
+		return "";
 	}
 
 	public String getOwner(String accountID) {

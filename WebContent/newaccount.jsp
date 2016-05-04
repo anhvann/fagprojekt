@@ -15,7 +15,17 @@
 				<label class="control-label col-sm-5">Status:</label>
 				<div class="col-sm-5"><input type="radio" name="status" value="1" checked/> Active <input type="radio" name="status" value="0"/> Inactive</div>
 				<br><br>
-				<div class="col-sm-offset-5 col-sm-5"><input type="submit" class="btn btn-default" name="createButton" value="Create"></div>
+				<div class="col-sm-offset-5 col-sm-5">
+				<script>
+					function clicked() {
+					System.out.println('${message}');
+						if (!'${message}'.equals("")) {
+							alert('${message}');
+						}
+					}
+				</script>
+				<input type="submit" onclick="clicked" class="btn btn-default" name="createButton" value="Create">
+				</div>
 			</form>		
 	</div>
 </div>

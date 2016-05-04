@@ -55,6 +55,7 @@ public class Activity extends HttpServlet {
 			user.setInfo(userInfo);
 			accounts = db.getAccounts(user);
 			user.setAccounts(accounts);
+			String message;
 			
 			switch (action) {
 				case "viewuser" :
@@ -94,8 +95,9 @@ public class Activity extends HttpServlet {
 						accountID = generateAccountID(user);
 						BigDecimal balance = new BigDecimal(String.valueOf(0));
 						Account account = new Account(user, accountID, name, balance, interest, status);
-						user.addAccount(account);
+						message = user.addAccount(account);
 						
+						request.setAttribute("message", message);
 						request.setAttribute("accounts", user.getAccounts());
 						request.setAttribute("fullname", user.getName());
 						request.setAttribute("cpr", cpr);
@@ -105,7 +107,8 @@ public class Activity extends HttpServlet {
 					}
 					break;
 				case "closeaccount" :
-					user.closeAccount(accountID);
+					message = user.closeAccount(accountID);
+					request.setAttribute("message", message);
 					request.setAttribute("accounts", user.getAccounts());
 					request.setAttribute("fullname", user.getName());
 					request.setAttribute("cpr", cpr);
@@ -131,8 +134,9 @@ public class Activity extends HttpServlet {
 						account.setName(name);
 						account.setInterest(interest);
 						account.setStatus(status);
-						user.editAccount(account);
+						message = user.editAccount(account);
 						
+						request.setAttribute("message", message);
 						request.setAttribute("accounts", user.getAccounts());
 						request.setAttribute("fullname", user.getName());
 						request.setAttribute("cpr", cpr);
@@ -150,7 +154,8 @@ public class Activity extends HttpServlet {
 			e.printStackTrace();
 		}
 
-	}
+
+		}
 
 	private String generateAccountID(User user) {
 		int min = 0;
@@ -180,6 +185,7 @@ public class Activity extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);
+
 	}
 
 }
