@@ -31,7 +31,7 @@
 				<tr onclick="document.location = 'Activity?ID=${cpr}&action=viewaccount&accountID=<%=acc.get(i).getAccountID()%>';">
 					<td> <%= acc.get(i).getAccountID() %></td>
 					<td> <%= acc.get(i).getName() %></td>
-					<td> <%= acc.get(i).getBalance() %></td>
+					<td> <%= acc.get(i).getBalanceString() %></td>
 				</tr>
 				<%}%>
 			</table>

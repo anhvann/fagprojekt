@@ -39,10 +39,6 @@ public class Activity extends HttpServlet {
 		String name = request.getParameter("name");
 		String value = request.getParameter("interest");
 		String status = request.getParameter("status");
-		String pattern = "#.###";
-		DecimalFormatSymbols symbols;
-		DecimalFormat decimalFormat;
-		BigDecimal interest;
 		
 		try {
 			db = new Database();
@@ -76,8 +72,7 @@ public class Activity extends HttpServlet {
 					request.setAttribute("cpr", cpr);
 					request.setAttribute("accountID", accountID);
 					request.setAttribute("transactions", db.getTransactions(accountID));
-					System.out.println(user.getBalance(accountID));
-					request.setAttribute("balance", user.getBalance(accountID));
+					request.setAttribute("balance", formatNumber(user.getBalance(accountID)));
 					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 					break;
 				case "newaccount" :
@@ -86,14 +81,10 @@ public class Activity extends HttpServlet {
 					request.getRequestDispatcher("newaccount.jsp").forward(request, response);
 					break;
 				case "createaccount" :
-					symbols = new DecimalFormatSymbols();
-					symbols.setDecimalSeparator('.');
-					decimalFormat = new DecimalFormat(pattern, symbols);
-					decimalFormat.setParseBigDecimal(true);
 					try {
-						interest = (BigDecimal) decimalFormat.parse(value);
+						BigDecimal interest = getBigDecimal(value);
+						BigDecimal balance = getBigDecimal("0");
 						accountID = generateAccountID(user);
-						BigDecimal balance = new BigDecimal(String.valueOf(0));
 						Account account = new Account(user, accountID, name, balance, interest, status);
 						message = user.addAccount(account);
 						System.out.println(message);
@@ -102,7 +93,7 @@ public class Activity extends HttpServlet {
 						request.setAttribute("fullname", user.getName());
 						request.setAttribute("cpr", cpr);
 						request.getRequestDispatcher("accounts.jsp").forward(request, response);
-					} catch (ParseException | ClassNotFoundException | SQLException e) {
+					} catch (ClassNotFoundException | SQLException e) {
 						e.printStackTrace();
 					}
 					break;
@@ -125,12 +116,8 @@ public class Activity extends HttpServlet {
 					request.getRequestDispatcher("editaccount.jsp").forward(request, response);
 					break;
 				case "changeaccount" :
-					symbols = new DecimalFormatSymbols();
-					symbols.setDecimalSeparator('.');
-					decimalFormat = new DecimalFormat(pattern, symbols);
-					decimalFormat.setParseBigDecimal(true);
 					try {
-						interest = (BigDecimal) decimalFormat.parse(value);
+						BigDecimal interest = getBigDecimal(value);
 						Account account = user.getAccount(accountID);
 						account.setName(name);
 						account.setInterest(interest);
@@ -142,7 +129,7 @@ public class Activity extends HttpServlet {
 						request.setAttribute("fullname", user.getName());
 						request.setAttribute("cpr", cpr);
 						request.getRequestDispatcher("accounts.jsp").forward(request, response);
-					} catch (ParseException | ClassNotFoundException | SQLException e) {
+					} catch (ClassNotFoundException | SQLException e) {
 						e.printStackTrace();
 					}
 					break;
@@ -157,6 +144,19 @@ public class Activity extends HttpServlet {
 
 
 		}
+
+	private String formatNumber(BigDecimal value) {
+		DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+		symbols.setGroupingSeparator(',');
+		symbols.setDecimalSeparator('.');
+		DecimalFormat formatter = new DecimalFormat("###,###.00", symbols);
+		return formatter.format(value.longValue());
+	}
+
+	private BigDecimal getBigDecimal(String string) {		
+		BigDecimal value = new BigDecimal(string.replaceAll(",", ""));
+		return value;
+	}
 
 	private String generateAccountID(User user) {
 		int min = 0;

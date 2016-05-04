@@ -50,7 +50,7 @@
 					<td> <%= trans.get(i).getDate() %></td>
 					<td> <%= trans.get(i).getName() %></td>
 					<td> <font color="<%=color%>"><b><%= trans.get(i).getAmount() %></b></font></td>
-					<td> <b><%=trans.get(i).getBalance() %></b> </td>
+					<td> <b><%=trans.get(i).getBalanceString() %></b> </td>
 				</tr>
 				<%}%>
 			</table>

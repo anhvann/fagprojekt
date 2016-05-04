@@ -1,7 +1,11 @@
 package model;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.LinkedList;
+import java.util.Locale;
 
 public class Account {
 
@@ -21,7 +25,15 @@ public class Account {
 	}
 	
 	public BigDecimal getBalance(){
-		return balance;
+		 return balance;
+	}
+	
+	public String getBalanceString(){
+		DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+		symbols.setGroupingSeparator(',');
+		symbols.setDecimalSeparator('.');
+		DecimalFormat formatter = new DecimalFormat("###,##0.00", symbols);
+		return formatter.format(balance.longValue());
 	}
 	
 	public String getAccountID(){

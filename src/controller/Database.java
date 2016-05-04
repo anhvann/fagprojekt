@@ -51,9 +51,10 @@ public class Database {
 			// Compare first set with other
 			while (scanner.hasNext()) {
 				keyword = scanner.next();
-				ResultSet otherResultSet = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" LIKE '%" + keyword
-						+ "%' OR LOWER(\"Email\") LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%" + keyword
-						+ "%'");
+				ResultSet otherResultSet = statement
+						.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" LIKE '%" + keyword
+								+ "%' OR LOWER(\"Email\") LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%"
+								+ keyword + "%'");
 
 				while (otherResultSet.next()) {
 					for (int i = 0; i < IDs.size(); i++) {
@@ -118,16 +119,18 @@ public class Database {
 		LinkedList<Transaction> transactions = new LinkedList<>();
 
 		try {
-			ResultSet resultset = statement.executeQuery(
-					"select * from \"DTUGRP05\".\"TRANSACTIONS\" WHERE \"AccID\" = '" + accountID + "' OR \"AccIDTracing\" = '" + accountID + "' " );
+			ResultSet resultset = statement
+					.executeQuery("select * from \"DTUGRP05\".\"TRANSACTIONS\" WHERE \"AccID\" = '" + accountID
+							+ "' OR \"AccIDTracing\" = '" + accountID + "' ");
 			while (resultset.next()) {
 				BigDecimal amount = resultset.getBigDecimal("Amount");
-				if (resultset.getString("AccID").equals(accountID) && !resultset.getString("AccIDTracing").equals(accountID)){
+				if (resultset.getString("AccID").equals(accountID)
+						&& !resultset.getString("AccIDTracing").equals(accountID)) {
 					amount = amount.negate();
 				}
 				Transaction trans = new Transaction(resultset.getString("TransName"), resultset.getDate("TransDate"),
 						amount, resultset.getString("ISOCode"), resultset.getString("AccID"),
-						resultset.getString("AccIDTracing"), resultset.getBigDecimal("Balance"));
+						resultset.getString("AccIDTracing"), resultset.getBigDecimal("ResultBalance"));
 				transactions.add(trans);
 			}
 			resultset.close();
@@ -177,38 +180,38 @@ public class Database {
 		return call.getString("vOutput");
 	}
 
-	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount, String currency,
-			String transactionName) throws SQLException {
+	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount,
+			String currency, String transactionName) throws SQLException {
 		CallableStatement call;
 		switch (type) {
-			case "Deposit" :
-				call = connection.prepareCall("{call \"DTUGRP05\".deposit(?, ?, ?, ?) }");
-				call.setString("vAccID", accountID);
-				call.setBigDecimal("vAmount", amount);
-				call.setString("vISOCode", currency);
-				call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
-				call.execute();
-				return call.getString("vOutput");
-			case "Withdraw" :
-				call = connection.prepareCall("{call \"DTUGRP05\".withdraw(?, ?, ?, ?) }");
-				call.setString("vAccID", accountID);
-				call.setBigDecimal("vAmount", amount);
-				call.setString("vISOCode", currency);
-				call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
-				call.execute();
-				return call.getString("vOutput");
-			case "Transfer" :
-				call = connection.prepareCall("{call \"DTUGRP05\".MoneyTransfer(?, ?, ?, ?, ?, ?, ?) }");
-				System.out.println(amount+" "+transactionName+" "+accountID+" "+accountID2+" "+currency);
-				call.setBigDecimal("vTransfer", amount);
-				call.setString("vTransName", transactionName);
-				call.setString("vAccID1", accountID);
-				call.setString("vAccID2", accountID2);
-				call.setString("vCurrency", currency);
-				call.setString("vStatus", "?");
-				call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
-				call.execute();
-				return call.getString("vOutput");
+		case "Deposit":
+			call = connection.prepareCall("{call \"DTUGRP05\".deposit(?, ?, ?, ?) }");
+			call.setString("vAccID", accountID);
+			call.setBigDecimal("vAmount", amount);
+			call.setString("vISOCode", currency);
+			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+			call.execute();
+			return call.getString("vOutput");
+		case "Withdraw":
+			call = connection.prepareCall("{call \"DTUGRP05\".withdraw(?, ?, ?, ?) }");
+			call.setString("vAccID", accountID);
+			call.setBigDecimal("vAmount", amount);
+			call.setString("vISOCode", currency);
+			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+			call.execute();
+			return call.getString("vOutput");
+		case "Transfer":
+			call = connection.prepareCall("{call \"DTUGRP05\".MoneyTransfer(?, ?, ?, ?, ?, ?, ?) }");
+			System.out.println(amount + " " + transactionName + " " + accountID + " " + accountID2 + " " + currency);
+			call.setBigDecimal("vTransfer", amount);
+			call.setString("vTransName", transactionName);
+			call.setString("vAccID1", accountID);
+			call.setString("vAccID2", accountID2);
+			call.setString("vCurrency", currency);
+			call.setString("vStatus", "?");
+			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+			call.execute();
+			return call.getString("vOutput");
 		}
 		return "";
 	}
@@ -216,8 +219,8 @@ public class Database {
 	public String getOwner(String accountID) {
 		String cpr = "";
 		try {
-			ResultSet resultset = statement.executeQuery(
-					"select * from \"DTUGRP05\".\"OWNERSHIPS\" WHERE \"AccID\" = '" + accountID + "'" );
+			ResultSet resultset = statement
+					.executeQuery("select * from \"DTUGRP05\".\"OWNERSHIPS\" WHERE \"AccID\" = '" + accountID + "'");
 			if (resultset.next()) {
 				cpr = resultset.getString("CPRNo");
 			}
