@@ -61,7 +61,7 @@ public class Login extends HttpServlet {
 			} else if (role.equals("c")) {
 				response.sendRedirect("accounts.jsp");
 			} else {
-				String message = "CPR Number and password did not watch";
+				String message = "CPR Number and password did not match";
 				request.setAttribute("message", message);
 				request.getRequestDispatcher("login.jsp").forward(request, response);
 			}

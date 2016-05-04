@@ -208,9 +208,9 @@ public class Database {
 			call.setString("vAccID1", accountID);
 			call.setString("vAccID2", accountID2);
 			call.setString("vCurrency", currency);
-			call.registerOutParameter("vStatus", java.sql.Types.VARCHAR);
+			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
 			call.execute();
-			return call.getString("vStatus");
+			return call.getString("vOutput");
 		}
 		return "";
 	}
