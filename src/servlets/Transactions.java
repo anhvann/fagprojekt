@@ -20,24 +20,19 @@ import controller.Database;
 import model.Transaction;
 import model.User;
 
-/**
- * Servlet implementation class Transaction
- */
 @WebServlet("/Transactions")
 public class Transactions extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+    
     public Transactions() {
         super();
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
 		String action = request.getParameter("action");
 		String accountID = request.getParameter("accountID");
 		String accountID2 = request.getParameter("accountID2");
@@ -66,40 +61,30 @@ public class Transactions extends HttpServlet {
 		
 		try {
 			Database db = new Database();
-			java.util.Date utilDate = new java.util.Date();
-		    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 			String message;
 		    
 		    switch (action) {
 		    	case "deposit" :
 					message = db.processTransaction("Deposit", accountID, accountID2, amount, currency, transactionName);
 					System.out.println(message);
-					redirect(request, response, accountID, db);
+					redirect(request, response, accountID);
 					break;
 		    	case "withdraw" :
 		    		message = db.processTransaction("Withdraw", accountID, accountID2, amount, currency, transactionName);
 					System.out.println(message);
-		    		redirect(request, response, accountID, db);
+		    		redirect(request, response, accountID);
 		    		break;
 		    	case "transfer" :
 		    		message = db.processTransaction("Transfer", accountID, accountID2, amount, currency, transactionName);
 					System.out.println(message);
-		    		redirect(request, response, accountID, db);
+		    		redirect(request, response, accountID);
 		    		break;
 		    }
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
-
-	private void redirect(HttpServletRequest request, HttpServletResponse response, String accountID, Database db)throws ServletException, IOException {
-		request.setAttribute("cpr", db.getOwner(accountID));
-		request.setAttribute("accountID", accountID);
-		request.setAttribute("transactions", db.getTransactions(accountID));
-		request.setAttribute("balance", db.getTransactions(accountID).getLast().getBalanceString());
-		request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
-	}
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+	private void redirect(HttpServletRequest request, HttpServletResponse response, String accountID)throws ServletException, IOException {
+		response.sendRedirect("Confirmation?accountID="+accountID);
 	}
 }

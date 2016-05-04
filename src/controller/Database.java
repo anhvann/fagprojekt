@@ -229,4 +229,17 @@ public class Database {
 		}
 		return cpr;
 	}
+
+	public String getAccountName(String accountID) {
+		try {
+			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "'");
+			if (resultset.next()) {
+				return resultset.getString("AccName");
+			}
+			resultset.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
 }

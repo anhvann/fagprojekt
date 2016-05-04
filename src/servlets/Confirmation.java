@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import controller.Database;
 
 /**
  * Servlet implementation class Confirmation
@@ -24,17 +27,20 @@ public class Confirmation extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
-		int success = Integer.parseInt(request.getParameter("s"));
-        if (success == 1)
-            request.setAttribute("result", "Employee Successfully Inserted");
-        else
-            request.setAttribute("result", "Employee Not Inserted: " + request.getAttribute("error"));
-        	RequestDispatcher view = request.getRequestDispatcher("accountoverview.jsp");
-        	view.forward(request, response);
+		try {
+			Database db = new Database();
+			String accountID = request.getParameter("accountID");
+			String accountName = request.getParameter("accountName");
+			request.setAttribute("accountID", accountID);
+			request.setAttribute("transactions", db.getTransactions(accountID));
+			request.setAttribute("balance", db.getTransactions(accountID).getLast().getBalanceString());
+			request.setAttribute("accountName", db.getAccountName(accountID));
+			request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
