@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <div class="container">
+	<%@include file="cacheclear.jsp"%>
 	<%@include file="header.jsp"%>
 	<div class="main">
 		<form id="loginform" action="Login" method="post" target="_self">
