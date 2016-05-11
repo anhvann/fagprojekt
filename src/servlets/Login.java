@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import controller.Database;
 
@@ -48,18 +49,18 @@ public class Login extends HttpServlet {
 			db = new Database();
 			String role = "";
 			String[] columns = { "FullName", "Password", "RoleID" };
-			LinkedList<String> results = db
-					.getStrings("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ", columns);
+			LinkedList<String> results = db.getStrings("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ", columns);
 			if (!results.isEmpty()) {
 				String dbpassword = results.get(1);
 				if (dbpassword.equals(password)) {
 					role = results.get(2);
 				}
 			}
+	        
 			if (role.equals("e")) {
-				response.sendRedirect("search.jsp");
+				setSession(request, response, cpr, "e");
 			} else if (role.equals("c")) {
-				response.sendRedirect("accounts.jsp");
+				setSession(request, response, cpr, "c");
 			} else {
 				String message = "CPR Number and password did not match";
 				request.setAttribute("message", message);
@@ -70,8 +71,16 @@ public class Login extends HttpServlet {
 		}
 	}
 
-	protected void dispatch(HttpServletRequest request, HttpServletResponse response, String url)
-			throws ServletException, IOException {
+	private void setSession(HttpServletRequest request, HttpServletResponse response, String cpr, String role) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		if(session!=null){
+			session.setAttribute("role", role);
+			session.setAttribute("loggedinuser", cpr);
+			request.getRequestDispatcher("loginredirect.jsp").forward(request,response);
+		}
+	}
+
+	protected void dispatch(HttpServletRequest request, HttpServletResponse response, String url) throws ServletException, IOException {
 		RequestDispatcher RequetsDispatcherObj = request.getRequestDispatcher(url);
 		System.out.println(RequetsDispatcherObj != null);
 		System.out.println(request != null);
