@@ -22,7 +22,7 @@ if ((session.getAttribute("loggedinuser") == null) || (session.getAttribute("log
 		<ul class="nav navbar-nav">
 			<li><a href="cdeposit.jsp">Deposit</a></li>
 			<li><a href="cwithdraw.jsp">Withdraw</a></li>
-			<li><a href="Activity?ID=<%session.getAttribute("loggedinuser")%>&action=ctransfer">Transfer</a></li>
+			<li><a href="ClientActivity?ID=<%session.getAttribute("loggedinuser");%>&action=ctransfer">Transfer</a></li>
 		</ul>
 	</div>
 	<div id="loginlink">

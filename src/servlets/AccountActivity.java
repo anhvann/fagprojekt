@@ -43,7 +43,6 @@ public class AccountActivity extends HttpServlet {
 		
 		try {
 			db = new Database();
-			db = new Database();
 			User user = db.getUser(cpr);
 			String message;
 			
