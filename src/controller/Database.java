@@ -229,4 +229,30 @@ public class Database {
 		}
 		
 	}
+
+	public User getUser(String cpr) {
+		User user = null;
+		try {
+			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "'");
+			if (resultset.next()) {
+				user = new User(this, cpr);
+				String email = resultset.getString("Email");
+				String name = resultset.getString("FullName");
+				String password = resultset.getString("Password");
+				String phone = resultset.getString("Phone");
+				String address = resultset.getString("Address");
+				Date dateOfBirth = resultset.getDate("DateOfBirth");
+				String postCode = resultset.getString("PostCode");
+				String role = resultset.getString("RoleID");
+				user.setInfo(email, password, name, phone, address, dateOfBirth, postCode, role);
+				
+				LinkedList<Account> accounts = getAccounts(user);
+				user.setAccounts(accounts);
+			}
+			resultset.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
 }

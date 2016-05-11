@@ -1,6 +1,7 @@
 package model;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
@@ -8,7 +9,8 @@ import controller.Database;
 
 public class User {
 
-	private String cpr, email, password, name, phone, address, dateOfBirth, postCode, roleID;
+	private String cpr, email, password, name, phone, address, postCode, roleID;
+	private Date dateOfBirth;
 	private LinkedList<Account> accounts;
 	private LinkedList<Transaction> transactions;
 	private Database bank;
@@ -19,15 +21,15 @@ public class User {
 		this.accounts = new LinkedList<>();
 	}
 
-	public void setInfo(LinkedList<String> info) {
-		email = info.get(1);
-		password = info.get(2);
-		name = info.get(3);
-		phone = info.get(4);
-		address = info.get(5);
-		dateOfBirth = info.get(6);
-		postCode = info.get(7);
-		roleID = info.get(8);
+	public void setInfo(String email, String password, String name, String phone, String address, Date dateOfBirth, String postCode, String roleID) {
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.phone = phone;
+		this.address = address;
+		this.dateOfBirth = dateOfBirth;
+		this.postCode = postCode;
+		this.roleID = roleID;
 	}
 
 	public LinkedList<Account> getAccounts() {
@@ -54,7 +56,7 @@ public class User {
 		return address;
 	}
 
-	public String getDateOfBirth() {
+	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
 
