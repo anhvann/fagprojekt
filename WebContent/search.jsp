@@ -32,7 +32,7 @@
                		<th>Phone</th>
            		</tr>
            		<% while(resultset.next()){ %>
-           		<tr onclick="document.location = 'Activity?ID=<%=resultset.getString("CPRNo")%>&action=viewuser';">
+           		<tr onclick="document.location = 'UserActivity?ID=<%=resultset.getString("CPRNo")%>&action=viewuser';">
                		<td> <%= resultset.getString("CPRNo") %></td>
                		<td> <%= resultset.getString("FullName") %></td>
                		<td> <%= resultset.getString("Address") %></td>

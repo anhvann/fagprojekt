@@ -242,4 +242,16 @@ public class Database {
 		}
 		return "";
 	}
+
+	public void register(String cpr, String email, String password, String name, String address, String zipcode,
+			String date, String phone) {
+		try {
+			ResultSet resultset = statement.executeQuery("INSERT INTO \"DTUGRP05\".\"USERS\"" + "VALUES(" + cpr + ", " + email + ", " + 
+								  password + ", c, " + name + ", " + phone + ", " + address + ", " + date + ", " + zipcode + ")");
+			resultset.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }

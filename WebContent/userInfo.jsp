@@ -5,7 +5,7 @@
 	<div class="main" >
 			<div class="pagetitle">Edit User Information</div>
 			<hr width="95%" noshade>
-				<form action="Activity" method="post" target="_self">
+				<form action="UserActivity" method="post" target="_self">
 					<label class="control-label col-sm-5" for="email">Email:</label>
 					<div class="col-sm-5"><input type="email" class="form-control" id="email" placeholder="Enter email" value=${email}></div>
 					<br><br>

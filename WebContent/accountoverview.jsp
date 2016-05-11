@@ -15,7 +15,7 @@
 				<span style="float:right;"><%=request.getAttribute("balance")%> DKK</span></font></font>
 				<br><br>
 				<span style="float:right;">
-				<a href="Activity?ID=action=editaccount&accountID=${accountID}">Edit Account</a> | <a href="Activity?action=closeaccount&accountID=${accountID}">Close Account</a>
+				<a href="AccountActivity?ID=action=editaccount&accountID=${accountID}">Edit Account</a> | <a href="AccountActivity?action=closeaccount&accountID=${accountID}">Close Account</a>
 				</span>
 				<br>
 			</p>

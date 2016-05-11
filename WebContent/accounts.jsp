@@ -11,8 +11,8 @@
 		<div align="center">
 			<div class="content">
 				<p style="text-align:left;">
-				<a href="Activity?ID=${cpr}&action=edit">Edit User Information</a><br>
-				<a href="Activity?ID=${cpr}&action=newaccount">Create New Account</a>
+				<a href="UserActivity?ID=${cpr}&action=edit">Edit User Information</a><br>
+				<a href="AccountActivity?ID=${cpr}&action=newaccount">Create New Account</a>
 				</p>
 			</div>
 		
@@ -28,7 +28,7 @@
 				<%
 				LinkedList<Account> acc = (LinkedList<Account>) request.getAttribute("accounts");
 				for (int i = 0; i < acc.size(); i++) {%>
-				<tr onclick="document.location = 'Activity?ID=${cpr}&action=viewaccount&accountID=<%=acc.get(i).getAccountID()%>&accountName=<%=acc.get(i).getName()%>';">
+				<tr onclick="document.location = 'AccountActivity?ID=${cpr}&action=viewaccount&accountID=<%=acc.get(i).getAccountID()%>&accountName=<%=acc.get(i).getName()%>';">
 					<td> <%= acc.get(i).getAccountID() %></td>
 					<td> <%= acc.get(i).getName() %></td>
 					<td> <%= acc.get(i).getBalanceString() %></td>

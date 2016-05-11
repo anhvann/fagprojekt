@@ -22,13 +22,13 @@ import model.User;
 /**
  * Servlet implementation class Activity
  */
-@WebServlet("/Activity")
-public class Activity extends HttpServlet {
+@WebServlet("/AccountActivity")
+public class AccountActivity extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private Database db = null;
 	
-	public Activity() {
+	public AccountActivity() {
 		super();
 	}
 	
@@ -55,20 +55,6 @@ public class Activity extends HttpServlet {
 			String message;
 			
 			switch (action) {
-				case "viewuser" :
-					request.setAttribute("accounts", user.getAccounts());
-					request.setAttribute("fullname", user.getName());
-					request.setAttribute("cpr", cpr);
-					request.getRequestDispatcher("accounts.jsp").forward(request, response);
-					break;
-				case "edit" :
-					request.setAttribute("email", user.getEmail());
-					request.setAttribute("password", user.getPassword());
-					request.setAttribute("fullname", user.getName());
-					request.setAttribute("address", user.getAddress());
-					request.setAttribute("postcode", user.getPostCode());
-					request.getRequestDispatcher("userInfo.jsp").forward(request, response);
-					break;
 				case "viewaccount" :
 					request.setAttribute("cpr", cpr);
 					request.setAttribute("accountID", accountID);
@@ -135,10 +121,6 @@ public class Activity extends HttpServlet {
 					} catch (ClassNotFoundException | SQLException e) {
 						e.printStackTrace();
 					}
-					break;
-				case "deposit" : 
-					request.setAttribute("account", accountID);
-					request.getRequestDispatcher("deposit.jsp").forward(request, response);
 					break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
