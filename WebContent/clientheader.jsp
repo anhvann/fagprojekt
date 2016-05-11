@@ -20,20 +20,9 @@ if ((session.getAttribute("loggedinuser") == null) || (session.getAttribute("log
 	</div>
 	<div class="navigationarea">
 		<ul class="nav navbar-nav">
-			<li><a href="search.jsp">Search</a></li>
-			<li><a href="deposit.jsp?accountID=${accountID}&accountName=${accountName}">Deposit</a></li>
-			<li><a href="withdraw.jsp?accountID=${accountID}&accountName=${accountName}">Withdraw</a></li>
-			<li><a href="transfer.jsp?accountID=${accountID}&accountName=${accountName}">Transfer</a></li>
-			<div class="dropdown">
-				<div class="expand">
-					<button class="dropbtn" >Account</button>
-					<div class="dropdown-content">
-						<a href="register.jsp">New user account</a> 
-						<a href="#">Close user account</a>
-					</div>
-				</div>
-				<div style="clear: left;"></div>
-			</div>
+			<li><a href="cdeposit.jsp">Deposit</a></li>
+			<li><a href="cwithdraw.jsp">Withdraw</a></li>
+			<li><a href="Activity?ID=<%session.getAttribute("loggedinuser")%>&action=ctransfer">Transfer</a></li>
 		</ul>
 	</div>
 	<div id="loginlink">

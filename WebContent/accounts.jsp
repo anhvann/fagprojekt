@@ -15,7 +15,6 @@
 				<a href="Activity?ID=${cpr}&action=newaccount">Create New Account</a>
 				</p>
 			</div>
-		
 			<table class="clickable">
 			    <col width="20%">
 		  		<col width="50%">
