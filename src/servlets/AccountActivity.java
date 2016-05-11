@@ -43,15 +43,8 @@ public class AccountActivity extends HttpServlet {
 		
 		try {
 			db = new Database();
-			User user = new User(db, cpr);
-			String[] columns = { "CPRNo", "Email", "Password", "FullName", "Address", "Phone", "DateOfBirth","Postcode", "RoleID" };
-			LinkedList<String> userInfo;
-			LinkedList<Account> accounts;
-			LinkedList<Transaction> transactions;
-			userInfo = db.getStrings("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ", columns);
-			user.setInfo(userInfo);
-			accounts = db.getAccounts(user);
-			user.setAccounts(accounts);
+			db = new Database();
+			User user = db.getUser(cpr);
 			String message;
 			
 			switch (action) {
