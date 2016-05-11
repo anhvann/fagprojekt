@@ -32,43 +32,18 @@ public class Database {
 		statement = connection.createStatement();
 	}
 
-	public LinkedList<String> searchFor(String input) {
+	public LinkedList<String> searchFor(String keyword) {
 		ResultSet resultSet = null;
-		Scanner scanner = new Scanner(input);
 		LinkedList<String> IDs = new LinkedList<>();
-		LinkedList<String> IDs2 = new LinkedList<>();
-
-		// Get first set
-		String keyword = scanner.next();
+		
 		try {
-			resultSet = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" LIKE '%" + keyword
-					+ "%' OR LOWER(\"Email\") LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%" + keyword
+			resultSet = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"CUSTOMERS\" WHERE \"CPRNo\" LIKE '%" + keyword
+					+ "%' OR \"Phone\" LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%" + keyword
 					+ "%'");
 			while (resultSet.next()) {
 				IDs.add(resultSet.getString("CPRNo"));
 			}
 			resultSet.close();
-			// Compare first set with other
-			while (scanner.hasNext()) {
-				keyword = scanner.next();
-				ResultSet otherResultSet = statement
-						.executeQuery("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" LIKE '%" + keyword
-								+ "%' OR LOWER(\"Email\") LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%"
-								+ keyword + "%'");
-
-				while (otherResultSet.next()) {
-					for (int i = 0; i < IDs.size(); i++) {
-						if (IDs.get(i).equals(otherResultSet.getString("CPRNo"))) {
-							IDs2.add(IDs.get(i));
-							break;
-						}
-					}
-				}
-				otherResultSet.close();
-				IDs = (LinkedList<String>) IDs2.clone();
-				IDs2.clear();
-			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

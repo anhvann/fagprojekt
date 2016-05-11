@@ -9,7 +9,7 @@
 			<input id=searchbutton type="submit" value="Search"	style="float: right" />
 			<div style="overflow: hidden">
 				<input id="searchfield" type="text" name="searchfield"
-					placeholder="Search by name, cpr or e-mail address"
+					placeholder="Search by name, cpr or phone"
 					style="width: 100%" />
 			</div>
 		</form>
@@ -26,7 +26,7 @@
 		  		<col width="30%">
 		  		<col width="15%">
             	<tr>
-                	<th>ID</th>
+                	<th>CPR</th>
                 	<th>Name</th>
                 	<th>Address</th>
                		<th>Phone</th>
