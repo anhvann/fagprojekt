@@ -12,7 +12,7 @@
 			<div class="content">
 			<p style="text-align:left;">
 				<font size="5"><font color="#01405b">Balance
-				<span style="float:right;"><%=request.getAttribute("balance")%> DKK</span></font></font>
+				<span style="float:right;"><%=request.getAttribute("balance")%> <%=request.getAttribute("ISOCode")%></span></font></font>
 				<br><br>
 				<span style="float:right;">
 				<a href="AccountActivity?ID=action=editaccount&accountID=${accountID}">Edit Account</a> | <a href="AccountActivity?action=closeaccount&accountID=${accountID}">Close Account</a>

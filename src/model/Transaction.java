@@ -6,15 +6,15 @@ import java.text.DecimalFormatSymbols;
 
 public class Transaction {
 
-	private String name, currency, accountID, accountID2;
+	private String name, ISOCode, accountID, accountID2;
 	private BigDecimal amount, balance;
 	private Date date;
 	
 	//Transfer
-	public Transaction(String name, Date date, BigDecimal amount, String currency, String accountID, String accountID2, BigDecimal balance) {
+	public Transaction(String name, Date date, BigDecimal amount, String ISOCode, String accountID, String accountID2, BigDecimal balance) {
 		this.name = name;
 		this.amount = amount;
-		this.currency = currency;
+		this.ISOCode = ISOCode;
 		this.date = date;
 		this.accountID = accountID;
 		this.accountID2 = accountID2;

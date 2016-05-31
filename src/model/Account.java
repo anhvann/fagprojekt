@@ -9,17 +9,17 @@ import java.util.Locale;
 
 public class Account {
 
-	private String accountID, status, name;
+	private String accountID, ISOCode, name;
 	private User user;
 	private BigDecimal balance, interest;
 	private LinkedList<Transaction> transactions;
 	
-	public Account(User user, String accountID, String name, BigDecimal balance, BigDecimal interest, String status) {
+	public Account(User user, String accountID, String name, BigDecimal balance, BigDecimal interest, String ISOCode) {
 		this.user = user;
 		this.accountID = accountID;
 		this.name = name;
 		this.interest = interest;
-		this.status = status;
+		this.ISOCode = ISOCode;
 		this.transactions = new LinkedList<>();
 		this.balance = balance;
 	}
@@ -56,12 +56,12 @@ public class Account {
 		this.interest = interest;
 	}
 	
-	public String getStatus() {
-		return status;
+	public String getISOCode() {
+		return ISOCode;
 	}
 	
-	public void setStatus(String status) {
-		this.status = status;
+	public void setISOCode(String ISOCode) {
+		this.ISOCode = ISOCode;
 	}
 	
 	public User getOwner() {

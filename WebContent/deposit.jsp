@@ -15,7 +15,7 @@
 				<br><br>
 				<label class="control-label col-sm-5">Amount:</label>
 				<div class="col-sm-5"><input type="text" class="form-control" name="amount" placeholder="Enter amount"/>
-				<select class="form-control" name="currency">
+				<select class="form-control" name="ISOCode">
     				<option value="DKK" selected>DKK</option>
     				<option value="USD">USD</option>
     				<option value="EUR">EUR</option> 

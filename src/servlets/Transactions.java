@@ -38,7 +38,7 @@ public class Transactions extends HttpServlet {
 		String accountID2 = request.getParameter("accountID2");
 		String transactionName = request.getParameter("transName");
 		String amountString = request.getParameter("amount");
-		String currency = request.getParameter("currency");
+		String ISOCode = request.getParameter("ISOCode");
 		if (accountID.isEmpty() || amountString.isEmpty() || (action.equals("transfer") && (accountID2.isEmpty() || transactionName.isEmpty()))) {
 			String message = "Please fill in all fields";
 			request.setAttribute("message", message);
@@ -65,17 +65,17 @@ public class Transactions extends HttpServlet {
 		    
 		    switch (action) {
 		    	case "deposit" :
-					message = db.processTransaction("Deposit", accountID, accountID2, amount, currency, transactionName);
+					message = db.processTransaction("Deposit", accountID, accountID2, amount, ISOCode, transactionName);
 					System.out.println(message);
 					redirect(request, response, accountID);
 					break;
 		    	case "withdraw" :
-		    		message = db.processTransaction("Withdraw", accountID, accountID2, amount, currency, transactionName);
+		    		message = db.processTransaction("Withdraw", accountID, accountID2, amount, ISOCode, transactionName);
 					System.out.println(message);
 		    		redirect(request, response, accountID);
 		    		break;
 		    	case "transfer" :
-		    		message = db.processTransaction("Transfer", accountID, accountID2, amount, currency, transactionName);
+		    		message = db.processTransaction("Transfer", accountID, accountID2, amount, ISOCode, transactionName);
 					System.out.println(message);
 		    		redirect(request, response, accountID);
 		    		break;

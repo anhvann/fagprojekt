@@ -39,7 +39,7 @@ public class AccountActivity extends HttpServlet {
 		String accountName = request.getParameter("accountName");
 		String name = request.getParameter("name");
 		String value = request.getParameter("interest");
-		String status = request.getParameter("status");
+		String ISOCode = request.getParameter("ISOCode");
 		
 		try {
 			db = new Database();
@@ -53,6 +53,7 @@ public class AccountActivity extends HttpServlet {
 					request.setAttribute("accountName", accountName);
 					request.setAttribute("transactions", db.getTransactions(accountID));
 					request.setAttribute("balance", formatNumber(user.getBalance(accountID)));
+					request.setAttribute("ISOCode", user.getAccount(accountID).getISOCode());
 					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 					break;
 				case "newaccount" :
@@ -65,7 +66,7 @@ public class AccountActivity extends HttpServlet {
 						BigDecimal interest = getBigDecimal(value);
 						BigDecimal balance = getBigDecimal("0");
 						accountID = generateAccountID(user);
-						Account account = new Account(user, accountID, name, balance, interest, status);
+						Account account = new Account(user, accountID, name, balance, interest, ISOCode);
 						message = user.addAccount(account);
 						System.out.println(message);
 						request.setAttribute("message", message);
@@ -92,7 +93,7 @@ public class AccountActivity extends HttpServlet {
 					request.setAttribute("cpr", cpr);
 					request.setAttribute("name", user.getAccount(accountID).getName());
 					request.setAttribute("interest", user.getAccount(accountID).getInterest());
-					request.setAttribute("status", user.getAccount(accountID).getStatus());
+					request.setAttribute("ISOCode", user.getAccount(accountID).getISOCode());
 					System.out.println("edit");
 					request.getRequestDispatcher("editaccount.jsp").forward(request, response);
 					break;
@@ -102,7 +103,7 @@ public class AccountActivity extends HttpServlet {
 						Account account = user.getAccount(accountID);
 						account.setName(name);
 						account.setInterest(interest);
-						account.setStatus(status);
+						account.setISOCode(ISOCode);
 						message = user.editAccount(account);
 						System.out.println(message);
 						request.setAttribute("message", message);

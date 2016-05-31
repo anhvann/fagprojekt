@@ -79,7 +79,7 @@ public class Database {
 			while (resultset.next()) {
 				Account acc = new Account(user, resultset.getString("AccID"), resultset.getString("AccName"),
 						resultset.getBigDecimal("Balance"), resultset.getBigDecimal("Interest"),
-						resultset.getString("Status"));
+						resultset.getString("ISOCode"));
 				accounts.add(acc);
 			}
 			resultset.close();
@@ -122,7 +122,7 @@ public class Database {
 		String name = account.getName();
 		BigDecimal balance = account.getBalance();
 		BigDecimal interest = account.getInterest();
-		String status = account.getStatus();
+		String ISOCode = account.getISOCode();
 
 		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".CreateAccount(?, ?, ?, ?, ?, ?, ?) }");
 		call.setString("vCPRNo", cpr);
@@ -130,7 +130,7 @@ public class Database {
 		call.setBigDecimal("vAmount", balance);
 		call.setBigDecimal("vInterest", interest);
 		call.setString("vAccName", name);
-		call.setString("vStatus", status);
+		call.setString("vISOCode", ISOCode);
 		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
 		call.execute();
 		return call.getString("vOutput");
@@ -149,21 +149,22 @@ public class Database {
 		call.setString("vAccID", account.getAccountID());
 		call.setString("vAccName", account.getName());
 		call.setBigDecimal("vInterest", account.getInterest());
-		call.setString("vStatus", account.getStatus());
+		call.setString("vISOCode", account.getISOCode());
 		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
 		call.execute();
 		return call.getString("vOutput");
 	}
 
 	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount,
-			String currency, String transactionName) throws SQLException {
+			String ISOCode, String transactionName) throws SQLException {
 		CallableStatement call;
 		switch (type) {
 		case "Deposit":
-			call = connection.prepareCall("{call \"DTUGRP05\".deposit(?, ?, ?, ?) }");
+			call = connection.prepareCall("{call \"DTUGRP05\".Deposit(?, ?, ?, ?) }");
+			System.out.println("accountID: " + accountID + ", Amount: " + amount + ", ISOCode: " + ISOCode);
 			call.setString("vAccID", accountID);
 			call.setBigDecimal("vAmount", amount);
-			call.setString("vISOCode", currency);
+			call.setString("vISOCode", ISOCode);
 			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
 			call.execute();
 			return call.getString("vOutput");
@@ -171,18 +172,18 @@ public class Database {
 			call = connection.prepareCall("{call \"DTUGRP05\".withdraw(?, ?, ?, ?) }");
 			call.setString("vAccID", accountID);
 			call.setBigDecimal("vAmount", amount);
-			call.setString("vISOCode", currency);
+			call.setString("vISOCode", ISOCode);
 			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
 			call.execute();
 			return call.getString("vOutput");
 		case "Transfer":
 			call = connection.prepareCall("{call \"DTUGRP05\".MoneyTransfer(?, ?, ?, ?, ?, ?) }");
-			System.out.println(amount + " " + transactionName + " " + accountID + " " + accountID2 + " " + currency);
+			System.out.println(amount + " " + transactionName + " " + accountID + " " + accountID2 + " " + ISOCode);
 			call.setBigDecimal("vTransfer", amount);
 			call.setString("vTransName", transactionName);
 			call.setString("vAccID1", accountID);
 			call.setString("vAccID2", accountID2);
-			call.setString("vCurrency", currency);
+			call.setString("vISOCode", ISOCode);
 			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
 			call.execute();
 			return call.getString("vOutput");
@@ -204,7 +205,7 @@ public class Database {
 		}
 		return cpr;
 	}
-
+	
 	public String getAccountName(String accountID) {
 		try {
 			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "'");
@@ -254,5 +255,17 @@ public class Database {
 			e.printStackTrace();
 		}
 		return user;
+	}
+
+	public String getISOCode(String accountID) {
+		String ISO = null;
+		try {
+			ResultSet resultset = statement.executeQuery("select \"ISOCode\" from \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "'");
+			ISO = resultset.getString("ISOCode");
+			resultset.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ISO;
 	}
 }
