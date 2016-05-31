@@ -260,9 +260,15 @@ public class Database {
 	public String getISOCode(String accountID) {
 		String ISO = null;
 		try {
-			ResultSet resultset = statement.executeQuery("select \"ISOCode\" from \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "'");
-			ISO = resultset.getString("ISOCode");
+			System.out.println(1);
+			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "'");
+			System.out.println(2);
+			if (resultset.next()) {
+				ISO = resultset.getString("ISOCode");
+				System.out.println(3);
+			}
 			resultset.close();
+			System.out.println(4);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
