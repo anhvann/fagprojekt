@@ -1,10 +1,4 @@
-<!DOCTYPE HTML><%@page language="java"
-	contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<html>
-<head>
-<title>logoutredirect</title>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-</head>
+<!DOCTYPE HTML>
 <body>
 Logging out
 <%session.setAttribute("loggedinuser", null);

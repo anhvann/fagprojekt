@@ -12,7 +12,8 @@
 		</ul>
 	</div>
 <%response.addHeader("Cache-Control", "no-cache,no-store,private,must-revalidate,max-stale=0,post-check=0,pre-check=0"); 
-response.addHeader("Pragma", "no-cache"); 
+response.addHeader("Pragma", "no-cache");
+String role = (String)session.getAttribute("role");
 if ((session.getAttribute("loggedinuser") == null) || (session.getAttribute("loggedinuser") == "")) {%>
 	<div class="navigationarea">
 		<ul class="nav navbar-nav">
@@ -26,7 +27,7 @@ if ((session.getAttribute("loggedinuser") == null) || (session.getAttribute("log
 			<li><a href="login.jsp" text-align="right">Login</a></li>
 		</ul>
 	</div>
-<%} else if(true){%>
+<%} else if(role.equals("e")){%>
 	<div class="navigationarea">
 		<ul class="nav navbar-nav">
 			<li><a href="search.jsp">Search</a></li>
@@ -52,6 +53,7 @@ if ((session.getAttribute("loggedinuser") == null) || (session.getAttribute("log
 <%} else{ %>
 	<div class="navigationarea">
 		<ul class="nav navbar-nav">
+			<li><a href="UserActivity?ID=<%=session.getAttribute("loggedinuser")%>&action=viewuser">Accounts</a></li>
 			<li><a href="cdeposit.jsp">Deposit</a></li>
 			<li><a href="cwithdraw.jsp">Withdraw</a></li>
 			<li><a href="ClientActivity?ID=<%session.getAttribute("loggedinuser");%>&action=ctransfer">Transfer</a></li>

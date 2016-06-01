@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.Database;
+import model.User;
 
 /**
  * Servlet implementation class Login
@@ -36,31 +37,28 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String cpr = request.getParameter("cpr");
 		String password = request.getParameter("password");
-		if (cpr.isEmpty() || password.isEmpty()) {
-			String message = "Please fill in all fields";
-			request.setAttribute("message", message);
-			request.getRequestDispatcher("login.jsp").forward(request, response);
-			return;
-		}
 		try {
 			db = new Database();
 			String role = "";
 			String[] columns = { "FullName", "Password", "RoleID" };
-			LinkedList<String> results = db.getStrings("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ", columns);
+			LinkedList<String> results = db
+					.getStrings("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ", columns);
 			if (!results.isEmpty()) {
 				String dbpassword = results.get(1);
 				if (dbpassword.equals(password)) {
 					role = results.get(2);
 				}
 			}
-	        
+
 			if (role.equals("e")) {
-				setSession(request, response, cpr, "e");
+				setSession(request, response, cpr, "e", null);
 			} else if (role.equals("c")) {
-				setSession(request, response, cpr, "c");
+				User user = db.getUser(cpr);
+				setSession(request, response, cpr, "c", user);
 			} else {
 				String message = "CPR Number and password did not match";
 				request.setAttribute("message", message);
@@ -71,20 +69,26 @@ public class Login extends HttpServlet {
 		}
 	}
 
-	private void setSession(HttpServletRequest request, HttpServletResponse response, String cpr, String role) throws ServletException, IOException {
+	private void setSession(HttpServletRequest request, HttpServletResponse response, String cpr, String role, User user) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		if(session!=null){
+		if (session != null) {
 			session.setAttribute("role", role);
 			session.setAttribute("loggedinuser", cpr);
-			request.getRequestDispatcher("loginredirect.jsp").forward(request,response);
+			if (role.equals("c")) {
+				request.setAttribute("accounts", user.getAccounts());
+				request.setAttribute("fullname", user.getName());
+			}
+			request.getRequestDispatcher("loginredirect.jsp").forward(request, response);
 		}
 	}
-
-	protected void dispatch(HttpServletRequest request, HttpServletResponse response, String url) throws ServletException, IOException {
-		RequestDispatcher RequetsDispatcherObj = request.getRequestDispatcher(url);
-		System.out.println(RequetsDispatcherObj != null);
-		System.out.println(request != null);
-		System.out.println(response != null);
-		RequetsDispatcherObj.forward(request, response);
-	}
+	//
+	// protected void dispatch(HttpServletRequest request, HttpServletResponse
+	// response, String url) throws ServletException, IOException {
+	// RequestDispatcher RequetsDispatcherObj =
+	// request.getRequestDispatcher(url);
+	// System.out.println(RequetsDispatcherObj != null);
+	// System.out.println(request != null);
+	// System.out.println(response != null);
+	// RequetsDispatcherObj.forward(request, response);
+	// }
 }
