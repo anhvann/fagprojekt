@@ -5,8 +5,6 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
-import controller.Database;
-
 public class User {
 
 	private String cpr, email, password, name, phone, address, postCode, roleID;

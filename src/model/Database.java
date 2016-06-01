@@ -1,4 +1,4 @@
-package controller;
+package model;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -10,11 +10,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
-
-import model.Account;
-import model.Transaction;
-import model.User;
-
 import java.sql.*;
 
 public class Database {
