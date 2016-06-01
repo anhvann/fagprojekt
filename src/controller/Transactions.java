@@ -1,4 +1,4 @@
-package servlets;
+package controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import controller.Database;
+import model.Database;
 import model.Transaction;
 import model.User;
 
@@ -88,6 +88,7 @@ public class Transactions extends HttpServlet {
 					System.out.println(message);
 					if (message.equals("")) {
 		    			request.setAttribute("message", message);
+		    			request.setAttribute("cpr", cpr);
 		    			request.getRequestDispatcher("transfer.jsp").forward(request, response);
 		    		} else {
 		    			redirect(request, response, accountID, cpr);

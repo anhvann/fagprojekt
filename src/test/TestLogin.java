@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import org.junit.*;
 
-import controller.Database;
+import model.Database;
 
 public class TestLogin {
 	

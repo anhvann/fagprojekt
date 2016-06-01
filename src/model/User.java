@@ -4,8 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.LinkedList;
-
-import controller.Database;
+import model.Database;
 
 public class User {
 
@@ -15,8 +14,8 @@ public class User {
 	private LinkedList<Transaction> transactions;
 	private Database bank;
 
-	public User(Database bank, String cpr) {
-		this.bank = bank;
+	public User(Database database, String cpr) {
+		this.bank = database;
 		this.cpr = cpr;
 		this.accounts = new LinkedList<>();
 	}

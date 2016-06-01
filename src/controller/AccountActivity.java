@@ -1,4 +1,4 @@
-package servlets;
+package controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import controller.Database;
 import model.Account;
+import model.Database;
 import model.Transaction;
 import model.User;
 
@@ -43,7 +43,10 @@ public class AccountActivity extends HttpServlet {
 		
 		try {
 			db = new Database();
-			System.out.println("cpr: " + cpr);
+			if (cpr == null) {
+				cpr = db.getOwner(accountID);
+			}
+			System.out.println(cpr);
 			User user = db.getUser(cpr);
 			String message;
 			
@@ -88,11 +91,11 @@ public class AccountActivity extends HttpServlet {
 						request.setAttribute("accountID", accountID);
 						request.setAttribute("accountName", accountName);
 						request.setAttribute("transactions", db.getTransactions(accountID));
-						System.out.println("user: " + user + ", accountID: " + accountID);
 						request.setAttribute("balance", formatNumber(user.getBalance(accountID)));
 						request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
 						request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 					} else {
+						System.out.println("user: " + user);
 						user.closeAccount(accountID);
 						request.setAttribute("accounts", user.getAccounts());
 						request.setAttribute("fullname", user.getName());

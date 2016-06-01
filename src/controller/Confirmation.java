@@ -1,4 +1,4 @@
-package servlets;
+package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import controller.Database;
+import model.Database;
 
 /**
  * Servlet implementation class Confirmation
@@ -33,6 +33,8 @@ public class Confirmation extends HttpServlet {
 			Database db = new Database();
 			String accountID = request.getParameter("accountID");
 			String accountName = request.getParameter("accountName");
+			String cpr = db.getOwner(accountID);
+			request.setAttribute("cpr", cpr);
 			request.setAttribute("accountID", accountID);
 			request.setAttribute("transactions", db.getTransactions(accountID));
 			request.setAttribute("balance", db.getTransactions(accountID).getLast().getBalanceString());

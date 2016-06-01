@@ -7,8 +7,8 @@ import java.sql.SQLException;
 
 import org.junit.*;
 
-import controller.Database;
 import model.Account;
+import model.Database;
 import model.User;
 
 public class TestCreateAccount {

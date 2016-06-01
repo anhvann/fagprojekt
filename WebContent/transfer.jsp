@@ -40,7 +40,7 @@
     				<option value="HUF">HUF</option>
     				<option value="ILS">ILS</option>
     				<option value="JPY">JPY</option>    				
-    				<option value="NZD">NCD</option>
+    				<option value="NZD">NZD</option>
     				<option value="PLN">PLN</option>
     				<option value="RON">RON</option>
     				<option value="RUB">RUB</option>
