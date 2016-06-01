@@ -2,11 +2,6 @@
 <html>
 <meta charset="utf-8">
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-
-<!--<meta name="viewport" content="width=device-width, initial-scale=1">
-<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
--->
 <link rel="stylesheet" type="text/css" href="Style.css">
 <nav class="navbar">
 	<a href="index.jsp"><img class="img-center img-logo"
@@ -16,6 +11,9 @@
 			<li><img class="img-bar" src="http://i.imgur.com/Uf3PuDg.png"></li>
 		</ul>
 	</div>
+<%response.addHeader("Cache-Control", "no-cache,no-store,private,must-revalidate,max-stale=0,post-check=0,pre-check=0"); 
+response.addHeader("Pragma", "no-cache"); 
+if ((session.getAttribute("loggedinuser") == null) || (session.getAttribute("loggedinuser") == "")) {%>
 	<div class="navigationarea">
 		<ul class="nav navbar-nav">
 			<li><a href="index.html">Home</a></li>
@@ -23,12 +21,47 @@
 			<li><a href="#">Contact</a></li>
 			<li><a href="#">Help</a></li>
 		</ul>
-		<div id="loginlink">
-			<ul class="nav navbar-nav pull-right">
-				<li><a href="login.jsp" text-align="right"><span
-						class="glyphicon glyphicon-log-in"></span> Login</a></li>
-			</ul>
-		</div>
+			<div id="loginlink">
+		<ul class="nav navbar-nav pull-right">
+			<li><a href="login.jsp" text-align="right">Login</a></li>
+		</ul>
 	</div>
+<%} else if(true){%>
+	<div class="navigationarea">
+		<ul class="nav navbar-nav">
+			<li><a href="search.jsp">Search</a></li>
+			<li><a href="deposit.jsp?accountID=${accountID}&accountName=${accountName}">Deposit</a></li>
+			<li><a href="withdraw.jsp?accountID=${accountID}&accountName=${accountName}">Withdraw</a></li>
+			<li><a href="transfer.jsp?accountID=${accountID}&accountName=${accountName}">Transfer</a></li>
+			<div class="dropdown">
+				<div class="expand">
+					<button class="dropbtn" >Account</button>
+					<div class="dropdown-content">
+						<a href="register.jsp">New user account</a> 
+						<a href="#">Close user account</a>
+					</div>
+				</div>
+			</div>
+		</ul>
+	</div>
+	<div id="loginlink">
+		<ul class="nav navbar-nav pull-right">
+			<li><a href="logoutredirect.jsp" text-align="right">Logout</a></li>
+		</ul>
+	</div>
+<%} else{ %>
+	<div class="navigationarea">
+		<ul class="nav navbar-nav">
+			<li><a href="cdeposit.jsp">Deposit</a></li>
+			<li><a href="cwithdraw.jsp">Withdraw</a></li>
+			<li><a href="ClientActivity?ID=<%session.getAttribute("loggedinuser");%>&action=ctransfer">Transfer</a></li>
+		</ul>
+	</div>
+	<div id="loginlink">
+		<ul class="nav navbar-nav pull-right">
+			<li><a href="logoutredirect.jsp" text-align="right">Logout</a></li>
+		</ul>
+	</div>
+<%} %>
 </nav>
 </html>

@@ -3,7 +3,7 @@
 <%@ page import="model.Account" %>
 <html>
 <div class="container">
-	<%@include file="clientheader.jsp"%>
+	<%@include file="sessioncheck.jsp" %>
 	<div class="main">
 		<div class="pagetitle">Transfer money</div>
 		<hr width="95%" noshade>

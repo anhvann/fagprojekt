@@ -5,7 +5,7 @@
 <%@ page import="java.math.BigDecimal" %>
 <html>
 <div class="container">
-	<%@include file="employeeheader.jsp"%>
+	<%@include file="sessioncheck.jsp" %>
 	<div class="main"><div class="pagetitle">${accountName} (${accountID})</div>
 		<hr width="95%" noshade>
 		<div align="center">

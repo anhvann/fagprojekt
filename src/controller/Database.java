@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -32,9 +33,10 @@ public class Database {
 		statement = connection.createStatement();
 	}
 
-	public LinkedList<String> searchFor(String keyword) {
+	public ArrayList<User> searchFor(String keyword) {
 		ResultSet resultSet = null;
 		LinkedList<String> IDs = new LinkedList<>();
+		ArrayList<User> users = new ArrayList<>();
 		
 		try {
 			resultSet = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"CUSTOMERS\" WHERE \"CPRNo\" LIKE '%" + keyword
@@ -47,7 +49,10 @@ public class Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return IDs;
+		for (String ID : IDs){
+			users.add(getUser(ID));
+		}
+		return users;
 	}
 
 	public LinkedList<String> getStrings(String query, String[] columns) {
@@ -237,11 +242,10 @@ public class Database {
 	}
 
 	public void register(String cpr, String email, String password, String name, String address, String zipcode,
-			String date, String phone) {
+			Date date, String phone) {
 		try {
-			ResultSet resultset = statement.executeQuery("INSERT INTO \"DTUGRP05\".\"USERS\"" + "VALUES(" + cpr + ", " + email + ", " + 
-								  password + ", c, " + name + ", " + phone + ", " + address + ", " + date + ", " + zipcode + ")");
-			resultset.close();
+			statement.executeUpdate("INSERT INTO \"DTUGRP05\".\"USERS\"" + " VALUES('" + cpr + "', '" + email + "', '" + 
+								  password + "', 'c', '" + name + "', '" + phone + "', '" + address + "', '" + date + "', '" + zipcode + "');");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
