@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.servlet.RequestDispatcher;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import controller.Database;
+import model.Account;
+import model.User;
 
 @WebServlet("/Search")
 public class Search extends HttpServlet {
@@ -24,22 +27,15 @@ public class Search extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String input = request.getParameter("searchfield");
-		LinkedList<String> results = null;
+		ArrayList<User> results = null;
 		
 		try {
 			db = new Database();
 			results = db.searchFor(input.toLowerCase());
 			if(results != null && !results.isEmpty()){
-				//Create one long string of IDs for SQL
-				String IDs = "(";
-				for (int i = 0; i<results.size()-1; i++){
-					IDs += "'"+results.get(i)+"'"+",";
-				}
-				IDs += "'"+results.get(results.size()-1)+"')";
-				
 				String message = "Search results for: "+ input;
 				request.setAttribute("message", message);
-				request.setAttribute("resultlist", IDs);
+				request.setAttribute("resultlist", results);
 				request.getRequestDispatcher("search.jsp").forward(request, response);
 			} else {
 				String message = "Nothing matched your search terms";

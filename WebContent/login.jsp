@@ -2,6 +2,9 @@
 <html>
 <div class="container">
 	<%@include file="header.jsp"%>
+	<%if ((session.getAttribute("loggedinuser") != null) && (session.getAttribute("loggedinuser") != "")) {
+	response.sendRedirect("index.jsp");
+	}%>
 	<div class="main">
 		<form id="loginform" action="Login" method="post" target="_self">
 			<legend>Login to Uniccol Bank</legend>

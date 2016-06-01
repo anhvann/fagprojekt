@@ -4,7 +4,7 @@
 <%@ page import="model.Account" %>
 <html>
 <div class="container">
-	<%@include file="employeeheader.jsp"%>
+	<%@include file="sessioncheck.jsp" %>
 	<div class="main">
 		<div class="pagetitle">	${fullname} (${cpr})</div>
 		<hr width="95%" noshade>

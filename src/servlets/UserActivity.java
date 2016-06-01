@@ -3,6 +3,8 @@ package servlets;
 import java.io.IOException;
 import java.util.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 
 import javax.servlet.ServletException;
@@ -46,19 +48,27 @@ public class UserActivity extends HttpServlet {
 		
 		try {
 			db = new Database();
-			User user = db.getUser(cpr);
+			User user;
 			String message;
 			
 			switch (action) {
 			// updated - user.getAccounts()?
-				case "register" : 
-					db.register(cpr, email, password, name, address, zipcode, date, phone);
-					request.setAttribute("accounts", user.getAccounts());
-					request.setAttribute("ID", cpr);
-					request.setAttribute("fullname", name);
-					request.getRequestDispatcher("accounts.jsp").forward(request, response);
+				case "register" :
+					try {
+						Date dateObject = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+						java.sql.Date dateSQL = new java.sql.Date(dateObject.getTime());
+						db.register(cpr, email, password, name, address, zipcode, dateSQL, phone);
+						user = db.getUser(cpr);
+						request.setAttribute("accounts", user.getAccounts());
+						request.setAttribute("fullname", user.getName());
+						request.setAttribute("cpr", cpr);
+						request.getRequestDispatcher("accounts.jsp").forward(request, response);
+					} catch (ParseException e1) {
+						e1.printStackTrace();
+					} 
 					break;
 				case "viewuser" :
+					user = db.getUser(cpr);
 					request.setAttribute("accounts", user.getAccounts());
 					request.setAttribute("fullname", user.getName());
 					request.setAttribute("cpr", cpr);
@@ -66,6 +76,7 @@ public class UserActivity extends HttpServlet {
 					break;
 			// not updated
 				case "edit" :
+					user = db.getUser(cpr);
 					request.setAttribute("email", user.getEmail());
 					request.setAttribute("password", user.getPassword());
 					request.setAttribute("fullname", user.getName());
@@ -86,5 +97,4 @@ public class UserActivity extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }
