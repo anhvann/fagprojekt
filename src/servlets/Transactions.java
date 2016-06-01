@@ -88,6 +88,7 @@ public class Transactions extends HttpServlet {
 					System.out.println(message);
 					if (message.equals("")) {
 		    			request.setAttribute("message", message);
+		    			request.setAttribute("cpr", cpr);
 		    			request.getRequestDispatcher("transfer.jsp").forward(request, response);
 		    		} else {
 		    			redirect(request, response, accountID, cpr);

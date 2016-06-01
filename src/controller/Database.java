@@ -164,6 +164,7 @@ public class Database {
 		CallableStatement call;
 		switch (type) {
 		case "Deposit":
+			System.out.println("accID: " + accountID + ", amount: " + amount + ", ISO: " + ISOCode);
 			call = connection.prepareCall("{call \"DTUGRP05\".Deposit(?, ?, ?, ?) }");
 			call.setString("vAccID", accountID);
 			call.setBigDecimal("vAmount", amount);
