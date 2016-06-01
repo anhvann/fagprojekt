@@ -43,6 +43,7 @@ public class AccountActivity extends HttpServlet {
 		
 		try {
 			db = new Database();
+			System.out.println(cpr);
 			User user = db.getUser(cpr);
 			String message;
 			
@@ -85,7 +86,6 @@ public class AccountActivity extends HttpServlet {
 					request.setAttribute("accounts", user.getAccounts());
 					request.setAttribute("fullname", user.getName());
 					request.setAttribute("cpr", cpr);
-					System.out.println("NOOOO");
 					request.getRequestDispatcher("accounts.jsp").forward(request, response);
 					break;
 				case "editaccount" :

@@ -145,11 +145,10 @@ public class Database {
 	}
 
 	public String editAccount(Account account) throws SQLException {
-		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditAccount(?, ?, ?, ?, ?) }");
+		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditAccount(?, ?, ?, ?) }");
 		call.setString("vAccID", account.getAccountID());
 		call.setString("vAccName", account.getName());
 		call.setBigDecimal("vInterest", account.getInterest());
-		call.setString("vISOCode", account.getISOCode());
 		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
 		call.execute();
 		return call.getString("vOutput");
@@ -161,7 +160,6 @@ public class Database {
 		switch (type) {
 		case "Deposit":
 			call = connection.prepareCall("{call \"DTUGRP05\".Deposit(?, ?, ?, ?) }");
-			System.out.println("accountID: " + accountID + ", Amount: " + amount + ", ISOCode: " + ISOCode);
 			call.setString("vAccID", accountID);
 			call.setBigDecimal("vAmount", amount);
 			call.setString("vISOCode", ISOCode);
@@ -206,17 +204,36 @@ public class Database {
 		return cpr;
 	}
 	
-	public String getAccountName(String accountID) {
+	public String getCity(String zipcode) {
+		String city = "";
 		try {
-			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "'");
+			ResultSet resultset = statement
+					.executeQuery("select * from \"DTUGRP05\".\"CITIES\" WHERE \"Postcode\" = '" + zipcode + "'");
 			if (resultset.next()) {
-				return resultset.getString("AccName");
+				city = resultset.getString("CityName");
 			}
 			resultset.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return "";
+		return city;
+	}
+	
+	public Account getAccount(String accountID) {
+		try {
+			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "'");
+			if (resultset.next()) {
+				BigDecimal balance = resultset.getBigDecimal("Balance");
+				BigDecimal interest = resultset.getBigDecimal("Interest");
+				String AccName = resultset.getString("AccName");
+				String ISOCode = resultset.getString("ISOCode");
+				return new Account(getUser(getOwner(accountID)), accountID, AccName, balance, interest, ISOCode);
+			}
+			resultset.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public void register(String cpr, String email, String password, String name, String address, String zipcode,
@@ -257,21 +274,19 @@ public class Database {
 		return user;
 	}
 
-	public String getISOCode(String accountID) {
-		String ISO = null;
-		try {
-			System.out.println(1);
-			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "'");
-			System.out.println(2);
-			if (resultset.next()) {
-				ISO = resultset.getString("ISOCode");
-				System.out.println(3);
-			}
-			resultset.close();
-			System.out.println(4);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return ISO;
+	public String editUser(String cpr, String email, String password, String name, String address, String zipcode,
+			String date, String phone) throws SQLException {
+		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditUser(?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+		call.setString("vCPRNo", cpr);
+		call.setString("vEmail", email);
+		call.setString("vPassword", password);
+		call.setString("vName", name);
+		call.setString("vAddress", address);
+		call.setString("vPostcode", zipcode);
+		call.setString("vDate", date);
+		call.setString("vPhone", phone);
+		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+		call.execute();
+		return call.getString("vOutput");
 	}
 }

@@ -9,7 +9,7 @@
 				<form action="AccountActivity?ID=${cpr}&action=changeaccount&accountID=<%=request.getParameter("accountID")%>" method="post" target="_self">
 					<label class="control-label col-sm-5">Name:</label>
 					<div class="col-sm-5">
-						<input type="text" class="form-control" name="name" placeholder="Enter name" value=${name}>
+						<input type="text" class="form-control" name="name" placeholder="Enter name" value="${name}">
 					</div>
 					<br><br>
 					
@@ -18,12 +18,10 @@
 						<input type="text" class="form-control" name="interest" placeholder="Enter interest" value="${interest}">
 					</div>
 					<br><br>
-					
-					<label class="control-label col-sm-5">Status:</label>
+					<label class="control-label col-sm-5">Currency:</label>
 					<div class="col-sm-5">
-						<input type="radio" name="status" value="1"> Active 
-						<input type="radio" name="status" value="0"> Inactive
-					</div>
+					<input type="text" class="form-control" name="ISOCode" readonly="readonly" value="${ISOCode}">
+	  				</div>
 					<br><br>
 					
 					<div class="col-sm-offset-5 col-sm-5">

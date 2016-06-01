@@ -50,7 +50,6 @@ public class UserActivity extends HttpServlet {
 			String message;
 			
 			switch (action) {
-			// updated - user.getAccounts()?
 				case "register" : 
 					db.register(cpr, email, password, name, address, zipcode, date, phone);
 					request.setAttribute("accounts", user.getAccounts());
@@ -64,15 +63,24 @@ public class UserActivity extends HttpServlet {
 					request.setAttribute("cpr", cpr);
 					request.getRequestDispatcher("accounts.jsp").forward(request, response);
 					break;
-			// not updated
 				case "edit" :
 					request.setAttribute("email", user.getEmail());
 					request.setAttribute("password", user.getPassword());
+					request.setAttribute("phone", user.getPhone());
 					request.setAttribute("fullname", user.getName());
 					request.setAttribute("address", user.getAddress());
 					request.setAttribute("postcode", user.getPostCode());
+					request.setAttribute("city", db.getCity(user.getPostCode()));
+					request.setAttribute("date", user.getDateOfBirth());
 					request.getRequestDispatcher("userInfo.jsp").forward(request, response);
 					break;
+				case "change" :
+					message = db.editUser(cpr, email, password, name, address, zipcode, date, phone);
+					request.setAttribute("message", message);
+					request.setAttribute("accounts", user.getAccounts());
+					request.setAttribute("fullname", user.getName());
+					request.setAttribute("cpr", cpr);
+					request.getRequestDispatcher("accounts.jsp").forward(request, response);
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();

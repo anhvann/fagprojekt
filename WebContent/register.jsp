@@ -22,10 +22,10 @@
 				<label class="control-label col-sm-5" for="address">Address*:</label>
 				<div class="col-sm-5"><input type="text" class="form-control" name="address" placeholder="Enter address"></div>
 				<br><br>
-				<label class="control-label col-sm-5" for="address">Zip code*:</label>
+				<label class="control-label col-sm-5" for="postcode">Zip code*:</label>
 				<div class="col-sm-5"><input type="number" class="form-control" name="zipcode" placeholder="Enter zipcode"></div>
 				<br><br>
-				<label class="control-label col-sm-5" for="address">Date of birth*:</label>
+				<label class="control-label col-sm-5" for="date">Date of birth*:</label>
 				<div class="col-sm-5"><input type="Date" class="form-control" name="date" placeholder="Enter date of birth"></div>
 				<br><br>				
 				<div class="col-sm-offset-5 col-sm-5"><font size="2"><font color="red">${message}</font></font><br>

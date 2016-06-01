@@ -15,7 +15,7 @@
 				<span style="float:right;"><%=request.getAttribute("balance")%> <%=request.getAttribute("ISOCode")%></span></font></font>
 				<br><br>
 				<span style="float:right;">
-				<a href="AccountActivity?ID=action=editaccount&accountID=${accountID}">Edit Account</a> | <a href="AccountActivity?action=closeaccount&accountID=${accountID}">Close Account</a>
+				<a href="AccountActivity?ID=${cpr}&action=editaccount&accountID=${accountID}">Edit Account</a> | <a href="AccountActivity?ID=${cpr}&action=closeaccount&accountID=${accountID}">Close Account</a>
 				</span>
 				<br>
 			</p>

@@ -36,8 +36,8 @@ public class Confirmation extends HttpServlet {
 			request.setAttribute("accountID", accountID);
 			request.setAttribute("transactions", db.getTransactions(accountID));
 			request.setAttribute("balance", db.getTransactions(accountID).getLast().getBalanceString());
-			request.setAttribute("accountName", db.getAccountName(accountID));
-			request.setAttribute("ISOCode", db.getISOCode(accountID));
+			request.setAttribute("accountName", db.getAccount(accountID).getName());
+			request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
 			request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
