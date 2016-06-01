@@ -30,8 +30,7 @@
            		<% 
            		ArrayList<User> users = (ArrayList<User>) request.getAttribute("resultlist");
 				if(users!= null){
-					for (User user : users) {
-					System.out.println(users.size());%>
+					for (User user : users) {%>
            			<tr onclick="document.location = 'UserActivity?ID=<%=user.getCPR()%>&action=viewuser';">
                		<td> <%= user.getCPR() %></td>
                		<td> <%= user.getName() %></td>
