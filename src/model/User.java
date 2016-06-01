@@ -89,16 +89,14 @@ public class User {
 		return cpr;
 	}
 
-	public String closeAccount(String accID) throws SQLException {
+	public void closeAccount(String accID) throws SQLException {
 		String message = "";
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountID().equals(accID)) {
 				accounts.remove(i);
-				message = bank.closeAccount(accID);
 				break;
 			}
 		}
-		return message;
 	}
 
 	public Account getAccount(String accID) {

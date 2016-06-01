@@ -75,6 +75,7 @@ public class UserActivity extends HttpServlet {
 					break;
 				case "edit" :
 					user = db.getUser(cpr);
+					request.setAttribute("cpr", cpr);
 					request.setAttribute("email", user.getEmail());
 					request.setAttribute("password", user.getPassword());
 					request.setAttribute("phone", user.getPhone());
@@ -86,13 +87,20 @@ public class UserActivity extends HttpServlet {
 					request.getRequestDispatcher("userInfo.jsp").forward(request, response);
 					break;
 				case "change" :
-					user = db.getUser(cpr);
-					message = db.editUser(cpr, email, password, name, address, zipcode, date, phone);
-					request.setAttribute("message", message);
-					request.setAttribute("accounts", user.getAccounts());
-					request.setAttribute("fullname", user.getName());
-					request.setAttribute("cpr", cpr);
-					request.getRequestDispatcher("accounts.jsp").forward(request, response);
+					try {
+						Date dateObject = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+						java.sql.Date dateSQL = new java.sql.Date(dateObject.getTime());
+						user = db.getUser(cpr);
+						message = db.editUser(cpr, email, password, name, address, zipcode, dateSQL, phone);
+						request.setAttribute("message", message);
+						request.setAttribute("accounts", user.getAccounts());
+						request.setAttribute("fullname", user.getName());
+						request.setAttribute("cpr", cpr);
+						request.getRequestDispatcher("accounts.jsp").forward(request, response);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+				break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();

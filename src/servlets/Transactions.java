@@ -39,6 +39,7 @@ public class Transactions extends HttpServlet {
 		String transactionName = request.getParameter("transName");
 		String amountString = request.getParameter("amount");
 		String ISOCode = request.getParameter("ISOCode");
+		String cpr = request.getParameter("ID");
 		if (accountID.isEmpty() || amountString.isEmpty() || (action.equals("transfer") && (accountID2.isEmpty() || transactionName.isEmpty()))) {
 			String message = "Please fill in all fields";
 			request.setAttribute("message", message);
@@ -67,7 +68,7 @@ public class Transactions extends HttpServlet {
 		    	case "deposit" :
 					message = db.processTransaction("Deposit", accountID, accountID2, amount, ISOCode, transactionName);
 					System.out.println(message);
-					redirect(request, response, accountID);
+					redirect(request, response, accountID, cpr);
 					break;
 		    	case "withdraw" :
 		    		message = db.processTransaction("Withdraw", accountID, accountID2, amount, ISOCode, transactionName);
@@ -76,7 +77,7 @@ public class Transactions extends HttpServlet {
 		    			request.setAttribute("message", message);
 		    			request.getRequestDispatcher("withdraw.jsp").forward(request, response);
 		    		} else {
-		    			redirect(request, response, accountID);
+		    			redirect(request, response, accountID, cpr);
 		    		}
 		    		break;
 		    	case "transfer" :
@@ -86,7 +87,7 @@ public class Transactions extends HttpServlet {
 		    			request.setAttribute("message", message);
 		    			request.getRequestDispatcher("transfer.jsp").forward(request, response);
 		    		} else {
-		    			redirect(request, response, accountID);
+		    			redirect(request, response, accountID, cpr);
 		    		}
 		    		break;
 		    }
@@ -94,7 +95,7 @@ public class Transactions extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-	private void redirect(HttpServletRequest request, HttpServletResponse response, String accountID)throws ServletException, IOException {
-		response.sendRedirect("Confirmation?accountID="+accountID);
+	private void redirect(HttpServletRequest request, HttpServletResponse response, String accountID, String cpr)throws ServletException, IOException {
+		response.sendRedirect("Confirmation?ID="+cpr+"&accountID="+accountID);
 	}
 }

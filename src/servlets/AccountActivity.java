@@ -43,7 +43,7 @@ public class AccountActivity extends HttpServlet {
 		
 		try {
 			db = new Database();
-			System.out.println(cpr);
+			System.out.println("cpr: " + cpr);
 			User user = db.getUser(cpr);
 			String message;
 			
@@ -80,13 +80,24 @@ public class AccountActivity extends HttpServlet {
 					}
 					break;
 				case "closeaccount" :
-					message = user.closeAccount(accountID);
+					message = db.closeAccount(accountID);
 					System.out.println(message);
-					request.setAttribute("message", message);
-					request.setAttribute("accounts", user.getAccounts());
-					request.setAttribute("fullname", user.getName());
-					request.setAttribute("cpr", cpr);
-					request.getRequestDispatcher("accounts.jsp").forward(request, response);
+					if (message.equals("Cannot delete because account has money")) {
+						request.setAttribute("cpr", cpr);
+						request.setAttribute("message", message);
+						request.setAttribute("accountID", accountID);
+						request.setAttribute("accountName", accountName);
+						request.setAttribute("transactions", db.getTransactions(accountID));
+						request.setAttribute("balance", formatNumber(user.getBalance(accountID)));
+						request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
+						request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+					} else {
+						user.closeAccount(accountID);
+						request.setAttribute("accounts", user.getAccounts());
+						request.setAttribute("fullname", user.getName());
+						request.setAttribute("cpr", cpr);
+						request.getRequestDispatcher("accounts.jsp").forward(request, response);
+					}
 					break;
 				case "editaccount" :
 					request.setAttribute("accountID", accountID);

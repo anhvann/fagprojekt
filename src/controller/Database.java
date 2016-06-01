@@ -280,15 +280,15 @@ public class Database {
 	}
 
 	public String editUser(String cpr, String email, String password, String name, String address, String zipcode,
-			String date, String phone) throws SQLException {
+			Date date, String phone) throws SQLException {
 		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditUser(?, ?, ?, ?, ?, ?, ?, ?, ?) }");
 		call.setString("vCPRNo", cpr);
 		call.setString("vEmail", email);
 		call.setString("vPassword", password);
-		call.setString("vName", name);
+		call.setString("vFullName", name);
 		call.setString("vAddress", address);
 		call.setString("vPostcode", zipcode);
-		call.setString("vDate", date);
+		call.setDate("vDateOfBirth", date);
 		call.setString("vPhone", phone);
 		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
 		call.execute();
