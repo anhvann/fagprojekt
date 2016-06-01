@@ -88,6 +88,7 @@ public class AccountActivity extends HttpServlet {
 						request.setAttribute("accountID", accountID);
 						request.setAttribute("accountName", accountName);
 						request.setAttribute("transactions", db.getTransactions(accountID));
+						System.out.println("user: " + user + ", accountID: " + accountID);
 						request.setAttribute("balance", formatNumber(user.getBalance(accountID)));
 						request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
 						request.getRequestDispatcher("accountoverview.jsp").forward(request, response);

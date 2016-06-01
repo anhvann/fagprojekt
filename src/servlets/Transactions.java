@@ -53,7 +53,7 @@ public class Transactions extends HttpServlet {
 			String pattern = "#.##";			
 			DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
 			decimalFormat.setParseBigDecimal(true);
-			amount  = (BigDecimal) decimalFormat.parse(amountString);
+			amount = (BigDecimal) decimalFormat.parse(amountString);
 	    } catch (NumberFormatException | ParseException ignore) {
 	    	String message = "Please type in a valid amount";
 			request.setAttribute("message", message);
@@ -63,7 +63,10 @@ public class Transactions extends HttpServlet {
 		try {
 			Database db = new Database();
 			String message;
-		    
+			if (cpr == null) {
+				cpr = db.getOwner(accountID);
+			}
+			
 		    switch (action) {
 		    	case "deposit" :
 					message = db.processTransaction("Deposit", accountID, accountID2, amount, ISOCode, transactionName);
