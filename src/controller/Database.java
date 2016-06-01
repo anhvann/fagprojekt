@@ -37,10 +37,10 @@ public class Database {
 		ResultSet resultSet = null;
 		LinkedList<String> IDs = new LinkedList<>();
 		ArrayList<User> users = new ArrayList<>();
-		
+
 		try {
-			resultSet = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"CUSTOMERS\" WHERE \"CPRNo\" LIKE '%" + keyword
-					+ "%' OR \"Phone\" LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%" + keyword
+			resultSet = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"CUSTOMERS\" WHERE \"CPRNo\" LIKE '%"
+					+ keyword + "%' OR \"Phone\" LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%" + keyword
 					+ "%'");
 			while (resultSet.next()) {
 				IDs.add(resultSet.getString("CPRNo"));
@@ -49,7 +49,7 @@ public class Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		for (String ID : IDs){
+		for (String ID : IDs) {
 			users.add(getUser(ID));
 		}
 		return users;
@@ -104,7 +104,8 @@ public class Database {
 							+ "' OR \"AccIDTracing\" = '" + accountID + "' ");
 			while (resultset.next()) {
 				BigDecimal amount = resultset.getBigDecimal("Amount");
-				if (resultset.getString("AccID").equals(accountID) && !resultset.getString("AccIDTracing").equals(accountID)
+				if (resultset.getString("AccID").equals(accountID)
+						&& !resultset.getString("AccIDTracing").equals(accountID)
 						|| resultset.getString("TransName").equals("Withdraw")) {
 					amount = amount.negate();
 				}
@@ -208,7 +209,7 @@ public class Database {
 		}
 		return cpr;
 	}
-	
+
 	public String getCity(String zipcode) {
 		String city = "";
 		try {
@@ -223,10 +224,11 @@ public class Database {
 		}
 		return city;
 	}
-	
+
 	public Account getAccount(String accountID) {
 		try {
-			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "'");
+			ResultSet resultset = statement
+					.executeQuery("select * from \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "'");
 			if (resultset.next()) {
 				BigDecimal balance = resultset.getBigDecimal("Balance");
 				BigDecimal interest = resultset.getBigDecimal("Interest");
@@ -245,18 +247,20 @@ public class Database {
 			Date date, String phone) {
 		System.out.println(date);
 		try {
-			statement.executeUpdate("INSERT INTO \"DTUGRP05\".\"USERS\"" + " VALUES('" + cpr + "', '" + email + "', '" + 
-								  password + "', 'c', '" + name + "', '" + phone + "', '" + address + "', '" + date + "', '" + zipcode + "');");
+			statement.executeUpdate("INSERT INTO \"DTUGRP05\".\"USERS\"" + " VALUES('" + cpr + "', '" + email + "', '"
+					+ password + "', 'c', '" + name + "', '" + phone + "', '" + address + "', '" + date + "', '"
+					+ zipcode + "');");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public User getUser(String cpr) {
 		User user = null;
 		try {
-			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "'");
+			ResultSet resultset = statement
+					.executeQuery("select * from \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "'");
 			if (resultset.next()) {
 				user = new User(this, cpr);
 				String email = resultset.getString("Email");
@@ -268,7 +272,7 @@ public class Database {
 				String postCode = resultset.getString("PostCode");
 				String role = resultset.getString("RoleID");
 				user.setInfo(email, password, name, phone, address, dateOfBirth, postCode, role);
-				
+
 				LinkedList<Account> accounts = getAccounts(user);
 				user.setAccounts(accounts);
 			}

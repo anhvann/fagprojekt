@@ -54,9 +54,9 @@ if ((session.getAttribute("loggedinuser") == null) || (session.getAttribute("log
 	<div class="navigationarea">
 		<ul class="nav navbar-nav">
 			<li><a href="UserActivity?ID=<%=session.getAttribute("loggedinuser")%>&action=viewuser">Accounts</a></li>
-			<li><a href="cdeposit.jsp">Deposit</a></li>
-			<li><a href="cwithdraw.jsp">Withdraw</a></li>
-			<li><a href="ClientActivity?ID=<%session.getAttribute("loggedinuser");%>&action=ctransfer">Transfer</a></li>
+			<li><a href="ClientActivity?ID=<%=session.getAttribute("loggedinuser")%>&action=deposit">Deposit</a></li>
+			<li><a href="ClientActivity?ID=<%=session.getAttribute("loggedinuser")%>&action=withdraw">Withdraw</a></li>
+			<li><a href="ClientActivity?ID=<%=session.getAttribute("loggedinuser")%>&action=transfer">Transfer</a></li>
 		</ul>
 	</div>
 	<div id="loginlink">

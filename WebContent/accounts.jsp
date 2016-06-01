@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<%@ page import="java.sql.*"%>
-<%@ page import="java.util.LinkedList"%>
-<%@ page import="model.Account" %>
 <html>
 <div class="container">
 	<%@include file="sessioncheck.jsp" %>
+	<%@ page import="java.sql.*"%>
+	<%@ page import="java.util.LinkedList"%>
+	<%@ page import="model.Account" %>
 	<div class="main">
 		<div class="pagetitle">	${fullname} (${cpr})</div>
 		<hr width="95%" noshade>
@@ -25,12 +25,12 @@
 					<th>Balance</th>
 				</tr>
 				<%
-				LinkedList<Account> acc = (LinkedList<Account>) request.getAttribute("accounts");
-				for (int i = 0; i < acc.size(); i++) {%>
-				<tr onclick="document.location = 'AccountActivity?ID=${cpr}&action=viewaccount&accountID=<%=acc.get(i).getAccountID()%>&accountName=<%=acc.get(i).getName()%>';">
-					<td> <%= acc.get(i).getAccountID() %></td>
-					<td> <%= acc.get(i).getName() %></td>
-					<td> <%= acc.get(i).getBalanceString() %></td>
+				LinkedList<Account> accounts = (LinkedList<Account>) request.getAttribute("accounts");
+				for (Account acc : accounts) {%>
+				<tr onclick="document.location = 'AccountActivity?ID=${cpr}&action=viewaccount&accountID=<%=acc.getAccountID()%>&accountName=<%=acc.getName()%>';">
+					<td> <%= acc.getAccountID()%></td>
+					<td> <%= acc.getName()%></td>
+					<td> <%= acc.getBalanceString()%></td>
 				</tr>
 				<%}%>
 			</table>

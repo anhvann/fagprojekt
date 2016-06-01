@@ -1,7 +1,7 @@
 <!DOCTYPE HTML><%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html>
 <div class="container">
-	<%@include file="sessioncheck.jsp" %>
+	<%@include file="employeecheck.jsp" %>
 	<div class="main" >
 			<div class="pagetitle">Edit Account</div>
 			<hr width="95%" noshade>

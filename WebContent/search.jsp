@@ -4,7 +4,7 @@
 <%@ page import="model.User" %>
 <html>
 <div class="container">
-	<%@include file="sessioncheck.jsp" %>
+	<%@include file="employeecheck.jsp" %>
 	<div class="main">
 		<form id=searchbar action="Search" method="post" target="_self">
 			<input id=searchbutton type="submit" value="Search"	style="float: right" />
@@ -15,22 +15,22 @@
 			</div>
 		</form>
 		<div class="pagetitle"><font size="4"><font color="grey">${message}</font></font></div><br>
-            <div align="center">
-            <table class="clickable">
-            	<col width="25%">
-		  		<col width="30%">
-		  		<col width="30%">
-		  		<col width="15%">
-            	<tr>
-                	<th>CPR</th>
-                	<th>Name</th>
-                	<th>Address</th>
-               		<th>Phone</th>
-           		</tr>
            		<% 
            		ArrayList<User> users = (ArrayList<User>) request.getAttribute("resultlist");
-				if(users!= null){
-					for (User user : users) {%>
+				if(users!= null){%>
+				    <div align="center">
+		            <table class="clickable">
+		            	<col width="25%">
+				  		<col width="30%">
+				  		<col width="30%">
+				  		<col width="15%">
+		            	<tr>
+		                	<th>CPR</th>
+		                	<th>Name</th>
+		                	<th>Address</th>
+		               		<th>Phone</th>
+		           		</tr>
+					<%for (User user : users) {%>
            			<tr onclick="document.location = 'UserActivity?ID=<%=user.getCPR()%>&action=viewuser';">
                		<td> <%= user.getCPR() %></td>
                		<td> <%= user.getName() %></td>

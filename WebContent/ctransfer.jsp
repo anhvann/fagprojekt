@@ -1,9 +1,9 @@
-<!DOCTYPE HTML><%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.ArrayList"%>
-<%@ page import="model.Account" %>
+<!DOCTYPE HTML>
 <html>
 <div class="container">
-	<%@include file="sessioncheck.jsp" %>
+	<%@include file="clientcheck.jsp" %>
+	<%@ page import="java.util.LinkedList"%>
+	<%@ page import="model.Account" %>
 	<div class="main">
 		<div class="pagetitle">Transfer money</div>
 		<hr width="95%" noshade>
@@ -12,15 +12,11 @@
 				<div class="col-sm-5"><input type="text" class="form-control" name="transName" placeholder="Enter transaction name"/></div>
 				<br><br>
 				<label class="control-label col-sm-5">Sending Account:</label>
-				
 				<div class="col-sm-5"><select class="form-control" name="accountID">
-				<%ArrayList<Account> accounts = (ArrayList<Account>) request.getAttribute("accounts");
-				if(!accounts.isEmpty()){%>
-					<option value="<%=accounts.get(0).getAccountID()%>" selected><%=accounts.get(0).getAccountID()%></option>
-					<%for (int i = 1; i< accounts.size(); i++){%>
-						<option value="<%=accounts.get(i).getAccountID()%>"><%=accounts.get(i).getAccountID()%></option>
-				<%	}
-				}%>
+				<%LinkedList<Account> accounts = (LinkedList<Account>) request.getAttribute("accounts");%>
+					<%for (Account acc : accounts){%>
+						<option value="<%=acc.getAccountID()%>"><%=acc.getAccountID()%></option>
+				<%}%>
   				</select>
   				</div>
   				
