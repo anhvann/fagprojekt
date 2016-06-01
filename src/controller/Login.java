@@ -74,11 +74,14 @@ public class Login extends HttpServlet {
 		if (session != null) {
 			session.setAttribute("role", role);
 			session.setAttribute("loggedinuser", cpr);
-			if (role.equals("c")) {
+			if (role.equals("e")) {
+				request.getRequestDispatcher("search.jsp").forward(request, response);
+			} else {
 				request.setAttribute("accounts", user.getAccounts());
 				request.setAttribute("fullname", user.getName());
+				request.setAttribute("cpr", cpr);
+				request.getRequestDispatcher("accounts.jsp").forward(request, response);
 			}
-			request.getRequestDispatcher("loginredirect.jsp").forward(request, response);
 		}
 	}
 	//
