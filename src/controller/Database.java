@@ -243,6 +243,7 @@ public class Database {
 
 	public void register(String cpr, String email, String password, String name, String address, String zipcode,
 			Date date, String phone) {
+		System.out.println(date);
 		try {
 			statement.executeUpdate("INSERT INTO \"DTUGRP05\".\"USERS\"" + " VALUES('" + cpr + "', '" + email + "', '" + 
 								  password + "', 'c', '" + name + "', '" + phone + "', '" + address + "', '" + date + "', '" + zipcode + "');");
