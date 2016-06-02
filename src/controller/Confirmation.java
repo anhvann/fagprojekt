@@ -28,19 +28,27 @@ public class Confirmation extends HttpServlet {
     }
 
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("here");
 		try {
 			Database db = new Database();
-			String accountID = request.getParameter("accountID");
-			String accountName = request.getParameter("accountName");
+			String accountID = (String) request.getAttribute("accountID");
+			String accountName = (String) request.getAttribute("accountName");
+			String message = (String) request.getAttribute("message");
 			String cpr = db.getOwner(accountID);
-			request.setAttribute("cpr", cpr);
-			request.setAttribute("accountID", accountID);
-			request.setAttribute("transactions", db.getTransactions(accountID));
-			request.setAttribute("balance", db.getTransactions(accountID).getLast().getBalanceString());
-			request.setAttribute("accountName", db.getAccount(accountID).getName());
-			request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
-			request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+			System.out.println(message);
+			if(message.equals("Deposit failure")){
+				request.setAttribute("message", message);
+				request.getRequestDispatcher("deposit.jsp").forward(request, response);
+			} else {
+				request.setAttribute("cpr", cpr);
+				request.setAttribute("accountID", accountID);
+				request.setAttribute("transactions", db.getTransactions(accountID));
+				request.setAttribute("balance", db.getTransactions(accountID).getLast().getBalanceString());
+				request.setAttribute("accountName", db.getAccount(accountID).getName());
+				request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
+				request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}

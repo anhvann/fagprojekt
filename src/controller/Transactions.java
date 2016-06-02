@@ -71,7 +71,7 @@ public class Transactions extends HttpServlet {
 		    	case "deposit" :
 					message = db.processTransaction("Deposit", accountID, accountID2, amount, ISOCode, transactionName);
 					System.out.println(message);
-					redirect(request, response, accountID, cpr);
+					redirect(request, response, accountID, cpr, message);
 					break;
 		    	case "withdraw" :
 		    		message = db.processTransaction("Withdraw", accountID, accountID2, amount, ISOCode, transactionName);
@@ -80,7 +80,7 @@ public class Transactions extends HttpServlet {
 		    			request.setAttribute("message", message);
 		    			request.getRequestDispatcher("withdraw.jsp").forward(request, response);
 		    		} else {
-		    			redirect(request, response, accountID, cpr);
+		    			//redirect(request, response, accountID, cpr);
 		    		}
 		    		break;
 		    	case "transfer" :
@@ -91,7 +91,7 @@ public class Transactions extends HttpServlet {
 		    			request.setAttribute("cpr", cpr);
 		    			request.getRequestDispatcher("transfer.jsp").forward(request, response);
 		    		} else {
-		    			redirect(request, response, accountID, cpr);
+		    			//redirect(request, response, accountID, cpr);
 		    		}
 		    		break;
 		    }
@@ -99,7 +99,10 @@ public class Transactions extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-	private void redirect(HttpServletRequest request, HttpServletResponse response, String accountID, String cpr)throws ServletException, IOException {
-		response.sendRedirect("Confirmation?ID="+cpr+"&accountID="+accountID);
+	private void redirect(HttpServletRequest request, HttpServletResponse response, String accountID, String cpr, String message)throws ServletException, IOException {
+		request.setAttribute("message", message);
+		request.setAttribute("cpr", cpr);
+		request.setAttribute("accountID", accountID);
+		request.getRequestDispatcher("Confirmation").forward(request, response);
 	}
 }

@@ -29,12 +29,11 @@ public class Database {
 	}
 
 	public ArrayList<User> searchFor(String keyword) {
-		ResultSet resultSet = null;
-		LinkedList<String> IDs = new LinkedList<>();
+		ArrayList<String> IDs = new ArrayList<>();
 		ArrayList<User> users = new ArrayList<>();
 		
 		try {
-			resultSet = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"CUSTOMERS\" WHERE \"CPRNo\" LIKE '%" + keyword
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM \"DTUGRP05\".\"CUSTOMERS\" WHERE \"CPRNo\" LIKE '%" + keyword
 					+ "%' OR \"Phone\" LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%" + keyword
 					+ "%'");
 			while (resultSet.next()) {
@@ -97,14 +96,14 @@ public class Database {
 		LinkedList<Transaction> transactions = new LinkedList<>();
 
 		try {
-			ResultSet resultset = statement
-					.executeQuery("select * from \"DTUGRP05\".\"TRANSACTIONS\" WHERE \"AccID\" = '" + accountID
+			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"TRANSACTIONS\" WHERE \"AccID\" = '" + accountID
 							+ "' OR \"AccIDTracing\" = '" + accountID + "' ");
 			while (resultset.next()) {
 				BigDecimal amount = resultset.getBigDecimal("Amount");
 				if (resultset.getString("AccID").equals(accountID) && !resultset.getString("AccIDTracing").equals(accountID)
-						|| resultset.getString("TransName").equals("Withdraw")) {
+						|| resultset.getString("TransType").equals("Withdraw")) {
 					amount = amount.negate();
+					
 				}
 				Transaction trans = new Transaction(resultset.getString("TransName"), resultset.getDate("TransDate"),
 						amount, resultset.getString("ISOCode"), resultset.getString("AccID"),
