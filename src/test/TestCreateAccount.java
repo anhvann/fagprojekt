@@ -75,7 +75,7 @@ public class TestCreateAccount {
 		
 		try {
 			db = new Database();
-			User user = new User(db, cpr);
+			User user = db.getUser(cpr);
 			BigDecimal interest = new BigDecimal(interestInt.replaceAll(",", ""));
 			BigDecimal balance = new BigDecimal("0".replaceAll(",", ""));
 			String accountID = generateAccountID(user);
