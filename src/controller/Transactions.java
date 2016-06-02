@@ -62,39 +62,25 @@ public class Transactions extends HttpServlet {
 		
 		try {
 			Database db = new Database();
-			String message;
+			String message ="";
 			if (cpr == null) {
 				cpr = db.getOwner(accountID);
 			}
 			
 		    switch (action) {
 		    	case "deposit" :
-					message = db.processTransaction("Deposit", accountID, accountID2, amount, ISOCode, transactionName);
-					System.out.println(message);
-					redirect(request, response, accountID, cpr, message);
+					message = db.processTransaction("Deposit", accountID, accountID2, amount, ISOCode, transactionName);					
 					break;
 		    	case "withdraw" :
 		    		message = db.processTransaction("Withdraw", accountID, accountID2, amount, ISOCode, transactionName);
-					System.out.println(message);
-		    		if (message.equals("Withdrawing under 0 is not allowed")) {
-		    			request.setAttribute("message", message);
-		    			request.getRequestDispatcher("withdraw.jsp").forward(request, response);
-		    		} else {
-		    			//redirect(request, response, accountID, cpr);
-		    		}
 		    		break;
 		    	case "transfer" :
 		    		message = db.processTransaction("Transfer", accountID, accountID2, amount, ISOCode, transactionName);
-					System.out.println(message);
-					if (message.equals("")) {
-		    			request.setAttribute("message", message);
-		    			request.setAttribute("cpr", cpr);
-		    			request.getRequestDispatcher("transfer.jsp").forward(request, response);
-		    		} else {
-		    			//redirect(request, response, accountID, cpr);
-		    		}
 		    		break;
 		    }
+		    request.setAttribute("message", message);
+    		redirect(request, response, accountID, cpr, message);
+    		
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}

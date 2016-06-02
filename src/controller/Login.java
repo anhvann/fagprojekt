@@ -37,8 +37,7 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String cpr = request.getParameter("cpr");
 		String password = request.getParameter("password");
 		try {

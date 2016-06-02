@@ -11,10 +11,10 @@
 		} %>
 			<form class="form-inline" action="Transactions?action=withdraw" method="post" target="_self">
 				<label class="control-label col-sm-5">Account:</label>
-				<div class="col-sm-5"><input type="text" class="form-control" name="accountID" placeholder="Enter account ID" value="<%=accID%>" /></div>
+				<div class="col-sm-5"><input type="number" class="form-control" name="accountID" placeholder="Enter account ID" value="<%=accID%>" required/></div>
 				<br><br>
 				<label class="control-label col-sm-5">Amount:</label>
-				<div class="col-sm-5"><input type="text" class="form-control" name="amount" placeholder="Enter amount"/>
+				<div class="col-sm-5"><input type="number" class="form-control" name="amount" placeholder="Enter amount" min="0" required/>
 				<select class="form-control" name="ISOCode">
     				<option value="DKK" selected>DKK</option>
     				<option value="USD">USD</option>

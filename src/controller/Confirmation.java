@@ -29,26 +29,49 @@ public class Confirmation extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("here");
 		try {
 			Database db = new Database();
 			String accountID = (String) request.getAttribute("accountID");
 			String accountName = (String) request.getAttribute("accountName");
 			String message = (String) request.getAttribute("message");
 			String cpr = db.getOwner(accountID);
-			System.out.println(message);
-			if(message.equals("Deposit failure")){
-				request.setAttribute("message", message);
-				request.getRequestDispatcher("deposit.jsp").forward(request, response);
-			} else {
-				request.setAttribute("cpr", cpr);
-				request.setAttribute("accountID", accountID);
-				request.setAttribute("transactions", db.getTransactions(accountID));
-				request.setAttribute("balance", db.getTransactions(accountID).getLast().getBalanceString());
-				request.setAttribute("accountName", db.getAccount(accountID).getName());
-				request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
-				request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
-			}
+			switch (message) {
+		    	case "Deposit failure" :
+					request.setAttribute("message", "Account does not exist");
+					request.getRequestDispatcher("deposit.jsp").forward(request, response);
+					break;
+		    	case "Withdraw failure" :
+		    		request.setAttribute("message", "Account does not exist");
+					request.getRequestDispatcher("withdraw.jsp").forward(request, response);
+					break;
+		    	case "Money Transaction failure" :
+		    		if (request.getSession().getAttribute("role").equals("c")){
+		    			request.setAttribute("message", "Receiving account does not exist");
+		    			request.getRequestDispatcher("ctransfer.jsp").forward(request, response);
+		    		} else {
+		    			request.setAttribute("message", "One of the accounts does not exist");
+		    			request.getRequestDispatcher("transfer.jsp").forward(request, response);
+		    		}
+		    		break;
+		    	case "Same account failure" :
+		    		request.setAttribute("message", "Sending and receiving account is the same");
+		    		if (request.getSession().getAttribute("role").equals("c")){
+		    			request.getRequestDispatcher("ctransfer.jsp").forward(request, response);
+		    		} else {
+		    			request.getRequestDispatcher("transfer.jsp").forward(request, response);
+		    		}
+		    		break;
+		    	default :
+		    		request.setAttribute("message", "");
+					request.setAttribute("cpr", cpr);
+					request.setAttribute("accountID", accountID);
+					request.setAttribute("transactions", db.getTransactions(accountID));
+					request.setAttribute("balance", db.getTransactions(accountID).getLast().getBalanceString());
+					request.setAttribute("accountName", db.getAccount(accountID).getName());
+					request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
+					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+					break;
+				}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
