@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -10,6 +11,7 @@ import java.text.ParseException;
 import java.sql.Date;
 import java.util.LinkedList;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,6 +25,7 @@ import model.User;
 @WebServlet("/Transactions")
 public class Transactions extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+    private String message ="";
     
     public Transactions() {
         super();
@@ -40,11 +43,6 @@ public class Transactions extends HttpServlet {
 		String amountString = request.getParameter("amount");
 		String ISOCode = request.getParameter("ISOCode");
 		String cpr = request.getParameter("ID");
-		if (accountID.isEmpty() || amountString.isEmpty() || (action.equals("transfer") && (accountID2.isEmpty() || transactionName.isEmpty()))) {
-			String message = "Please fill in all fields";
-			request.setAttribute("message", message);
-			request.getRequestDispatcher("deposit.jsp").forward(request, response);
-		}
 		BigDecimal amount = null;
 		try {
 			DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -55,17 +53,13 @@ public class Transactions extends HttpServlet {
 			decimalFormat.setParseBigDecimal(true);
 			amount = (BigDecimal) decimalFormat.parse(amountString);
 	    } catch (NumberFormatException | ParseException ignore) {
-	    	String message = "Please type in a valid amount";
+	    	message = "Invalid amount";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("deposit.jsp").forward(request, response);
 	    }
 		
 		try {
 			Database db = new Database();
-			String message ="";
-			if (cpr == null) {
-				cpr = db.getOwner(accountID);
-			}
 			
 		    switch (action) {
 		    	case "deposit" :
@@ -78,9 +72,7 @@ public class Transactions extends HttpServlet {
 		    		message = db.processTransaction("Transfer", accountID, accountID2, amount, ISOCode, transactionName);
 		    		break;
 		    }
-		    request.setAttribute("message", message);
     		redirect(request, response, accountID, cpr, message);
-    		
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -90,5 +82,8 @@ public class Transactions extends HttpServlet {
 		request.setAttribute("cpr", cpr);
 		request.setAttribute("accountID", accountID);
 		request.getRequestDispatcher("Confirmation").forward(request, response);
+	}
+	public String getMessage(){
+		return message;
 	}
 }

@@ -24,7 +24,6 @@ public class Confirmation extends HttpServlet {
      */
     public Confirmation() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 

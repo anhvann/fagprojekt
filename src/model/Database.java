@@ -96,14 +96,11 @@ public class Database {
 		LinkedList<Transaction> transactions = new LinkedList<>();
 
 		try {
-			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"TRANSACTIONS\" WHERE \"AccID\" = '" + accountID
-							+ "' OR \"AccIDTracing\" = '" + accountID + "' ");
+			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"TRANSACTIONS\" WHERE \"AccID\" = '" + accountID+"'");
 			while (resultset.next()) {
 				BigDecimal amount = resultset.getBigDecimal("Amount");
-				if (resultset.getString("AccID").equals(accountID) && !resultset.getString("AccIDTracing").equals(accountID)
-						|| resultset.getString("TransType").equals("Withdraw")) {
+				if (resultset.getString("TransType").equals("Transaction Send Money")){
 					amount = amount.negate();
-					
 				}
 				Transaction trans = new Transaction(resultset.getString("TransName"), resultset.getDate("TransDate"),
 						amount, resultset.getString("ISOCode"), resultset.getString("AccID"),
