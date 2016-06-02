@@ -27,7 +27,7 @@
 				<%
 				LinkedList<Account> accounts = (LinkedList<Account>) request.getAttribute("accounts");
 				for (Account acc : accounts) {%>
-				<tr onclick="document.location = 'AccountActivity?ID=${cpr}&action=viewaccount&accountID=<%=acc.getAccountID()%>&accountName=<%=acc.getName()%>';">
+				<tr onclick="document.location = 'AccountActivity?ID=${cpr}&action=viewaccount&accountID=<%=acc.getAccountID()%>';">
 					<td> <%= acc.getAccountID()%></td>
 					<td> <%= acc.getName()%></td>
 					<td> <%= acc.getBalanceString()%></td>

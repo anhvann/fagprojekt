@@ -14,7 +14,7 @@ public class Account {
 	private BigDecimal balance, interest;
 	private LinkedList<Transaction> transactions;
 	
-	public Account(User user, String accountID, String name, BigDecimal balance, BigDecimal interest, String ISOCode) {
+	public Account(User user, String accountID, String name, BigDecimal balance, BigDecimal interest, String ISOCode, LinkedList<Transaction> transactions) {
 		this.user = user;
 		this.accountID = accountID;
 		this.name = name;
@@ -22,6 +22,7 @@ public class Account {
 		this.ISOCode = ISOCode;
 		this.transactions = new LinkedList<>();
 		this.balance = balance;
+		this.transactions = transactions;
 	}
 	
 	public BigDecimal getBalance(){
@@ -33,7 +34,7 @@ public class Account {
 		symbols.setGroupingSeparator(',');
 		symbols.setDecimalSeparator('.');
 		DecimalFormat formatter = new DecimalFormat("###,##0.00", symbols);
-		return formatter.format(balance.longValue());
+		return formatter.format(balance.doubleValue());
 	}
 	
 	public String getAccountID(){

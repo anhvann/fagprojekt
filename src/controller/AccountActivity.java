@@ -36,10 +36,12 @@ public class AccountActivity extends HttpServlet {
 		String cpr = request.getParameter("ID");
 		String action = request.getParameter("action");
 		String accountID = request.getParameter("accountID");
-		String accountName = request.getParameter("accountName");
+		
 		String name = request.getParameter("name");
 		String value = request.getParameter("interest");
 		String ISOCode = request.getParameter("ISOCode");
+		String accountName = request.getParameter("accountName");
+		Account account;
 		
 		try {
 			db = new Database();
@@ -52,12 +54,13 @@ public class AccountActivity extends HttpServlet {
 			
 			switch (action) {
 				case "viewaccount" :
+					account = db.getAccount(accountID);
 					request.setAttribute("cpr", cpr);
 					request.setAttribute("accountID", accountID);
-					request.setAttribute("accountName", accountName);
-					request.setAttribute("transactions", db.getTransactions(accountID));
-					request.setAttribute("balance", formatNumber(user.getBalance(accountID)));
-					request.setAttribute("ISOCode", user.getAccount(accountID).getISOCode());
+					request.setAttribute("accountName", account.getName());
+					request.setAttribute("transactions", account.getTransactions());
+					request.setAttribute("balance", account.getBalanceString());
+					request.setAttribute("ISOCode", account.getISOCode());
 					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 					break;
 				case "newaccount" :
@@ -70,9 +73,8 @@ public class AccountActivity extends HttpServlet {
 						BigDecimal interest = getBigDecimal(value);
 						BigDecimal balance = getBigDecimal("0");
 						accountID = generateAccountID(user);
-						Account account = new Account(user, accountID, name, balance, interest, ISOCode);
+						account = new Account(user, accountID, name, balance, interest, ISOCode, new LinkedList<Transaction>());
 						message = user.addAccount(account);
-						System.out.println(message);
 						request.setAttribute("message", message);
 						request.setAttribute("accounts", user.getAccounts());
 						request.setAttribute("fullname", user.getName());
@@ -115,7 +117,7 @@ public class AccountActivity extends HttpServlet {
 				case "changeaccount" :
 					try {
 						BigDecimal interest = getBigDecimal(value);
-						Account account = user.getAccount(accountID);
+						account = user.getAccount(accountID);
 						account.setName(name);
 						account.setInterest(interest);
 						account.setISOCode(ISOCode);

@@ -11,8 +11,7 @@
 			<li><img class="img-bar" src="http://i.imgur.com/Uf3PuDg.png"></li>
 		</ul>
 	</div>
-<%response.addHeader("Cache-Control", "no-cache,no-store,private,must-revalidate,max-stale=0,post-check=0,pre-check=0"); 
-response.setHeader("Pragma", "no-cache"); 
+<%
 String role = (String)session.getAttribute("role");
 if ((session.getAttribute("loggedinuser") == null) || (session.getAttribute("loggedinuser") == "")) {%>
 	<div class="navigationarea">

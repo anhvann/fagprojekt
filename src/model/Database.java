@@ -79,10 +79,13 @@ public class Database {
 			while (resultset.next()) {
 				Account acc = new Account(user, resultset.getString("AccID"), resultset.getString("AccName"),
 						resultset.getBigDecimal("Balance"), resultset.getBigDecimal("Interest"),
-						resultset.getString("ISOCode"));
+						resultset.getString("ISOCode"), null);
 				accounts.add(acc);
 			}
 			resultset.close();
+			for(Account acc : accounts){
+				acc.setTransactions(getTransactions(acc.getAccountID()));
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -107,6 +110,7 @@ public class Database {
 						amount, resultset.getString("ISOCode"), resultset.getString("AccID"),
 						resultset.getString("AccIDTracing"), resultset.getBigDecimal("ResultBalance"));
 				transactions.add(trans);
+				System.out.println(trans.getBalance());
 			}
 			resultset.close();
 		} catch (SQLException e) {
@@ -228,7 +232,8 @@ public class Database {
 				BigDecimal interest = resultset.getBigDecimal("Interest");
 				String AccName = resultset.getString("AccName");
 				String ISOCode = resultset.getString("ISOCode");
-				return new Account(getUser(getOwner(accountID)), accountID, AccName, balance, interest, ISOCode);
+				Account account = new Account(getUser(getOwner(accountID)), accountID, AccName, balance, interest, ISOCode, getTransactions(accountID));
+				return account;
 			}
 			resultset.close();
 		} catch (SQLException e) {

@@ -4,11 +4,13 @@ import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 import org.junit.*;
 
 import model.Account;
 import model.Database;
+import model.Transaction;
 import model.User;
 
 public class TestCreateAccount {
@@ -29,7 +31,7 @@ public class TestCreateAccount {
 			BigDecimal interest = new BigDecimal(interestInt.replaceAll(",", ""));
 			BigDecimal balance = new BigDecimal("0".replaceAll(",", ""));
 			String accountID = generateAccountID(user);
-			Account account = new Account(user, accountID, name, balance, interest, status);
+			Account account = new Account(user, accountID, name, balance, interest, status, new LinkedList<Transaction>());
 			message = user.addAccount(account);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
@@ -53,7 +55,7 @@ public class TestCreateAccount {
 			BigDecimal interest = new BigDecimal(interestInt.replaceAll(",", ""));
 			BigDecimal balance = new BigDecimal("0".replaceAll(",", ""));
 			String accountID = generateAccountID(user);
-			account = new Account(user, accountID, name, balance, interest, status);
+			account = new Account(user, accountID, name, balance, interest, status, new LinkedList<Transaction>());
 			message = user.addAccount(account);
 		} catch (NumberFormatException | ClassNotFoundException | SQLException e) {
 			
@@ -77,7 +79,7 @@ public class TestCreateAccount {
 			BigDecimal interest = new BigDecimal(interestInt.replaceAll(",", ""));
 			BigDecimal balance = new BigDecimal("0".replaceAll(",", ""));
 			String accountID = generateAccountID(user);
-			account = new Account(user, accountID, name, balance, interest, status);
+			account = new Account(user, accountID, name, balance, interest, status, new LinkedList<Transaction>());
 			message = user.addAccount(account);
 		} catch (NumberFormatException | ClassNotFoundException | SQLException e) {
 			

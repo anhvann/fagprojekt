@@ -34,7 +34,7 @@ public class Transaction {
 		symbols.setGroupingSeparator(',');
 		symbols.setDecimalSeparator('.');
 		DecimalFormat formatter = new DecimalFormat("###,##0.00", symbols);
-		return formatter.format(amount.longValue());
+		return formatter.format(amount.doubleValue());
 	}
 	
 	public Date getDate() {
@@ -57,7 +57,8 @@ public class Transaction {
 		DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
 		symbols.setGroupingSeparator(',');
 		symbols.setDecimalSeparator('.');
+		//DecimalFormat formatter = new DecimalFormat("###,##0.00", symbols);
 		DecimalFormat formatter = new DecimalFormat("###,##0.00", symbols);
-		return formatter.format(balance.longValue());
+		return formatter.format(balance.doubleValue());
 	}
 }
