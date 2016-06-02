@@ -14,11 +14,15 @@
 				<font size="5"><font color="#01405b">Balance
 				<span style="float:right;"><%=request.getAttribute("balance")%> <%=request.getAttribute("ISOCode")%></span></font></font>
 				<br><br>
-				<div align="right">
-				<font size="2"><font color="red">${message}</font></font><br>
-				<span style="float:right;">
-				<a href="AccountActivity?ID=${cpr}&action=editaccount&accountID=${accountID}">Edit Account</a> | <a href="AccountActivity?ID=${cpr}&action=closeaccount&accountID=${accountID}">Close Account</a>
-				</span>
+				<%if (session.getAttribute("role").equals("e")){ %>
+					<div align="right">
+					<font size="2" color="red">${message}</font>
+					<br>
+					<span style="float:right;">
+						<a href="AccountActivity?ID=${cpr}&action=editaccount&accountID=${accountID}">Edit Account</a> | <a href="AccountActivity?ID=${cpr}&action=closeaccount&accountID=${accountID}">Close Account</a>
+					</span>
+					</div>
+				<%}%>
 				<br>
 			</p>
 		</div>

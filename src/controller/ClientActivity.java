@@ -31,12 +31,6 @@ public class ClientActivity extends HttpServlet {
 				case "transfer" :
 					request.getRequestDispatcher("ctransfer.jsp").forward(request, response);
 					break;
-				case "deposit" :
-					request.getRequestDispatcher("cdeposit.jsp").forward(request, response);
-					break;
-				case "withdraw" :
-					request.getRequestDispatcher("cwithdraw.jsp").forward(request, response);
-					break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();

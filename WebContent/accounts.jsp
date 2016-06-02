@@ -9,12 +9,14 @@
 		<div class="pagetitle">	${fullname} (${cpr})</div>
 		<hr width="95%" noshade>
 		<div align="center">
+		<%if (session.getAttribute("role").equals("e")){ %>
 			<div class="content">
 				<p style="text-align:left;">
 				<a href="UserActivity?ID=${cpr}&action=edit">Edit User Information</a><br>
 				<a href="AccountActivity?ID=${cpr}&action=newaccount">Create New Account</a>
 				</p>
 			</div>
+		<%}%>
 			<table class="clickable">
 			    <col width="20%">
 		  		<col width="50%">

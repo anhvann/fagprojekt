@@ -110,7 +110,6 @@ public class Database {
 						amount, resultset.getString("ISOCode"), resultset.getString("AccID"),
 						resultset.getString("AccIDTracing"), resultset.getBigDecimal("ResultBalance"));
 				transactions.add(trans);
-				System.out.println(trans.getBalance());
 			}
 			resultset.close();
 		} catch (SQLException e) {
