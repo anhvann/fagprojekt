@@ -56,10 +56,11 @@ public class Transactions extends HttpServlet {
 	    	message = "Invalid amount";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("deposit.jsp").forward(request, response);
+			return;
 	    }
 		
 		try {
-			Database db = new Database();
+			Database db = new Database(request.getSession());
 			
 		    switch (action) {
 		    	case "deposit" :

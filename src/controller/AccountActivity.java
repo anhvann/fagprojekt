@@ -36,7 +36,6 @@ public class AccountActivity extends HttpServlet {
 		String cpr = request.getParameter("ID");
 		String action = request.getParameter("action");
 		String accountID = request.getParameter("accountID");
-		
 		String name = request.getParameter("name");
 		String value = request.getParameter("interest");
 		String ISOCode = request.getParameter("ISOCode");
@@ -44,11 +43,10 @@ public class AccountActivity extends HttpServlet {
 		Account account;
 		
 		try {
-			db = new Database();
+			db = new Database(request.getSession());
 			if (cpr == null) {
 				cpr = db.getOwner(accountID);
 			}
-			System.out.println(cpr);
 			User user = db.getUser(cpr);
 			String message;
 			
@@ -86,7 +84,6 @@ public class AccountActivity extends HttpServlet {
 					break;
 				case "closeaccount" :
 					message = db.closeAccount(accountID);
-					System.out.println(message);
 					if (message.equals("Cannot delete because account has money")) {
 						request.setAttribute("cpr", cpr);
 						request.setAttribute("message", message);
@@ -97,7 +94,6 @@ public class AccountActivity extends HttpServlet {
 						request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
 						request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 					} else {
-						System.out.println("user: " + user);
 						user.closeAccount(accountID);
 						request.setAttribute("accounts", user.getAccounts());
 						request.setAttribute("fullname", user.getName());
@@ -111,7 +107,6 @@ public class AccountActivity extends HttpServlet {
 					request.setAttribute("name", user.getAccount(accountID).getName());
 					request.setAttribute("interest", user.getAccount(accountID).getInterest());
 					request.setAttribute("ISOCode", user.getAccount(accountID).getISOCode());
-					System.out.println("edit");
 					request.getRequestDispatcher("editaccount.jsp").forward(request, response);
 					break;
 				case "changeaccount" :
@@ -122,7 +117,6 @@ public class AccountActivity extends HttpServlet {
 						account.setInterest(interest);
 						account.setISOCode(ISOCode);
 						message = user.editAccount(account);
-						System.out.println(message);
 						request.setAttribute("message", message);
 						request.setAttribute("accounts", user.getAccounts());
 						request.setAttribute("fullname", user.getName());
@@ -178,10 +172,8 @@ public class AccountActivity extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
-
 	}
 
 }

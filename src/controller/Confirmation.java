@@ -29,7 +29,7 @@ public class Confirmation extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			Database db = new Database();
+			Database db = new Database(request.getSession());
 			String accountID = (String) request.getAttribute("accountID");
 			String accountName = (String) request.getAttribute("accountName");
 			String message = (String) request.getAttribute("message");

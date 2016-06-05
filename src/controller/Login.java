@@ -24,6 +24,7 @@ import model.User;
 @WebServlet("/Login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private String loggedinuser, role;
 	Database db = null;
 
 	public Login() {
@@ -37,19 +38,21 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
 		String cpr = request.getParameter("cpr");
 		String password = request.getParameter("password");
 		try {
-			db = new Database();
+			db = new Database(request.getSession());
 			String role = "";
-			String[] columns = { "FullName", "Password", "RoleID" };
+			String[] columns = { "Password", "RoleID" };
 			LinkedList<String> results = db
 					.getStrings("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ", columns);
 			if (!results.isEmpty()) {
-				String dbpassword = results.get(1);
+				String dbpassword = results.get(0);
 				if (dbpassword.equals(password)) {
-					role = results.get(2);
+					role = results.get(1);
 				}
 			}
 
@@ -69,28 +72,26 @@ public class Login extends HttpServlet {
 	}
 
 	private void setSession(HttpServletRequest request, HttpServletResponse response, String cpr, String role, User user) throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			session.setAttribute("role", role);
-			session.setAttribute("loggedinuser", cpr);
-			if (role.equals("e")) {
-				request.getRequestDispatcher("search.jsp").forward(request, response);
-			} else {
-				request.setAttribute("accounts", user.getAccounts());
-				request.setAttribute("fullname", user.getName());
-				request.setAttribute("cpr", cpr);
-				request.getRequestDispatcher("accounts.jsp").forward(request, response);
-			}
+		HttpSession session = request.getSession();
+		this.loggedinuser = cpr;
+		this.role = role;
+		session.setAttribute("role", role);
+		session.setAttribute("loggedinuser", cpr);
+		if (role.equals("e")) {
+			request.getRequestDispatcher("search.jsp").forward(request, response);
+		} else {
+			request.setAttribute("accounts", user.getAccounts());
+			request.setAttribute("fullname", user.getName());
+			request.setAttribute("cpr", cpr);
+			request.getRequestDispatcher("accounts.jsp").forward(request, response);
 		}
 	}
-	//
-	// protected void dispatch(HttpServletRequest request, HttpServletResponse
-	// response, String url) throws ServletException, IOException {
-	// RequestDispatcher RequetsDispatcherObj =
-	// request.getRequestDispatcher(url);
-	// System.out.println(RequetsDispatcherObj != null);
-	// System.out.println(request != null);
-	// System.out.println(response != null);
-	// RequetsDispatcherObj.forward(request, response);
-	// }
+
+	protected String getLoggedInUser() {
+		return loggedinuser;
+	}
+
+	protected String getRole() {
+		return role;
+	}
 }

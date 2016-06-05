@@ -1,25 +1,21 @@
 package controller;
 import static org.junit.Assert.*;
-
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.Enumeration;
-import java.util.LinkedList;
 import java.io.*;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
-import javax.servlet.http.HttpServletRequest;
 import org.junit.*;
 import model.*;
-import java.math.BigDecimal;
 
 public class TestTransactions {
-	private HttpServletRequest request;
-	private HttpServletResponse response;
-	private RequestDispatcher dispatcher;
+	private HttpServletRequest request = mock(HttpServletRequest.class);  
+	private HttpServletResponse response = mock(HttpServletResponse.class);
+	private RequestDispatcher dispatcher = mock(RequestDispatcher.class);
+	private HttpSession session = mock(HttpSession.class);
 	private Transactions transactionServlet;
 	private Database db;
 	
@@ -27,18 +23,20 @@ public class TestTransactions {
 	
 	@Before
 	public void login() throws ServletException, IOException, ClassNotFoundException, SQLException{
-		HttpSession session = mock(HttpSession.class);
-		HttpServletRequest requestLogin = mock(HttpServletRequest.class);       
-	    HttpServletResponse responseLogin = mock(HttpServletResponse.class);
-	    when(requestLogin.getParameter("cpr")).thenReturn("9876543219");
-	    when(requestLogin.getParameter("password")).thenReturn("vanvan");
-		new Login().doPost(requestLogin, responseLogin);
-		request = mock(HttpServletRequest.class);       
-		response = mock(HttpServletResponse.class); 
-		dispatcher = mock(RequestDispatcher.class);
-		transactionServlet = new Transactions();
+		String cpr = "9876543219";
+		String password = "vanvan";
+
+		Login login = new Login();
+	    when(request.getSession()).thenReturn(session);
+	    when(request.getParameter("cpr")).thenReturn(cpr);
+	    when(request.getParameter("password")).thenReturn(password);
 	    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-		db = new Database();
+
+	    login.doPost(request, response);
+	    when(session.getAttribute("role")).thenReturn(login.getLoggedInUser());
+		transactionServlet = new Transactions();
+		
+		db = new Database(session);
 	}
 	
 	@Test
@@ -150,7 +148,7 @@ public class TestTransactions {
 	    when(request.getParameter("ISOCode")).thenReturn("DKK");
 	    when(request.getParameter("ID")).thenReturn("1234512345");
 	    transactionServlet.doPost(request, response);
-	    assertEquals(transactionServlet.getMessage(), "Withdraw completed"); //Wrong message in data base
+	    assertEquals(transactionServlet.getMessage(), "Withdraw invalid amount"); //Wrong message in data base
 	}
 	
 	@Test
@@ -244,7 +242,7 @@ public class TestTransactions {
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew1 = db.getAccount("46265417464412").getBalance();
 	    BigDecimal balanceNew2 = db.getAccount("82506733128212").getBalance();
-	    assertEquals(transactionServlet.getMessage(), "Money Transaction failure"); //Can transfer invalid amount
+	    assertEquals(transactionServlet.getMessage(), "Insufficient balance"); //Wrong message in data base
 	    assertEquals(balanceOld1, balanceNew1);
 	    assertEquals(balanceOld2, balanceNew2);
 	}
@@ -263,6 +261,37 @@ public class TestTransactions {
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew = db.getAccount("46265417464412").getBalance();
 	    assertEquals(transactionServlet.getMessage(), "Invalid amount");
+	    assertEquals(balanceOld, balanceNew);
+	}
+	
+	@Test
+	public void testWrongProcedure() throws Exception {
+		BigDecimal balanceOld = db.getAccount("46265417464412").getBalance();
+	    when(request.getParameter("action")).thenReturn("depo");
+	    when(request.getParameter("accountID")).thenReturn("46265417464412");
+	    when(request.getParameter("accountID2")).thenReturn("");
+	    when(request.getParameter("transName")).thenReturn("");
+	    when(request.getParameter("amount")).thenReturn("100");
+	    when(request.getParameter("ISOCode")).thenReturn("DKK");
+	    when(request.getParameter("ID")).thenReturn("1234512345");
+	    transactionServlet.doPost(request, response);
+	    BigDecimal balanceNew = db.getAccount("46265417464412").getBalance();
+	    assertEquals(balanceOld, balanceNew);
+	}
+	
+	@Test
+	public void testNotLoggedIn() throws Exception {
+	    when(request.getSession()).thenReturn(null);
+		BigDecimal balanceOld = db.getAccount("46265417464412").getBalance();
+	    when(request.getParameter("action")).thenReturn("deposit");
+	    when(request.getParameter("accountID")).thenReturn("46265417464412");
+	    when(request.getParameter("accountID2")).thenReturn("");
+	    when(request.getParameter("transName")).thenReturn("");
+	    when(request.getParameter("amount")).thenReturn("100");
+	    when(request.getParameter("ISOCode")).thenReturn("DKK");
+	    when(request.getParameter("ID")).thenReturn("1234512345");
+	    transactionServlet.doPost(request, response);
+	    BigDecimal balanceNew = db.getAccount("46265417464412").getBalance();
 	    assertEquals(balanceOld, balanceNew);
 	}
 }

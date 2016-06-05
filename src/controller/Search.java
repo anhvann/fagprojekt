@@ -31,7 +31,7 @@ public class Search extends HttpServlet {
 		ArrayList<User> results = null;
 		
 		try {
-			db = new Database();
+			db = new Database(request.getSession());
 			results = db.searchFor(input.toLowerCase());
 			if(results != null && !results.isEmpty()){
 				String message = "Search results for: "+ input;
