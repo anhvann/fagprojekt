@@ -278,7 +278,7 @@ public class Database {
 	}
 
 	public String editUser(String cpr, String email, String password, String name, String address, String zipcode, Date date, String phone) throws SQLException {
-		if(session.getAttribute("role").equals("e")){
+		if(session != null && session.getAttribute("role").equals("e")){
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditUser(?, ?, ?, ?, ?, ?, ?, ?, ?) }");
 			call.setString("vCPRNo", cpr);
 			call.setString("vEmail", email);
