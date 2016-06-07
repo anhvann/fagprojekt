@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.servlet.ServletException;
@@ -68,9 +69,8 @@ public class AccountActivity extends HttpServlet {
 			case "createaccount":
 				BigDecimal interest = getBigDecimal(value);
 				BigDecimal balance = getBigDecimal("0");
-				accountID = generateAccountID(user);
-				account = new Account(user, accountID, accountName, balance, interest, ISOCode,
-						new LinkedList<Transaction>());
+				accountID = db.generateAccountID();
+				account = new Account(user, accountID, accountName, balance, interest, ISOCode, new LinkedList<Transaction>());
 				message = user.addAccount(account);
 				request.setAttribute("message", message);
 				request.setAttribute("accounts", user.getAccounts());
@@ -133,27 +133,6 @@ public class AccountActivity extends HttpServlet {
 	private BigDecimal getBigDecimal(String string) {
 		BigDecimal value = new BigDecimal(string.replaceAll(",", ""));
 		return value;
-	}
-
-	private String generateAccountID(User user) {
-		int min = 0;
-		int max = 9;
-		String ID = "";
-		Boolean generated = false;
-		ID += 0 + (int) (Math.random() * max);
-		while (!generated) {
-			for (int i = 0; i < 13; i++) {
-				ID += min + (int) (Math.random() * max);
-			}
-			generated = true;
-			for (Account existingAccount : db.getAllAccounts()) {
-				if (existingAccount.getAccountID().equals(ID)) {
-					generated = false;
-					break;
-				}
-			}
-		}
-		return ID;
 	}
 
 	public String getMessage() {

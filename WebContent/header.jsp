@@ -1,7 +1,4 @@
 <!DOCTYPE HTML><%@page language="java"contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%response.addHeader("Cache-Control", "no-cache,no-store,private,must-revalidate,max-stale=0,post-check=0,pre-check=0"); 
-   response.addHeader("Pragma", "no-cache"); 
-   response.addDateHeader ("Expires", 0);%>
 <html>
 <meta charset="utf-8">
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -13,12 +10,11 @@
 			<li><img class="img-bar" src="http://i.imgur.com/Uf3PuDg.png"></li>
 		</ul>
 	</div>
-<%
-String role = (String)session.getAttribute("role");
+<%String role = (String)session.getAttribute("role");
 if ((session.getAttribute("loggedinuser") == null) || (session.getAttribute("loggedinuser") == "")) {%>
 	<div class="navigationarea">
 		<ul class="nav navbar-nav">
-			<li><a href="index.html">Home</a></li>
+			<li><a href="index.jsp">Home</a></li>
 			<li><a href="#">Welcome</a></li>
 			<li><a href="#">Contact</a></li>
 			<li><a href="#">Help</a></li>

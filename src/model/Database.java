@@ -128,7 +128,6 @@ public class Database {
 		BigDecimal balance = account.getBalance();
 		BigDecimal interest = account.getInterest();
 		String ISOCode = account.getISOCode();
-
 		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".CreateAccount(?, ?, ?, ?, ?, ?, ?) }");
 		call.setString("vCPRNo", cpr);
 		call.setString("vAccID", ID);
@@ -235,10 +234,11 @@ public class Database {
 				BigDecimal interest = resultset.getBigDecimal("Interest");
 				String AccName = resultset.getString("AccName");
 				String ISOCode = resultset.getString("ISOCode");
+				resultset.close();
+				
 				Account account = new Account(getUser(getOwner(accountID)), accountID, AccName, balance, interest, ISOCode, getTransactions(accountID));
 				return account;
 			}
-			resultset.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -300,26 +300,6 @@ public class Database {
 		}
 		return null;
 	}
-
-	public ArrayList<Account> getAllAccounts() {
-		ArrayList<Account> accounts = new ArrayList<>();
-		try {
-			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"ACCOUNTS\"");
-			while (resultset.next()) {
-				BigDecimal balance = resultset.getBigDecimal("Balance");
-				BigDecimal interest = resultset.getBigDecimal("Interest");
-				String accountID = resultset.getString("AccID");
-				String AccName = resultset.getString("AccName");
-				String ISOCode = resultset.getString("ISOCode");
-				Account account = new Account(getUser(getOwner(accountID)), accountID, AccName, balance, interest, ISOCode, getTransactions(accountID));
-				accounts.add(account);
-				resultset.close();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return accounts;
-	}
 	//Implement deleteUser in database
 	//Check if the user has no accounts
 	public String deleteUser(String cpr) throws SQLException {
@@ -329,5 +309,14 @@ public class Database {
 		call.execute();
 		return call.getString("vOutput");*/
 		return "User deleted successfully";
+	}
+
+	public String generateAccountID() throws SQLException {
+		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".FindMaxAccID(?) }");
+		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+		call.execute();
+		String ID = call.getString("vOutput");
+		BigDecimal value = (new BigDecimal(ID)).add(new BigDecimal("1"));
+		return ""+value;
 	}
 }

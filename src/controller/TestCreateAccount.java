@@ -64,6 +64,7 @@ public class TestCreateAccount {
 		BigDecimal interestBD = new BigDecimal(interest);
 		
 		User user = db.getUser(clientCPR);
+		System.out.println(user.getName());
 		int numberOfAccountsBefore = db.getAccounts(user).size();
 		
 		when(request.getParameter("ID")).thenReturn(clientCPR);
@@ -91,32 +92,32 @@ public class TestCreateAccount {
 		int numberOfAccountsFinal = db.getAccounts(user).size();
 		assertNull(db.getAccount(accountActivityServlet.getAccountID()));
 		assertEquals(-1, numberOfAccountsFinal-numberOfAccountsAfter);
-		assertEquals("Account Deleted", accountActivityServlet.getMessage());
+		assertEquals("Account deleted", accountActivityServlet.getMessage());
 	}
 	
 	//Not possible through user interface
-//	@Test
-//	public void testInvalidISOCode() throws NullPointerException, ServletException, IOException {
-//		//Create
-//		String name = "Extra";
-//		String interest = "0.010";
-//		String currency = "DKR";
-//		BigDecimal interestBD = new BigDecimal(interest);
-//		
-//		User user = db.getUser(clientCPR);
-//		int numberOfAccountsBefore = db.getAccounts(user).size();
-//		
-//		when(request.getParameter("ID")).thenReturn(clientCPR);
-//		when(request.getParameter("action")).thenReturn(action);
-//		when(request.getParameter("accountID")).thenReturn(accountID);
-//		when(request.getParameter("accountName")).thenReturn(name);
-//		when(request.getParameter("interest")).thenReturn(interest);
-//		when(request.getParameter("ISOCode")).thenReturn(currency);
-//		accountActivityServlet.doPost(request, response);
-//		
-//		user = db.getUser(clientCPR); //get updated user
-//		int numberOfAccountsAfter = db.getAccounts(user).size();
-//		assertEquals(0, numberOfAccountsAfter-numberOfAccountsBefore);
-//		assertEquals("Invalid ISO-Code", accountActivityServlet.getMessage());		
-//	}
+	@Test
+	public void testInvalidISOCode() throws NullPointerException, ServletException, IOException {
+		//Create
+		String name = "Extra";
+		String interest = "0.010";
+		String currency = "DKR";
+		BigDecimal interestBD = new BigDecimal(interest);
+		
+		User user = db.getUser(clientCPR);
+		int numberOfAccountsBefore = db.getAccounts(user).size();
+		
+		when(request.getParameter("ID")).thenReturn(clientCPR);
+		when(request.getParameter("action")).thenReturn(action);
+		when(request.getParameter("accountID")).thenReturn(accountID);
+		when(request.getParameter("accountName")).thenReturn(name);
+		when(request.getParameter("interest")).thenReturn(interest);
+		when(request.getParameter("ISOCode")).thenReturn(currency);
+		accountActivityServlet.doPost(request, response);
+		
+		user = db.getUser(clientCPR); //get updated user
+		int numberOfAccountsAfter = db.getAccounts(user).size();
+		assertEquals(0, numberOfAccountsAfter-numberOfAccountsBefore);
+		assertEquals("Invalid ISO-Code", accountActivityServlet.getMessage());		
+	}
 }
