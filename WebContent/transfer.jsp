@@ -1,4 +1,7 @@
 <!DOCTYPE HTML><%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page import="java.sql.*"%>
+<%@ page import="java.util.LinkedList"%>
+<%@ page import="model.Account"%>
 <html>
 <div class="container">
 	<%@include file="employeecheck.jsp" %>
@@ -17,7 +20,9 @@
 				<div class="col-sm-5"><input type="text" class="form-control" name="accountID" placeholder="Enter account ID" value="<%=accID%>"/></div>
 				<br><br>
 				<label class="control-label col-sm-5">Receiving Account:</label>
-				<div class="col-sm-5"><input type="text" class="form-control" name="accountID2" placeholder="Enter account ID"/></div>
+				<div class="col-sm-5">
+				<input type="text" class="form-control" name="accountID2" placeholder="Enter account ID"/>
+				</div>
 				<br><br>
 				<label class="control-label col-sm-5">Amount:</label>
 				<div class="col-sm-5"><input type="text" class="form-control" name="amount" placeholder="Enter amount"/>
