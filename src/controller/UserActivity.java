@@ -90,9 +90,9 @@ public class UserActivity extends HttpServlet {
 					break;
 				case "change" :
 					try {
+						user = db.getUser(cpr);
 						Date dateObject = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 						java.sql.Date dateSQL = new java.sql.Date(dateObject.getTime());
-						user = db.getUser(cpr);
 						message = db.editUser(cpr, email, password, name, address, zipcode, dateSQL, phone);
 						request.setAttribute("message", message);
 						request.setAttribute("toast", true);
