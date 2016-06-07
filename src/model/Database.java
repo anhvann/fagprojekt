@@ -150,13 +150,16 @@ public class Database {
 	}
 
 	public String editAccount(Account account) throws SQLException {
-		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditAccount(?, ?, ?, ?) }");
-		call.setString("vAccID", account.getAccountID());
-		call.setString("vAccName", account.getName());
-		call.setBigDecimal("vInterest", account.getInterest());
-		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
-		call.execute();
-		return call.getString("vOutput");
+		if(session!=null && session.getAttribute("role").equals("e")){
+			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditAccount(?, ?, ?, ?) }");
+			call.setString("vAccID", account.getAccountID());
+			call.setString("vAccName", account.getName());
+			call.setBigDecimal("vInterest", account.getInterest());
+			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+			call.execute();
+			return call.getString("vOutput");
+		}
+		return null;
 	}
 
 	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount, String ISOCode, String transactionName) throws SQLException {
@@ -298,6 +301,25 @@ public class Database {
 		return null;
 	}
 
+	public ArrayList<Account> getAllAccounts() {
+		ArrayList<Account> accounts = new ArrayList<>();
+		try {
+			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"ACCOUNTS\"");
+			while (resultset.next()) {
+				BigDecimal balance = resultset.getBigDecimal("Balance");
+				BigDecimal interest = resultset.getBigDecimal("Interest");
+				String accountID = resultset.getString("AccID");
+				String AccName = resultset.getString("AccName");
+				String ISOCode = resultset.getString("ISOCode");
+				Account account = new Account(getUser(getOwner(accountID)), accountID, AccName, balance, interest, ISOCode, getTransactions(accountID));
+				accounts.add(account);
+				resultset.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return accounts;
+	}
 	//Implement deleteUser in database
 	//Check if the user has no accounts
 	public String deleteUser(String cpr) throws SQLException {

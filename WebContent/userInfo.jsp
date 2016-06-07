@@ -18,8 +18,8 @@
 					<label class="control-label col-sm-5" for="phone">Phone:</label>
 					<div class="col-sm-5"><input type="number" class="form-control" name="phone" placeholder="Enter Phone" value="${phone}"></div>
 					<br><br>
-					<label class="control-label col-sm-5" for="fullname">Full Name:</label>
-					<div class="col-sm-5"><input type="text" class="form-control" name="name" placeholder="Enter full name" value="${fullname}"></div>
+					<label class="control-label col-sm-5" for="name">Full Name:</label>
+					<div class="col-sm-5"><input type="text" class="form-control" name="name" placeholder="Enter full name" value="${name}"></div>
 					<br><br>
 					<label class="control-label col-sm-5" for="address">Address:</label>
 					<div class="col-sm-5"><input type="text" class="form-control" name="address" placeholder="Enter address" value="${address}"></div>
