@@ -53,20 +53,17 @@ public class UserActivity extends HttpServlet {
 			
 			switch (action) {
 				case "register" :
-					try {
-						Date dateObject = new SimpleDateFormat("dd-MM-yyyy").parse(date);
-						java.sql.Date dateSQL = new java.sql.Date(dateObject.getTime());
-						message = db.register(cpr, email, password, name, address, zipcode, dateSQL, phone);
-						user = db.getUser(cpr);
-						request.setAttribute("accounts", user.getAccounts());
-						request.setAttribute("name", user.getName());
-						request.setAttribute("cpr", cpr);
-						request.setAttribute("message", message);
-						request.setAttribute("toast", true);
-						request.getRequestDispatcher("accounts.jsp").forward(request, response);
-					} catch (ParseException e1) {
-						e1.printStackTrace();
-					} 
+					Date dateObject = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+					java.sql.Date dateSQL = new java.sql.Date(dateObject.getTime());
+					message = db.register(cpr, email, password, name, address, zipcode, dateSQL, phone);
+					System.out.println(message);
+					user = db.getUser(cpr);
+					request.setAttribute("accounts", user.getAccounts());
+					request.setAttribute("name", user.getName());
+					request.setAttribute("cpr", cpr);
+					request.setAttribute("message", message);
+					request.setAttribute("toast", true);
+					request.getRequestDispatcher("accounts.jsp").forward(request, response);
 					break;
 				case "viewuser" :
 					user = db.getUser(cpr);
@@ -89,20 +86,19 @@ public class UserActivity extends HttpServlet {
 					request.getRequestDispatcher("userInfo.jsp").forward(request, response);
 					break;
 				case "change" :
-					try {
-						Date dateObject = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-						java.sql.Date dateSQL = new java.sql.Date(dateObject.getTime());
-						user = db.getUser(cpr);
-						message = db.editUser(cpr, email, password, name, address, zipcode, dateSQL, phone);
-						request.setAttribute("message", message);
-						request.setAttribute("toast", true);
-						request.setAttribute("accounts", user.getAccounts());
-						request.setAttribute("name", user.getName());
-						request.setAttribute("cpr", cpr);
-						request.getRequestDispatcher("accounts.jsp").forward(request, response);
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
+					user = db.getUser(cpr);
+					System.out.println(date);
+					dateObject = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+					System.out.println(dateObject);
+					dateSQL = new java.sql.Date(dateObject.getTime());
+					System.out.println(dateSQL);
+					message = db.editUser(cpr, email, password, name, address, zipcode, dateSQL, phone);
+					request.setAttribute("message", message);
+					request.setAttribute("toast", true);
+					request.setAttribute("accounts", user.getAccounts());
+					request.setAttribute("name", user.getName());
+					request.setAttribute("cpr", cpr);
+					request.getRequestDispatcher("accounts.jsp").forward(request, response);
 					break;
 				case "delete" :
 					message = db.deleteUser(cpr);
@@ -121,7 +117,7 @@ public class UserActivity extends HttpServlet {
 					}
 					break;
 			}
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (ClassNotFoundException | SQLException | ParseException e) {
 			e.printStackTrace();
 		}
 	}
