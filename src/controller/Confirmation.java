@@ -30,9 +30,8 @@ public class Confirmation extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			Database db = new Database(request.getSession());
-			String accountID = (String) request.getAttribute("accountID");
-			String accountName = (String) request.getAttribute("accountName");
-			String message = (String) request.getAttribute("message");
+			String accountID = request.getParameter("accountID");
+			String message = request.getParameter("message");
 			String cpr = db.getOwner(accountID);
 			switch (message) {
 		    	case "Deposit failure" :
@@ -69,6 +68,7 @@ public class Confirmation extends HttpServlet {
 					request.setAttribute("accountName", db.getAccount(accountID).getName());
 					request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
 					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+					request.setAttribute("formCode", "submitted");
 					break;
 				}
 		} catch (ClassNotFoundException | SQLException e) {
@@ -76,11 +76,7 @@ public class Confirmation extends HttpServlet {
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

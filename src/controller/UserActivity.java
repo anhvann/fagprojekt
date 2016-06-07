@@ -59,7 +59,7 @@ public class UserActivity extends HttpServlet {
 						db.register(cpr, email, password, name, address, zipcode, dateSQL, phone);
 						user = db.getUser(cpr);
 						request.setAttribute("accounts", user.getAccounts());
-						request.setAttribute("fullname", user.getName());
+						request.setAttribute("name", user.getName());
 						request.setAttribute("cpr", cpr);
 						request.getRequestDispatcher("accounts.jsp").forward(request, response);
 					} catch (ParseException e1) {
@@ -69,7 +69,7 @@ public class UserActivity extends HttpServlet {
 				case "viewuser" :
 					user = db.getUser(cpr);
 					request.setAttribute("accounts", user.getAccounts());
-					request.setAttribute("fullname", user.getName());
+					request.setAttribute("name", user.getName());
 					request.setAttribute("cpr", cpr);
 					request.getRequestDispatcher("accounts.jsp").forward(request, response);
 					break;
@@ -79,7 +79,7 @@ public class UserActivity extends HttpServlet {
 					request.setAttribute("email", user.getEmail());
 					request.setAttribute("password", user.getPassword());
 					request.setAttribute("phone", user.getPhone());
-					request.setAttribute("fullname", user.getName());
+					request.setAttribute("name", user.getName());
 					request.setAttribute("address", user.getAddress());
 					request.setAttribute("postcode", user.getPostCode());
 					request.setAttribute("city", db.getCity(user.getPostCode()));
@@ -94,7 +94,7 @@ public class UserActivity extends HttpServlet {
 						message = db.editUser(cpr, email, password, name, address, zipcode, dateSQL, phone);
 						request.setAttribute("message", message);
 						request.setAttribute("accounts", user.getAccounts());
-						request.setAttribute("fullname", user.getName());
+						request.setAttribute("name", user.getName());
 						request.setAttribute("cpr", cpr);
 						request.getRequestDispatcher("accounts.jsp").forward(request, response);
 					} catch (ParseException e) {

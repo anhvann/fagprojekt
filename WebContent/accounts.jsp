@@ -6,7 +6,7 @@
 	<%@ page import="java.util.LinkedList"%>
 	<%@ page import="model.Account" %>
 	<div class="main">
-		<div class="pagetitle">	${fullname} (${cpr})</div>
+		<div class="pagetitle">	${name} (${cpr})</div>
 		<hr width="95%" noshade>
 		<div align="center">
 		<%if (session.getAttribute("role").equals("e")){ %>

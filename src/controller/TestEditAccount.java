@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.*;
+import org.junit.rules.ExpectedException;
 
 import model.Account;
 import model.Database;
@@ -25,17 +26,27 @@ public class TestEditAccount {
 	private HttpSession session = mock(HttpSession.class);
 	private AccountActivity accountActivityServlet;
 	private Database db;
+	private String clientCPR = "1234512345";
+	private String action = "changeaccount";
+	private String accountID = "46265417464412";
+	private String accountName = "Food";
+	private String interest = "0.010";
+	private BigDecimal interestBD = new BigDecimal(interest);
+	private String currency;
 	
 	/*Precondition:
+	 * Employee account:
+	 * 		CPR: 9876543219
+	 * 		Password: vanvan
 	 * Initial account:
-	 * 		ID: 46265417464412 (not unchangeable)
+	 * 		ID: 46265417464412
 	 * 		Name: Food
-	 * 		Interest: 0.01
-	 * 		Currency: DDK
-	 * 		
+	 * 		Interest: 0.010
+	 * 		Currency: DDK 		
 	*/
 	@Before
 	public void loginAndReset() throws ServletException, IOException, ClassNotFoundException, SQLException{
+		//Login
 		String cpr = "9876543219";
 		String password = "vanvan";
 
@@ -46,34 +57,100 @@ public class TestEditAccount {
 	    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
 
 	    login.doPost(request, response);
-	    when(session.getAttribute("role")).thenReturn(login.getLoggedInUser());
+	    when(session.getAttribute("role")).thenReturn(login.getRole());
 	    accountActivityServlet = new AccountActivity();
 		
 		db = new Database(session);
 		
 		//Reset account to initial values
-		String clientCPR = "1234512345";
-		String accountID = "46265417464412";
-		String name = "Food";
-		String interest = "0.01";
-		String currency = "DDK";
+		currency = db.getAccount(accountID).getISOCode();
 
 	    when(request.getParameter("ID")).thenReturn(clientCPR);
-	    when(request.getParameter("action")).thenReturn("changeaccount");
+	    when(request.getParameter("action")).thenReturn(action);
 	    when(request.getParameter("accountID")).thenReturn(accountID);
-	    when(request.getParameter("name")).thenReturn("");
+	    when(request.getParameter("accountName")).thenReturn(accountName);
 	    when(request.getParameter("interest")).thenReturn(interest);
-	    when(request.getParameter("ISOCode")).thenReturn(""); //Change ISO?
-	    when(request.getParameter("accountName")).thenReturn(name);
-		accountActivityServlet.doPost(request, response);
+	    when(request.getParameter("ISOCode")).thenReturn(currency);
+	    accountActivityServlet.doPost(request, response);
+	    
+	    Account account = db.getAccount(accountID);
+		assertEquals(accountName, account.getName());
+		assertEquals(interestBD, account.getInterest());
 	}
 	@Test
 	public void testEditAccount() throws Exception {
+		accountName = "Transportation";
+		interest = "0.020";
+		interestBD = new BigDecimal(interest);
+		
+	    when(request.getParameter("ID")).thenReturn(clientCPR);
+	    when(request.getParameter("action")).thenReturn(action);
+	    when(request.getParameter("accountID")).thenReturn(accountID);
+	    when(request.getParameter("accountName")).thenReturn(accountName);
+	    when(request.getParameter("interest")).thenReturn(interest);
+	    when(request.getParameter("ISOCode")).thenReturn(currency);
+	    accountActivityServlet.doPost(request, response);
+		
+		Account account = db.getAccount(accountID); //Get updated account
+		assertEquals(accountName, account.getName());
+		assertEquals(interestBD, account.getInterest());
+	}
+	
+	//Not possible through interface
+	@Test
+	public void testNotLoggedIn() throws Exception {
+		//Log out
+		when(request.getSession()).thenReturn(null);
+		
+		//Test
+		String newAccountName = "Transportation";
+		interest = "0.020";
+		
+	    when(request.getParameter("ID")).thenReturn(clientCPR);
+	    when(request.getParameter("action")).thenReturn(action);
+	    when(request.getParameter("accountID")).thenReturn(accountID);
+	    when(request.getParameter("accountName")).thenReturn(newAccountName);
+	    when(request.getParameter("interest")).thenReturn(interest);
+	    when(request.getParameter("ISOCode")).thenReturn(currency);
+	    accountActivityServlet.doPost(request, response);
+		
+		Account account = db.getAccount(accountID); //Get updated account
+		assertEquals(accountName, account.getName());
+		assertEquals(interestBD, account.getInterest());
+	}
+	
+	@Test
+	public void testLoggedInAsClient() throws Exception {
+		//Log in
 		String cpr = "1234512345";
-		String accountID = "46265417464412";
-		String name = "Transportation";
-		String interest = "0.02";
-		String currency = "DDK";
+		String password = "c123";
 
+		Login login = new Login();
+	    when(request.getSession()).thenReturn(session);
+	    when(request.getParameter("cpr")).thenReturn(cpr);
+	    when(request.getParameter("password")).thenReturn(password);
+	    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
+
+	    login.doPost(request, response);
+	    when(session.getAttribute("role")).thenReturn(login.getRole());
+	    accountActivityServlet = new AccountActivity();
+		
+		db = new Database(session);
+		
+		//Test
+		String newAccountName = "Transportation";
+		interest = "0.020";
+		
+	    when(request.getParameter("ID")).thenReturn(clientCPR);
+	    when(request.getParameter("action")).thenReturn(action);
+	    when(request.getParameter("accountID")).thenReturn(accountID);
+	    when(request.getParameter("accountName")).thenReturn(newAccountName);
+	    when(request.getParameter("interest")).thenReturn(interest);
+	    when(request.getParameter("ISOCode")).thenReturn(currency);
+	    accountActivityServlet.doPost(request, response);
+		
+		Account account = db.getAccount(accountID); //Get updated account
+		assertEquals(accountName, account.getName());
+		assertEquals(interestBD, account.getInterest());
 	}	
 }

@@ -25,7 +25,7 @@ public class ClientActivity extends HttpServlet {
 			User user = db.getUser(cpr);
 			String message;
 			request.setAttribute("accounts", user.getAccounts());
-			request.setAttribute("fullname", user.getName());
+			request.setAttribute("name", user.getName());
 			request.setAttribute("cpr", cpr);
 			switch (action) {
 				case "transfer" :

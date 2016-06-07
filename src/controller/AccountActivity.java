@@ -25,22 +25,23 @@ import model.User;
 @WebServlet("/AccountActivity")
 public class AccountActivity extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
 	private Database db = null;
-	
+	private String message;
+	private String accountID;
+
 	public AccountActivity() {
 		super();
 	}
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String cpr = request.getParameter("ID");
 		String action = request.getParameter("action");
-		String accountID = request.getParameter("accountID");
-		String name = request.getParameter("name");
+		accountID = request.getParameter("accountID");
+		String accountName = request.getParameter("accountName");
 		String value = request.getParameter("interest");
 		String ISOCode = request.getParameter("ISOCode");
-		String accountName = request.getParameter("accountName");
 		Account account;
+
 		
 		try {
 			db = new Database(request.getSession());
@@ -48,91 +49,80 @@ public class AccountActivity extends HttpServlet {
 				cpr = db.getOwner(accountID);
 			}
 			User user = db.getUser(cpr);
-			String message;
-			
+
 			switch (action) {
-				case "viewaccount" :
-					account = db.getAccount(accountID);
+			case "viewaccount":
+				account = db.getAccount(accountID);
+				request.setAttribute("cpr", cpr);
+				request.setAttribute("accountID", accountID);
+				request.setAttribute("accountName", account.getName());
+				request.setAttribute("transactions", account.getTransactions());
+				request.setAttribute("balance", account.getBalanceString());
+				request.setAttribute("ISOCode", account.getISOCode());
+				request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+				break;
+			case "newaccount":
+				request.setAttribute("cpr", cpr);
+				request.setAttribute("user", user);
+				request.getRequestDispatcher("newaccount.jsp").forward(request, response);
+				break;
+			case "createaccount":
+				BigDecimal interest = getBigDecimal(value);
+				BigDecimal balance = getBigDecimal("0");
+				accountID = generateAccountID(user);
+				account = new Account(user, accountID, accountName, balance, interest, ISOCode, new LinkedList<Transaction>());
+				message = user.addAccount(account);
+				request.setAttribute("message", message);
+				request.setAttribute("accounts", user.getAccounts());
+				request.setAttribute("name", user.getName());
+				request.setAttribute("cpr", cpr);
+				request.getRequestDispatcher("accounts.jsp").forward(request, response);
+				break;
+			case "closeaccount":
+				message = db.closeAccount(accountID);
+				if (message.equals("Cannot delete because account has money")) {
 					request.setAttribute("cpr", cpr);
+					request.setAttribute("message", message);
 					request.setAttribute("accountID", accountID);
-					request.setAttribute("accountName", account.getName());
-					request.setAttribute("transactions", account.getTransactions());
-					request.setAttribute("balance", account.getBalanceString());
-					request.setAttribute("ISOCode", account.getISOCode());
+					request.setAttribute("accountName", accountName);
+					request.setAttribute("transactions", db.getTransactions(accountID));
+					request.setAttribute("balance", formatNumber(user.getBalance(accountID)));
+					request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
 					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
-					break;
-				case "newaccount" :
+				} else {
+					user.closeAccount(accountID);
+					request.setAttribute("accounts", user.getAccounts());
+					request.setAttribute("name", user.getName());
 					request.setAttribute("cpr", cpr);
-					request.setAttribute("user", user);
-					request.getRequestDispatcher("newaccount.jsp").forward(request, response);
-					break;
-				case "createaccount" :
-					try {
-						BigDecimal interest = getBigDecimal(value);
-						BigDecimal balance = getBigDecimal("0");
-						accountID = generateAccountID(user);
-						account = new Account(user, accountID, name, balance, interest, ISOCode, new LinkedList<Transaction>());
-						message = user.addAccount(account);
-						request.setAttribute("message", message);
-						request.setAttribute("accounts", user.getAccounts());
-						request.setAttribute("fullname", user.getName());
-						request.setAttribute("cpr", cpr);
-						request.getRequestDispatcher("accounts.jsp").forward(request, response);
-					} catch (ClassNotFoundException | SQLException e) {
-						e.printStackTrace();
-					}
-					break;
-				case "closeaccount" :
-					message = db.closeAccount(accountID);
-					if (message.equals("Cannot delete because account has money")) {
-						request.setAttribute("cpr", cpr);
-						request.setAttribute("message", message);
-						request.setAttribute("accountID", accountID);
-						request.setAttribute("accountName", accountName);
-						request.setAttribute("transactions", db.getTransactions(accountID));
-						request.setAttribute("balance", formatNumber(user.getBalance(accountID)));
-						request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
-						request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
-					} else {
-						user.closeAccount(accountID);
-						request.setAttribute("accounts", user.getAccounts());
-						request.setAttribute("fullname", user.getName());
-						request.setAttribute("cpr", cpr);
-						request.getRequestDispatcher("accounts.jsp").forward(request, response);
-					}
-					break;
-				case "editaccount" :
-					request.setAttribute("accountID", accountID);
-					request.setAttribute("cpr", cpr);
-					request.setAttribute("name", user.getAccount(accountID).getName());
-					request.setAttribute("interest", user.getAccount(accountID).getInterest());
-					request.setAttribute("ISOCode", user.getAccount(accountID).getISOCode());
-					request.getRequestDispatcher("editaccount.jsp").forward(request, response);
-					break;
-				case "changeaccount" :
-					try {
-						BigDecimal interest = getBigDecimal(value);
-						account = user.getAccount(accountID);
-						account.setName(name);
-						account.setInterest(interest);
-						account.setISOCode(ISOCode);
-						message = user.editAccount(account);
-						request.setAttribute("message", message);
-						request.setAttribute("accounts", user.getAccounts());
-						request.setAttribute("fullname", user.getName());
-						request.setAttribute("cpr", cpr);
-						request.getRequestDispatcher("accounts.jsp").forward(request, response);
-					} catch (ClassNotFoundException | SQLException e) {
-						e.printStackTrace();
-					}
-					break;
+					request.getRequestDispatcher("accounts.jsp").forward(request, response);
+				}
+				break;
+			case "editaccount":
+				request.setAttribute("accountID", accountID);
+				request.setAttribute("cpr", cpr);
+				request.setAttribute("name", user.getAccount(accountID).getName());
+				request.setAttribute("interest", user.getAccount(accountID).getInterest());
+				request.setAttribute("ISOCode", user.getAccount(accountID).getISOCode());
+				request.getRequestDispatcher("editaccount.jsp").forward(request, response);
+				break;
+			case "changeaccount":
+				interest = getBigDecimal(value);
+				account = user.getAccount(accountID);
+				account.setName(accountName);
+				account.setInterest(interest);
+				account.setISOCode(ISOCode);
+				message = user.editAccount(account);
+				request.setAttribute("message", message);
+				request.setAttribute("accounts", user.getAccounts());
+				request.setAttribute("name", user.getName());
+				request.setAttribute("cpr", cpr);
+				request.getRequestDispatcher("accounts.jsp").forward(request, response);
+				break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-
-
-		}
+	}
 
 	private String formatNumber(BigDecimal value) {
 		DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
@@ -142,7 +132,7 @@ public class AccountActivity extends HttpServlet {
 		return formatter.format(value.longValue());
 	}
 
-	private BigDecimal getBigDecimal(String string) {		
+	private BigDecimal getBigDecimal(String string) {
 		BigDecimal value = new BigDecimal(string.replaceAll(",", ""));
 		return value;
 	}
@@ -152,13 +142,13 @@ public class AccountActivity extends HttpServlet {
 		int max = 9;
 		String ID = "";
 		Boolean generated = false;
-		ID += 0 + (int) (Math.random()*max);
+		ID += 0 + (int) (Math.random() * max);
 		while (!generated) {
 			for (int i = 0; i < 13; i++) {
 				ID += min + (int) (Math.random() * max);
 			}
 			generated = true;
-			for (Account existingAccount : user.getAccounts()) {
+			for (Account existingAccount : db.getAllAccounts()) {
 				if (existingAccount.getAccountID().equals(ID)) {
 					generated = false;
 					break;
@@ -168,11 +158,16 @@ public class AccountActivity extends HttpServlet {
 		return ID;
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public String getMessage(){
+		return message;
+	}
+	
+	//For test
+	public String getAccountID(){
+		return accountID;
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 		doGet(request, response);
 	}
 
