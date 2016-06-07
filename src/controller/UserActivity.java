@@ -26,15 +26,12 @@ public class UserActivity extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	private Database db = null;
+	private String message;
 	
     public UserActivity() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String cpr = request.getParameter("ID");
 		String action = request.getParameter("action");
@@ -49,14 +46,12 @@ public class UserActivity extends HttpServlet {
 		try {
 			db = new Database(request.getSession());
 			User user;
-			String message;
 			
 			switch (action) {
 				case "register" :
-					Date dateObject = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+					Date dateObject = new SimpleDateFormat("dd-MM-yyyy").parse(date);
 					java.sql.Date dateSQL = new java.sql.Date(dateObject.getTime());
 					message = db.register(cpr, email, password, name, address, zipcode, dateSQL, phone);
-					System.out.println(message);
 					user = db.getUser(cpr);
 					request.setAttribute("accounts", user.getAccounts());
 					request.setAttribute("name", user.getName());
@@ -87,11 +82,8 @@ public class UserActivity extends HttpServlet {
 					break;
 				case "change" :
 					user = db.getUser(cpr);
-					System.out.println(date);
 					dateObject = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-					System.out.println(dateObject);
 					dateSQL = new java.sql.Date(dateObject.getTime());
-					System.out.println(dateSQL);
 					message = db.editUser(cpr, email, password, name, address, zipcode, dateSQL, phone);
 					request.setAttribute("message", message);
 					request.setAttribute("toast", true);
@@ -102,8 +94,9 @@ public class UserActivity extends HttpServlet {
 					break;
 				case "delete" :
 					message = db.deleteUser(cpr);
+					System.out.println(message);
 					//Insert error message
-					if (message.equals("")) {
+					if (message.equals("User deleted successfully")) {
 						user = db.getUser(cpr);
 						request.setAttribute("message", message);
 						request.setAttribute("accounts", user.getAccounts());
@@ -127,5 +120,9 @@ public class UserActivity extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
+	}
+
+	public String getMessage() {
+		return message;
 	}
 }

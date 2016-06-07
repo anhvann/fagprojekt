@@ -91,7 +91,7 @@ public class AccountActivity extends HttpServlet {
 					request.setAttribute("balance", account.getBalanceString());
 					request.setAttribute("ISOCode", account.getISOCode());
 					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
-				} else {
+				} else if (message.equals("Account deleted")){
 					user.closeAccount(accountID);
 					request.setAttribute("accounts", user.getAccounts());
 					request.setAttribute("name", user.getName());

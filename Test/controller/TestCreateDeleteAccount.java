@@ -19,14 +19,14 @@ import javax.servlet.http.HttpSession;
 import org.junit.*;
 import model.*;
 
-public class TestCreateAccount {
+public class TestCreateDeleteAccount {
 	private HttpServletRequest request = mock(HttpServletRequest.class);  
 	private HttpServletResponse response = mock(HttpServletResponse.class);
 	private RequestDispatcher dispatcher = mock(RequestDispatcher.class);
 	private HttpSession session = mock(HttpSession.class);
 	private AccountActivity accountActivityServlet;
 	private Database db;
-	private String clientCPR = "1234512345";
+	private String clientCPR = "2309911234";
 	private String accountID;
 	private String action = "createaccount";
 	private String currency;
@@ -36,7 +36,9 @@ public class TestCreateAccount {
 	 * 		CPR: 9876543219
 	 * 		Password: vanvan
 	 * Client account:
-	 * 		ID: 1234512345		
+	 * 		ID: 2309911234	
+	 * 		Account 85327386530327 has balance > 0 DKK
+	 * Account 00000000000000 does not exist
 	*/
 	@Before
 	public void login() throws ServletException, IOException, ClassNotFoundException, SQLException{
@@ -58,13 +60,13 @@ public class TestCreateAccount {
 	}
 	@Test
 	public void testCreateDeleteAccountSuccess() throws Exception {
+		//Create
 		String name = "Extra";
 		String interest = "0.010";
 		String currency = "DKK";
 		BigDecimal interestBD = new BigDecimal(interest);
 		
 		User user = db.getUser(clientCPR);
-		System.out.println(user.getName());
 		int numberOfAccountsBefore = db.getAccounts(user).size();
 		
 		when(request.getParameter("ID")).thenReturn(clientCPR);
@@ -95,9 +97,37 @@ public class TestCreateAccount {
 		assertEquals("Account deleted", accountActivityServlet.getMessage());
 	}
 	
+	@Test
+	public void testDeleteAccountWithMoney() throws NullPointerException, ServletException, IOException {
+		accountID = "85327386530327";
+		action = "closeaccount";
+		User user = db.getUser(clientCPR);
+		int numberOfAccountsBefore = db.getAccounts(user).size();
+		when(request.getParameter("action")).thenReturn(action);
+		when(request.getParameter("accountID")).thenReturn(accountID);
+		accountActivityServlet.doPost(request, response);	
+		
+		int numberOfAccountsAfter = db.getAccounts(user).size();
+		assertEquals(numberOfAccountsBefore, numberOfAccountsAfter);
+		
+		assertEquals("Cannot delete because account has money", accountActivityServlet.getMessage());	
+	}
+	
+	@Test
+	public void testDeleteNonExistentAccount() throws NullPointerException, ServletException, IOException {
+		accountID = "00000000000000";
+		action = "closeaccount";
+
+		when(request.getParameter("action")).thenReturn(action);
+		when(request.getParameter("accountID")).thenReturn(accountID);
+		accountActivityServlet.doPost(request, response);	
+		
+		assertEquals("Invalid account", accountActivityServlet.getMessage());	
+	}
+	
 	//Not possible through user interface
 	@Test
-	public void testInvalidISOCode() throws NullPointerException, ServletException, IOException {
+	public void testCreateInvalidISOCode() throws NullPointerException, ServletException, IOException {
 		//Create
 		String name = "Extra";
 		String interest = "0.010";

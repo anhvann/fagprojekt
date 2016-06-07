@@ -104,8 +104,7 @@ public class Database {
 			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"TRANSACTIONS\" WHERE \"AccID\" = '" + accountID+"'");
 			while (resultset.next()) {
 				BigDecimal amount = resultset.getBigDecimal("Amount");
-				if (resultset.getString("TransType").equals("Transaction Send Money")||
-						resultset.getString("TransType").equals("Withdraw")){
+				if (resultset.getString("TransType").equals("Transaction Send Money")|| resultset.getString("TransType").equals("Withdraw")){
 					amount = amount.negate();
 				}
 				Transaction trans = new Transaction(resultset.getString("TransName"), resultset.getDate("TransDate"),

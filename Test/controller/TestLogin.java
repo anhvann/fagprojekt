@@ -15,7 +15,7 @@ public class TestLogin {
 	
 	/*Precondition:
 	 * Employee CPR: 1234567891, password: anna0207
-	 * Client CPR: 1234512345, password: c123
+	 * Client CPR: 2309911234, password: daisy2
 	 * Non-existent CPR: 1584145477
 	*/
 	
@@ -36,8 +36,8 @@ public class TestLogin {
 	
 	@Test
 	public void testLoginClient() throws Exception {
-		String cpr = "1234512345";
-		String password = "c123";
+		String cpr = "2309911234";
+		String password = "daisy2";
 		Login login = new Login();
 	    when(request.getSession()).thenReturn(session);
 	    when(request.getParameter("cpr")).thenReturn(cpr);
@@ -52,7 +52,7 @@ public class TestLogin {
 	@Test
 	public void testWrongPassword() throws Exception {
 		String cpr = "9876543219";
-		String password = "c123";
+		String password = "daisy2";
 		Login login = new Login();
 	    when(request.getSession(false)).thenReturn(session);
 	    when(request.getParameter("cpr")).thenReturn(cpr);
@@ -67,7 +67,7 @@ public class TestLogin {
 	@Test
 	public void testNonexistentUser() throws Exception {
 		String cpr = "1584145477";
-		String password = "c123";
+		String password = "daisy2";
 		Login login = new Login();
 
 	    when(request.getSession(false)).thenReturn(session);

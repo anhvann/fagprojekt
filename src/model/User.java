@@ -88,8 +88,7 @@ public class User {
 		return cpr;
 	}
 
-	public void closeAccount(String accID) throws SQLException {
-		String message = "";
+	public void closeAccount(String accID) {
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountID().equals(accID)) {
 				accounts.remove(i);

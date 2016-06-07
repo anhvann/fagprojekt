@@ -26,10 +26,10 @@ public class TestEditAccount {
 	private HttpSession session = mock(HttpSession.class);
 	private AccountActivity accountActivityServlet;
 	private Database db;
-	private String clientCPR = "1234512345";
+	private String clientCPR = "2309911234";
 	private String action = "changeaccount";
-	private String accountID = "46265417464412";
-	private String accountName = "Food";
+	private String accountID = "85327386530327";
+	private String accountName = "Shopping";
 	private String interest = "0.010";
 	private BigDecimal interestBD = new BigDecimal(interest);
 	private String currency;
@@ -38,9 +38,12 @@ public class TestEditAccount {
 	 * Employee account:
 	 * 		CPR: 9876543219
 	 * 		Password: vanvan
+	 * Client account:
+	 * 		CPR: 2309911234
+	 * 		Password: daisy2
 	 * Initial account:
-	 * 		ID: 46265417464412
-	 * 		Name: Food
+	 * 		ID: 85327386530327
+	 * 		Name: Shopping
 	 * 		Interest: 0.010
 	 * 		Currency: DDK 		
 	*/
@@ -122,8 +125,8 @@ public class TestEditAccount {
 	@Test
 	public void testLoggedInAsClient() throws Exception {
 		//Log in
-		String cpr = "1234512345";
-		String password = "c123";
+		String cpr = "2309911234";
+		String password = "daisy2";
 
 		Login login = new Login();
 	    when(request.getSession()).thenReturn(session);
