@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet" type="text/css" href="Style.css">
+<script>
+	function toast() {
+	    var x = document.getElementById("successtoast")
+	    x.className = "show";
+	    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+	}
+</script>
 <div class="container">
 	<%@include file="sessioncheck.jsp" %>
 	<%@ page import="java.sql.*"%>
@@ -9,14 +17,21 @@
 		<div class="pagetitle">	${name} (${cpr})</div>
 		<hr width="95%" noshade>
 		<div align="center">
-		<%if (session.getAttribute("role").equals("e")){ %>
 			<div class="content">
-				<p style="text-align:left;">
-				<a href="UserActivity?ID=${cpr}&action=edit">Edit User Information</a><br>
-				<a href="AccountActivity?ID=${cpr}&action=newaccount">Create New Account</a>
-				</p>
-			</div>
-		<%}%>
+			<p style="text-align:left;">
+			<%if (session.getAttribute("role").equals("e")){ %>
+				<div align="left">
+					<font size="2"></font><span style="float:left;">
+						<a href="UserActivity?ID=${cpr}&action=edit">Edit User Information</a> | <a href="UserActivity?ID=${cpr}&action=delete">Delete User</a>
+					</span>
+					<span style="float:right;">
+						<a href="AccountActivity?ID=${cpr}&action=newaccount">Create New Account</a>
+					</span>
+				</div>
+			<%}%>
+			<br>
+		</p>
+	</div>
 			<table class="clickable">
 			    <col width="20%">
 		  		<col width="50%">
@@ -39,6 +54,12 @@
 		</div>
 	</div>
 	</table>
+	<div id="successtoast">${message}</div>
+    	<script>
+    		if (<%=request.getAttribute("toast")%>) {
+   				toast();
+    		}
+    	</script>
 </div>
 <%@include file="footer.jsp"%>
 </html>

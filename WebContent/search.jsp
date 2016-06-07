@@ -3,6 +3,14 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="model.User" %>
 <html>
+<link rel="stylesheet" type="text/css" href="Style.css">
+<script>
+	function toast() {
+	    var x = document.getElementById("successtoast")
+	    x.className = "show";
+	    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+	}
+</script>
 <div class="container">
 	<%@include file="employeecheck.jsp" %>
 	<div class="main">
@@ -14,7 +22,7 @@
 					style="width: 100%" />
 			</div>
 		</form>
-		<div class="pagetitle"><font size="4"><font color="grey">${message}</font></font></div><br>
+		<div class="pagetitle"><font size="4"><font color="grey">${searchmessage}</font></font></div><br>
            		<% 
            		ArrayList<User> users = (ArrayList<User>) request.getAttribute("resultlist");
 				if(users!= null){%>
@@ -40,6 +48,13 @@
         		<% } 
         	}%>
        		</table></div>
+       		<div id="successtoast">${message}</div>
+       		<script>
+       			if (<%=request.getAttribute("toast")%>) {
+       				toast();
+       			}
+       		</script>
+
 		</div>
 	</div>
 	<%@include file="footer.jsp"%>

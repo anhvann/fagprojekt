@@ -51,7 +51,7 @@ public class Transactions extends HttpServlet {
 			String pattern = "#.##";			
 			DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
 			decimalFormat.setParseBigDecimal(true);
-			amount = (BigDecimal) decimalFormat.parse(amountString);
+			amount = (BigDecimal) decimalFormat.parse(amountString);;
 	    } catch (NumberFormatException | ParseException ignore) {
 	    	message = "Invalid amount";
 			request.setAttribute("message", message);

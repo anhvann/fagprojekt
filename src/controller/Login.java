@@ -78,6 +78,7 @@ public class Login extends HttpServlet {
 		session.setAttribute("role", role);
 		session.setAttribute("loggedinuser", cpr);
 		if (role.equals("e")) {
+			request.setAttribute("toast", false);
 			request.getRequestDispatcher("search.jsp").forward(request, response);
 		} else {
 			request.setAttribute("accounts", user.getAccounts());
@@ -93,5 +94,5 @@ public class Login extends HttpServlet {
 
 	protected String getRole() {
 		return role;
-	}
+	} 
 }

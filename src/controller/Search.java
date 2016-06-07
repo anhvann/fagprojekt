@@ -35,12 +35,14 @@ public class Search extends HttpServlet {
 			results = db.searchFor(input.toLowerCase());
 			if(results != null && !results.isEmpty()){
 				String message = "Search results for: "+ input;
-				request.setAttribute("message", message);
+				request.setAttribute("searchmessage", message);
 				request.setAttribute("resultlist", results);
+				request.setAttribute("toast", false);
 				request.getRequestDispatcher("search.jsp").forward(request, response);
 			} else {
 				String message = "Nothing matched your search terms";
-				request.setAttribute("message", message);
+				request.setAttribute("searchmessage", message);
+				request.setAttribute("toast", false);
 				request.getRequestDispatcher("search.jsp").forward(request, response);
 			}
 		} catch (ClassNotFoundException | SQLException e) {

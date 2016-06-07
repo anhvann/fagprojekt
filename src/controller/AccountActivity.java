@@ -42,7 +42,6 @@ public class AccountActivity extends HttpServlet {
 		String ISOCode = request.getParameter("ISOCode");
 		Account account;
 
-		
 		try {
 			db = new Database(request.getSession());
 			if (cpr == null) {
@@ -70,39 +69,45 @@ public class AccountActivity extends HttpServlet {
 				BigDecimal interest = getBigDecimal(value);
 				BigDecimal balance = getBigDecimal("0");
 				accountID = generateAccountID(user);
-				account = new Account(user, accountID, accountName, balance, interest, ISOCode, new LinkedList<Transaction>());
+				account = new Account(user, accountID, accountName, balance, interest, ISOCode,
+						new LinkedList<Transaction>());
 				message = user.addAccount(account);
 				request.setAttribute("message", message);
 				request.setAttribute("accounts", user.getAccounts());
 				request.setAttribute("name", user.getName());
 				request.setAttribute("cpr", cpr);
+				request.setAttribute("toast", true);
 				request.getRequestDispatcher("accounts.jsp").forward(request, response);
 				break;
 			case "closeaccount":
 				message = db.closeAccount(accountID);
 				if (message.equals("Cannot delete because account has money")) {
+					account = db.getAccount(accountID);
 					request.setAttribute("cpr", cpr);
 					request.setAttribute("message", message);
 					request.setAttribute("accountID", accountID);
-					request.setAttribute("accountName", accountName);
-					request.setAttribute("transactions", db.getTransactions(accountID));
-					request.setAttribute("balance", formatNumber(user.getBalance(accountID)));
-					request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
+					request.setAttribute("accountName", account.getName());
+					request.setAttribute("transactions", account.getTransactions());
+					request.setAttribute("balance", account.getBalanceString());
+					request.setAttribute("ISOCode", account.getISOCode());
 					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 				} else {
 					user.closeAccount(accountID);
 					request.setAttribute("accounts", user.getAccounts());
 					request.setAttribute("name", user.getName());
 					request.setAttribute("cpr", cpr);
+					request.setAttribute("message", message);
+					request.setAttribute("toast", true);
 					request.getRequestDispatcher("accounts.jsp").forward(request, response);
 				}
 				break;
 			case "editaccount":
+				account = db.getAccount(accountID);
 				request.setAttribute("accountID", accountID);
 				request.setAttribute("cpr", cpr);
-				request.setAttribute("name", user.getAccount(accountID).getName());
-				request.setAttribute("interest", user.getAccount(accountID).getInterest());
-				request.setAttribute("ISOCode", user.getAccount(accountID).getISOCode());
+				request.setAttribute("name", account.getName());
+				request.setAttribute("interest", account.getInterest());
+				request.setAttribute("ISOCode", account.getISOCode());
 				request.getRequestDispatcher("editaccount.jsp").forward(request, response);
 				break;
 			case "changeaccount":
@@ -113,6 +118,7 @@ public class AccountActivity extends HttpServlet {
 				account.setISOCode(ISOCode);
 				message = user.editAccount(account);
 				request.setAttribute("message", message);
+				request.setAttribute("toast", true);
 				request.setAttribute("accounts", user.getAccounts());
 				request.setAttribute("name", user.getName());
 				request.setAttribute("cpr", cpr);
@@ -122,14 +128,6 @@ public class AccountActivity extends HttpServlet {
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private String formatNumber(BigDecimal value) {
-		DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
-		symbols.setGroupingSeparator(',');
-		symbols.setDecimalSeparator('.');
-		DecimalFormat formatter = new DecimalFormat("###,##0.00", symbols);
-		return formatter.format(value.longValue());
 	}
 
 	private BigDecimal getBigDecimal(String string) {
@@ -158,16 +156,17 @@ public class AccountActivity extends HttpServlet {
 		return ID;
 	}
 
-	public String getMessage(){
+	public String getMessage() {
 		return message;
 	}
-	
-	//For test
-	public String getAccountID(){
+
+	// For test
+	public String getAccountID() {
 		return accountID;
 	}
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 

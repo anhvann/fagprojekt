@@ -4,6 +4,14 @@
 <%@ page import="model.Transaction"%>
 <%@ page import="java.math.BigDecimal" %>
 <html>
+<link rel="stylesheet" type="text/css" href="Style.css">
+<script>
+	function toast() {
+	    var x = document.getElementById("successtoast")
+	    x.className = "show";
+	    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+	}
+</script>
 <div class="container">
 	<%@include file="sessioncheck.jsp" %>
 	<div class="main"><div class="pagetitle">${accountName} (${accountID})</div>
@@ -13,7 +21,7 @@
 			<p style="text-align:left;">
 				<font size="5"><font color="#01405b">Balance
 				<span style="float:right;"><%=request.getAttribute("balance")%> <%=request.getAttribute("ISOCode")%></span></font></font>
-				<br><br>
+				<br>
 				<%if (session.getAttribute("role").equals("e")){ %>
 					<div align="right">
 					<font size="2" color="red">${message}</font>
@@ -56,6 +64,12 @@
 				<%}%>
 			</table>
 		</div>
+		<div id="successtoast">${toastmessage}</div>
+    		<script>
+    			if (<%=request.getAttribute("toast")%>) {
+   					toast();
+    			}
+    		</script>
 	</div>
 </div>
 <%@include file="footer.jsp"%>

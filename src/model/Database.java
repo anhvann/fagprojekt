@@ -104,7 +104,8 @@ public class Database {
 			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"TRANSACTIONS\" WHERE \"AccID\" = '" + accountID+"'");
 			while (resultset.next()) {
 				BigDecimal amount = resultset.getBigDecimal("Amount");
-				if (resultset.getString("TransType").equals("Transaction Send Money")){
+				if (resultset.getString("TransType").equals("Transaction Send Money")||
+						resultset.getString("TransType").equals("Withdraw")){
 					amount = amount.negate();
 				}
 				Transaction trans = new Transaction(resultset.getString("TransName"), resultset.getDate("TransDate"),
@@ -244,14 +245,16 @@ public class Database {
 		return null;
 	}
 
-	public void register(String cpr, String email, String password, String name, String address, String zipcode, Date date, String phone) {
+	public String register(String cpr, String email, String password, String name, String address, String zipcode, Date date, String phone) {
+		String output = "";
 		try {
 			statement.executeUpdate("INSERT INTO \"DTUGRP05\".\"USERS\"" + " VALUES('" + cpr + "', '" + email + "', '" + 
 								  password + "', 'c', '" + name + "', '" + phone + "', '" + address + "', '" + date + "', '" + zipcode + "');");
+			output = "User Created Successfully";
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+		return output;
 	}
 
 	public User getUser(String cpr) {
@@ -316,5 +319,15 @@ public class Database {
 			e.printStackTrace();
 		}
 		return accounts;
+	}
+	//Implement deleteUser in database
+	//Check if the user has no accounts
+	public String deleteUser(String cpr) throws SQLException {
+		/*CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".DeleteUser(?, ?) }");
+		call.setString("vCPRNo", cpr);
+		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+		call.execute();
+		return call.getString("vOutput");*/
+		return "User deleted successfully";
 	}
 }

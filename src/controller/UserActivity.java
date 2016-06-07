@@ -56,11 +56,13 @@ public class UserActivity extends HttpServlet {
 					try {
 						Date dateObject = new SimpleDateFormat("dd-MM-yyyy").parse(date);
 						java.sql.Date dateSQL = new java.sql.Date(dateObject.getTime());
-						db.register(cpr, email, password, name, address, zipcode, dateSQL, phone);
+						message = db.register(cpr, email, password, name, address, zipcode, dateSQL, phone);
 						user = db.getUser(cpr);
 						request.setAttribute("accounts", user.getAccounts());
 						request.setAttribute("name", user.getName());
 						request.setAttribute("cpr", cpr);
+						request.setAttribute("message", message);
+						request.setAttribute("toast", true);
 						request.getRequestDispatcher("accounts.jsp").forward(request, response);
 					} catch (ParseException e1) {
 						e1.printStackTrace();
@@ -93,6 +95,7 @@ public class UserActivity extends HttpServlet {
 						user = db.getUser(cpr);
 						message = db.editUser(cpr, email, password, name, address, zipcode, dateSQL, phone);
 						request.setAttribute("message", message);
+						request.setAttribute("toast", true);
 						request.setAttribute("accounts", user.getAccounts());
 						request.setAttribute("name", user.getName());
 						request.setAttribute("cpr", cpr);
@@ -100,7 +103,23 @@ public class UserActivity extends HttpServlet {
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
-				break;
+					break;
+				case "delete" :
+					message = db.deleteUser(cpr);
+					//Insert error message
+					if (message.equals("")) {
+						user = db.getUser(cpr);
+						request.setAttribute("message", message);
+						request.setAttribute("accounts", user.getAccounts());
+						request.setAttribute("fullname", user.getName());
+						request.setAttribute("cpr", cpr);
+						request.getRequestDispatcher("accounts.jsp").forward(request, response);
+					} else {
+						request.setAttribute("message", message);
+						request.setAttribute("toast", true);
+						request.getRequestDispatcher("search.jsp").forward(request, response);
+					}
+					break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
