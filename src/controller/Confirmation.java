@@ -61,8 +61,9 @@ public class Confirmation extends HttpServlet {
 		    		}
 		    		break;
 		    	default :
-		    		request.setAttribute("message", "");
+		    		request.setAttribute("toastmessage", message);
 					request.setAttribute("cpr", cpr);
+					request.setAttribute("toast", true);
 					request.setAttribute("accountID", accountID);
 					request.setAttribute("transactions", db.getTransactions(accountID));
 					request.setAttribute("balance", db.getTransactions(accountID).getLast().getBalanceString());

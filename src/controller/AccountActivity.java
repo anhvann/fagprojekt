@@ -77,6 +77,7 @@ public class AccountActivity extends HttpServlet {
 						request.setAttribute("accounts", user.getAccounts());
 						request.setAttribute("fullname", user.getName());
 						request.setAttribute("cpr", cpr);
+						request.setAttribute("toast", true);
 						request.getRequestDispatcher("accounts.jsp").forward(request, response);
 					} catch (ClassNotFoundException | SQLException e) {
 						e.printStackTrace();
@@ -98,6 +99,8 @@ public class AccountActivity extends HttpServlet {
 						request.setAttribute("accounts", user.getAccounts());
 						request.setAttribute("fullname", user.getName());
 						request.setAttribute("cpr", cpr);
+						request.setAttribute("message", message);
+						request.setAttribute("toast", true);
 						request.getRequestDispatcher("accounts.jsp").forward(request, response);
 					}
 					break;
@@ -118,6 +121,7 @@ public class AccountActivity extends HttpServlet {
 						account.setISOCode(ISOCode);
 						message = user.editAccount(account);
 						request.setAttribute("message", message);
+						request.setAttribute("toast", true);
 						request.setAttribute("accounts", user.getAccounts());
 						request.setAttribute("fullname", user.getName());
 						request.setAttribute("cpr", cpr);

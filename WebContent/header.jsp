@@ -1,4 +1,7 @@
 <!DOCTYPE HTML><%@page language="java"contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%response.addHeader("Cache-Control", "no-cache,no-store,private,must-revalidate,max-stale=0,post-check=0,pre-check=0"); 
+   response.addHeader("Pragma", "no-cache"); 
+   response.addDateHeader ("Expires", 0);%>
 <html>
 <meta charset="utf-8">
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -37,7 +40,6 @@ if ((session.getAttribute("loggedinuser") == null) || (session.getAttribute("log
 					<button class="dropbtn" >Account</button>
 					<div class="dropdown-content">
 						<a href="register.jsp">New user account</a> 
-						<a href="#">Close user account</a>
 					</div>
 				</div>
 			</div>
