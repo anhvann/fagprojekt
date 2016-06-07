@@ -95,7 +95,6 @@ button:focus {
 	height: 65px;
 	width: auto;
 	top: 30px;
-	z-index: 1;
 	margin-left: 100px;
 	margin-bottom: 10px;
 	z-index: 10;
@@ -260,7 +259,7 @@ input[type="radio"] {
     border-radius: 10px;
     padding: 16px;
     position: fixed;
-    z-index: -2;
+    z-index: 20;
     left: 50%;
     bottom: 70px;
     font-size: 17px;

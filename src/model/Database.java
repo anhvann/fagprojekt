@@ -252,6 +252,7 @@ public class Database {
 								  password + "', 'c', '" + name + "', '" + phone + "', '" + address + "', '" + date + "', '" + zipcode + "');");
 			output = "User Created Successfully";
 		} catch (SQLException e) {
+			output = "SQLException";
 			e.printStackTrace();
 		}
 		return output;
