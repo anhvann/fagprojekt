@@ -6,9 +6,6 @@
 			<div class="pagetitle">Edit User Information</div>
 			<hr width="95%" noshade>
 				<form action="UserActivity?ID=${cpr}&action=change" method="post" target="_self">
-					<label class="control-label col-sm-5">CPR:</label>
-					<div class="col-sm-5"><input type="number" class="form-control" name="cpr" readonly="readonly" value="${cpr}"></div>
-					<br><br>
 					<label class="control-label col-sm-5" for="email">Email:</label>
 					<div class="col-sm-5"><input type="email" class="form-control" name="email" placeholder="Enter email" value="${email}"></div>
 					<br><br>
@@ -30,8 +27,8 @@
 					<label class="control-label col-sm-5">City:</label>
 					<div class="col-sm-5"><input type="text" class="form-control" name="city" readonly="readonly" value="${city}"></div>
 					<br><br>
-					<label class="control-label col-sm-5">Date of Birth:</label>
-					<div class="col-sm-5"><input type="date" class="form-control" name="date" readonly="readonly" value="${date}"></div>
+					<label class="control-label col-sm-5" for="date">Date of birth*:</label>
+					<div class="col-sm-5"><input type="Date" class="form-control" name="date" placeholder="Enter date of birth" value="${date}"></div>
 					<br><br>
 					
 					<div class="col-sm-offset-5 col-sm-5"><font size="2"><font color="red">${message}</font></font><br>

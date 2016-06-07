@@ -142,7 +142,6 @@ html, body {
 		height: auto;
 	}
 }
-
 .carousel-inner img {
 	margin: auto;
 }*/
@@ -290,4 +289,3 @@ input[type="radio"] {
     from {bottom: 70px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
 }
-

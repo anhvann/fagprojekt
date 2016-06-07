@@ -69,7 +69,6 @@
     			if (<%=request.getAttribute("toast")%>) {
    					toast();
     			}
-    			
     		</script>
 	</div>
 </div>
