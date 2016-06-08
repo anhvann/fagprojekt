@@ -92,32 +92,31 @@ public class TestRegisterAndDeleteUser {
 	    when(request.getParameter("action")).thenReturn(action);
 	    userActivity.doPost(request, response);
 	    
-	    assertEquals("User Deleted", userActivity.getMessage()); //But it's not :|
+	    assertEquals("User Deleted", userActivity.getMessage());
 	    assertNull(db.getUser(clientCpr));
 	}
-//	@Test
-//	public void testRegisterUserWithUsedCPR() throws Exception {
-//		//Register
-//		String action = "register";
-//		clientCpr = "2309911234";
-//		
-//		callServlet(action);
-//		
-//		assertEquals("User already exists",userActivity.getMessage()); //Needs output message
-//	}
-//	
-//	
-//	@Test
-//	public void testDeleteNonExistentUser() throws Exception {
-//		//Register
-//		String action = "delete";
-//		clientCpr = "0208891133";
-//		
-//		callServlet(action);
-//		
-//		assertEquals("User does not exist",userActivity.getMessage());
-//	}
-//	
+	@Test
+	public void testRegisterUserWithUsedCPR() throws Exception {
+		//Register
+		String action = "register";
+		clientCpr = "2309911234";
+		
+		callServlet(action);
+		
+		assertEquals("User existed", userActivity.getMessage());
+	}
+	
+	@Test
+	public void testDeleteNonExistentUser() throws Exception {
+		//Register
+		String action = "delete";
+		clientCpr = "0208891133";
+		
+		callServlet(action);
+		
+		assertEquals("Invalid User CPRNo",userActivity.getMessage());
+	}
+	
 	private void callServlet(String action) throws ServletException, IOException {
 		when(request.getParameter("ID")).thenReturn(clientCpr);
 	    when(request.getParameter("action")).thenReturn(action);
