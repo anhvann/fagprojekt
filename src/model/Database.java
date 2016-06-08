@@ -54,22 +54,18 @@ public class Database {
 		return users;
 	}
 
-	public LinkedList<String> getStrings(String query, String[] columns) {
-		LinkedList<String> results = new LinkedList<>();
-
-		try {
-			ResultSet resultset = statement.executeQuery(query);
-			while (resultset.next()) {
-				for (int i = 0; i < columns.length; i++) {
-					results.add(resultset.getString(columns[i]));
-				}
-			}
-			resultset.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+	public String Login(String cpr, String password) throws SQLException {
+		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".Login(?, ?, ?, ?) }");
+		call.setString("vCPRNo", cpr);
+		call.setString("vPassword", password);
+		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+		call.registerOutParameter("vRoleID", java.sql.Types.CHAR);
+		call.execute();
+		if (call.getString("vOutput").equals("T")) {
+			return call.getString("vRoleID");
+		} else {
+			return call.getString("vRoleID");
 		}
-
-		return results;
 	}
 
 	public LinkedList<Account> getAccounts(User user) {

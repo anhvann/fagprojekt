@@ -21,6 +21,8 @@
 			<p style="text-align:left;">
 			<%if (session.getAttribute("role").equals("e")){ %>
 				<div align="left">
+					<font size="2" color="red">${errormessage}</font>
+					<br>
 					<font size="2"></font><span style="float:left;">
 						<a href="UserActivity?ID=${cpr}&action=edit">Edit User Information</a> | <a href="UserActivity?ID=${cpr}&action=delete">Delete User</a>
 					</span>

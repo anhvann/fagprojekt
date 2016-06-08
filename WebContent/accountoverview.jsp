@@ -24,7 +24,7 @@
 				<br>
 				<%if (session.getAttribute("role").equals("e")){ %>
 					<div align="right">
-					<font size="2" color="red">${message}</font>
+					<font size="2" color="red">${errormessage}</font>
 					<br>
 					<span style="float:right;">
 						<a href="AccountActivity?ID=${cpr}&action=editaccount&accountID=${accountID}">Edit Account</a> | <a href="AccountActivity?ID=${cpr}&action=closeaccount&accountID=${accountID}">Close Account</a>
@@ -64,7 +64,7 @@
 				<%}%>
 			</table>
 		</div>
-		<div id="successtoast">${toastmessage}</div>
+		<div id="successtoast">${message}</div>
     		<script>
     			if (<%=request.getAttribute("toast")%>) {
    					toast();

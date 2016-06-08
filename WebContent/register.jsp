@@ -31,7 +31,7 @@
 				<label class="control-label col-sm-5" for="date">Date of birth*:</label>
 				<div class="col-sm-5"><input type="Date" class="form-control" name="date" placeholder="Enter date of birth" value="${date}" required></div>
 				<br><br>				
-				<div class="col-sm-offset-5 col-sm-5"><font size="2"><font color="red">${message}</font></font><br>
+				<div class="col-sm-offset-5 col-sm-5"><font size="2"><font color="red">${errormessage}</font></font><br>
 				<input type="submit" class="btn btn-default" name="registerButton" value="Create"></div>
 			</form>		
 	</div>

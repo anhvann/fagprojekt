@@ -84,7 +84,7 @@ public class AccountActivity extends HttpServlet {
 				if (message.equals("Cannot delete because account has money")) {
 					account = db.getAccount(accountID);
 					request.setAttribute("cpr", cpr);
-					request.setAttribute("message", message);
+					request.setAttribute("errormessage", message);
 					request.setAttribute("accountID", accountID);
 					request.setAttribute("accountName", account.getName());
 					request.setAttribute("transactions", account.getTransactions());

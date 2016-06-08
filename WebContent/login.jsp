@@ -10,7 +10,7 @@
 			<legend>Login to Uniccol Bank</legend>
 			CPR Number:<br> <input type="number" name="cpr" required><br>
 			Password:<br> <input type="password" name="password" required><br>
-			<font size="2"><font color="red">${message}</font></font> <br>
+			<font size="2"><font color="red">${errormessage}</font></font> <br>
 			<input type="submit" class="btn btn-default" name="loginButton" value="Login"></div>
 		</form>
 	</div>

@@ -45,26 +45,16 @@ public class Login extends HttpServlet {
 		String password = request.getParameter("password");
 		try {
 			db = new Database(request.getSession());
-			String role = "";
-			String[] columns = { "Password", "RoleID" };
-			LinkedList<String> results = db
-					.getStrings("SELECT * FROM \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "' ", columns);
-			if (!results.isEmpty()) {
-				String dbpassword = results.get(0);
-				if (dbpassword.equals(password)) {
-					role = results.get(1);
-				}
-			}
-
-			if (role.equals("e")) {
-				setSession(request, response, cpr, "e", null);
-			} else if (role.equals("c")) {
-				User user = db.getUser(cpr);
-				setSession(request, response, cpr, "c", user);
-			} else {
+			String role = db.Login(cpr, password);			
+			if (role == null) {
 				String message = "CPR Number and password did not match";
 				request.setAttribute("message", message);
 				request.getRequestDispatcher("login.jsp").forward(request, response);
+			} else if (role.equals("e")) {
+				setSession(request, response, cpr, "e", null);
+			} else {
+				User user = db.getUser(cpr);
+				setSession(request, response, cpr, "c", user);
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();

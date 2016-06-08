@@ -56,7 +56,7 @@
     				<option value="ZAR">ZAR</option>
   				</select>
   				</div>
-				<div class="col-sm-offset-5 col-sm-5"><font size="2"><font color="red">${message}</font></font><br>
+				<div class="col-sm-offset-5 col-sm-5"><font size="2"><font color="red">${errormessage}</font></font><br>
 				<input type="submit" class="btn btn-default" name="transferButton" value="Transfer"></div>
 			</form>		
 	</div>

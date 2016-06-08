@@ -34,25 +34,28 @@ public class Confirmation extends HttpServlet {
 			String message = request.getParameter("message");
 			String cpr = db.getOwner(accountID);
 			switch (message) {
-		    	case "Deposit failure" :
-					request.setAttribute("message", "Account does not exist");
+		    	case "Deposit Invalid Account" :
+					request.setAttribute("errormessage", "Account does not exist");
 					request.getRequestDispatcher("deposit.jsp").forward(request, response);
 					break;
-		    	case "Withdraw failure" :
-		    		request.setAttribute("message", "Account does not exist");
+		    	case "Withdraw Invalid Account" :
+		    		request.setAttribute("errormessage", "Account does not exist");
 					request.getRequestDispatcher("withdraw.jsp").forward(request, response);
 					break;
-		    	case "Money Transaction failure" :
+		    	case "Insufficient transfer amout of money" : 
+		    		request.setAttribute("errormessaage", message);
+		    		request.getRequestDispatcher("transfer.jsp").forward(request,  response);
+		    	case "Money Transfer Invalid Account" :
 		    		if (request.getSession().getAttribute("role").equals("c")){
-		    			request.setAttribute("message", "Receiving account does not exist");
+		    			request.setAttribute("errormessage", "Receiving account does not exist");
 		    			request.getRequestDispatcher("ctransfer.jsp").forward(request, response);
 		    		} else {
-		    			request.setAttribute("message", "One of the accounts does not exist");
+		    			request.setAttribute("errormessage", "One of the accounts does not exist");
 		    			request.getRequestDispatcher("transfer.jsp").forward(request, response);
 		    		}
 		    		break;
 		    	case "Same account failure" :
-		    		request.setAttribute("message", "Sending and receiving account is the same");
+		    		request.setAttribute("errormessage", "Sending and receiving account is the same");
 		    		if (request.getSession().getAttribute("role").equals("c")){
 		    			request.getRequestDispatcher("ctransfer.jsp").forward(request, response);
 		    		} else {
@@ -60,7 +63,7 @@ public class Confirmation extends HttpServlet {
 		    		}
 		    		break;
 		    	default :
-		    		request.setAttribute("toastmessage", message);
+		    		request.setAttribute("message", message);
 					request.setAttribute("cpr", cpr);
 					request.setAttribute("toast", true);
 					request.setAttribute("accountID", accountID);

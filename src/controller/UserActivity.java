@@ -70,7 +70,7 @@ public class UserActivity extends HttpServlet {
 					request.setAttribute("address", address);
 					request.setAttribute("date", date);
 					request.setAttribute("zipcode", zipcode);
-					request.setAttribute("message", message);
+					request.setAttribute("errormessage", message);
 					request.getRequestDispatcher("register.jsp").forward(request, response);
 				}
 				break;
@@ -109,18 +109,17 @@ public class UserActivity extends HttpServlet {
 			case "delete":
 				message = db.deleteUser(cpr);
 				System.out.println(message);
-				// Insert error message
-				if (message.equals("User deleted successfully")) {
-					user = db.getUser(cpr);
-					request.setAttribute("message", message);
-					request.setAttribute("accounts", user.getAccounts());
-					request.setAttribute("fullname", user.getName());
-					request.setAttribute("cpr", cpr);
-					request.getRequestDispatcher("accounts.jsp").forward(request, response);
-				} else {
+				if (message.equals("User Deleted")) {
 					request.setAttribute("message", message);
 					request.setAttribute("toast", true);
 					request.getRequestDispatcher("search.jsp").forward(request, response);
+				} else {
+					user = db.getUser(cpr);
+					request.setAttribute("errormessage", message);
+					request.setAttribute("accounts", user.getAccounts());
+					request.setAttribute("name", user.getName());
+					request.setAttribute("cpr", cpr);
+					request.getRequestDispatcher("accounts.jsp").forward(request, response);
 				}
 				break;
 			}
