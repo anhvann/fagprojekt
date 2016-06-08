@@ -10,7 +10,7 @@
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
 	<servlet>
-		<description />
+		<description/>
 		<display-name>Login Servlet</display-name>
 		<icon>
 			<small-icon>icons/small.gif</small-icon>
