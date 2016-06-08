@@ -94,7 +94,7 @@ public class TestTransactions {
 	    when(request.getParameter("ID")).thenReturn(clientCPR);
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew = db.getAccount(accountID1).getBalance();
-	    assertEquals(transactionServlet.getMessage(), "Invalid Account ID");
+	    assertEquals("Deposit Invalid Account", transactionServlet.getMessage());
 	    assertEquals(balanceOld, balanceNew);
 	}
 	
@@ -167,7 +167,7 @@ public class TestTransactions {
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew1 = db.getAccount(accountID1).getBalance();
 	    BigDecimal balanceNew2 = db.getAccount(accountID2).getBalance();
-	   // assertEquals(transactionServlet.getMessage(), "Transfer completed"); //Wrong message in data base
+	    assertEquals(transactionServlet.getMessage(), "Transfer completed"); //Wrong message in data base
 	    BigDecimal amount = new BigDecimal("100");
 	    assertEquals(balanceOld1.subtract(amount), balanceNew1);
 	    assertEquals(balanceOld2.add(amount), balanceNew2);
@@ -187,7 +187,7 @@ public class TestTransactions {
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew1 = db.getAccount(accountID1).getBalance();
 	    BigDecimal balanceNew2 = db.getAccount(accountGBP).getBalance();
-	    assertEquals(transactionServlet.getMessage(), "Money Transaction completed!"); //Wrong message in data base
+	    assertEquals("Money Transaction completed!", transactionServlet.getMessage()); //Missing message
 	    BigDecimal amount = new BigDecimal("75.70");
 	    BigDecimal amount2 = new BigDecimal("7.80");
 	    System.out.println(balanceOld2+" "+balanceNew2);
@@ -207,7 +207,7 @@ public class TestTransactions {
 	    when(request.getParameter("ID")).thenReturn(clientCPR);
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew = db.getAccount(accountID1).getBalance();
-	    assertEquals(transactionServlet.getMessage(), "Money Transaction failure");
+	    assertEquals(transactionServlet.getMessage(), "Money Transaction failure"); //missing message
 	    assertEquals(balanceOld, balanceNew);
 	}
 	
@@ -223,7 +223,7 @@ public class TestTransactions {
 	    when(request.getParameter("ID")).thenReturn(clientCPR);
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew = db.getAccount(accountID2).getBalance();
-	    assertEquals(transactionServlet.getMessage(), "Money Transaction failure");
+	    assertEquals("Money Transaction failure", transactionServlet.getMessage()); //Missing message
 	    assertEquals(balanceOld, balanceNew);
 	}
 	@Test
@@ -240,7 +240,7 @@ public class TestTransactions {
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew1 = db.getAccount(accountID1).getBalance();
 	    BigDecimal balanceNew2 = db.getAccount(accountID2).getBalance();
-	    assertEquals(transactionServlet.getMessage(), "Insufficient transfer amount of money"); //Wrong message in data base
+	    assertEquals("Insufficient transfer amount of money", transactionServlet.getMessage()); //Missing message
 	    assertEquals(balanceOld1, balanceNew1);
 	    assertEquals(balanceOld2, balanceNew2);
 	}

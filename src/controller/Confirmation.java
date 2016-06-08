@@ -42,6 +42,7 @@ public class Confirmation extends HttpServlet {
 		    	case "Insufficient transfer amount of money" : 
 		    		request.setAttribute("errormessaage", message);
 		    		request.getRequestDispatcher("transfer.jsp").forward(request,  response);
+		    		break;
 		    	case "Money Transfer Invalid Account" :
 		    		if (request.getSession().getAttribute("role").equals("c")){
 		    			request.setAttribute("errormessage", "Receiving account does not exist");
