@@ -138,7 +138,7 @@ public class TestTransactions {
 	    when(request.getParameter("ID")).thenReturn(clientCPR);
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew = db.getAccount(accountID1).getBalance();
-	    assertEquals(transactionServlet.getMessage(), "Invalid Account ID");
+	    assertEquals(transactionServlet.getMessage(), "Withdraw Invalid Account");
 	    assertEquals(balanceOld, balanceNew);
 	}
 	
@@ -190,6 +190,7 @@ public class TestTransactions {
 	    assertEquals(transactionServlet.getMessage(), "Money Transaction completed!"); //Wrong message in data base
 	    BigDecimal amount = new BigDecimal("75.70");
 	    BigDecimal amount2 = new BigDecimal("7.80");
+	    System.out.println(balanceOld2+" "+balanceNew2);
 	    assertEquals(balanceOld1.subtract(amount), balanceNew1);
 	    assertEquals(balanceOld2.add(amount2), balanceNew2);
 	}
