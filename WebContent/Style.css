@@ -51,38 +51,6 @@ overflow: hidden;
 .expand:hover {
     height: 150px;
 }
-.dropdown {
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: transparent;
-    min-width: 200px;
-}
-
-.dropdown-content a {
-    color: #45a3bb;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-button:focus {
-	outline:0;
-}
-
-.dropdown-content a:hover {
-	color: #b6b6b6
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.dropdown:hover .dropbtn {
-    color: #b6b6b6;
-}
 
 .img-bar {
 	height: 80px;

@@ -52,15 +52,27 @@ public class UserActivity extends HttpServlet {
 			case "register":
 				Date dateObject = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 				java.sql.Date dateSQL = new java.sql.Date(dateObject.getTime());
-				message = db.register(cpr, email, password, name, address, zipcode, dateSQL, phone);
+				message = db.register(cpr, email, password, name, phone, address, dateSQL, zipcode);
 				System.out.println(message);
 				user = db.getUser(cpr);
-				request.setAttribute("accounts", user.getAccounts());
-				request.setAttribute("name", user.getName());
-				request.setAttribute("cpr", cpr);
-				request.setAttribute("message", message);
-				request.setAttribute("toast", true);
-				request.getRequestDispatcher("accounts.jsp").forward(request, response);
+				if (user != null) {
+					request.setAttribute("accounts", user.getAccounts());
+					request.setAttribute("name", user.getName());
+					request.setAttribute("cpr", cpr);
+					request.setAttribute("message", message);
+					request.setAttribute("toast", true);
+					request.getRequestDispatcher("accounts.jsp").forward(request, response);
+				} else {
+					request.setAttribute("ID", cpr);
+					request.setAttribute("email", email);
+					request.setAttribute("name", name);
+					request.setAttribute("phone", phone);
+					request.setAttribute("address", address);
+					request.setAttribute("date", date);
+					request.setAttribute("zipcode", zipcode);
+					request.setAttribute("message", message);
+					request.getRequestDispatcher("register.jsp").forward(request, response);
+				}
 				break;
 			case "viewuser":
 				user = db.getUser(cpr);

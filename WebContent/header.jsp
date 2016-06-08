@@ -1,7 +1,10 @@
 <!DOCTYPE HTML><%@page language="java"contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html>
 <meta charset="utf-8">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="Style.css">
 <nav class="navbar">
 	<a href="index.jsp"><img class="img-center img-logo" src="http://i.imgur.com/RlR7g0c.png"></a>
@@ -31,14 +34,7 @@ if ((session.getAttribute("loggedinuser") == null) || (session.getAttribute("log
 			<li><a href="deposit.jsp?accountID=${accountID}&accountName=${accountName}">Deposit</a></li>
 			<li><a href="withdraw.jsp?accountID=${accountID}&accountName=${accountName}">Withdraw</a></li>
 			<li><a href="transfer.jsp?accountID=${accountID}&accountName=${accountName}">Transfer</a></li>
-			<div class="dropdown">
-				<div class="expand">
-					<button class="dropbtn" >Account</button>
-					<div class="dropdown-content">
-						<a href="register.jsp">New user account</a> 
-					</div>
-				</div>
-			</div>
+			<li><a href="register.jsp?">Register User</a></li>
 		</ul>
 	</div>
 	<div id="loginlink">
