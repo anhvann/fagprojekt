@@ -163,6 +163,7 @@ public class Database {
 	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount, String ISOCode, String transactionName) throws SQLException {
 		if(session != null){
 			CallableStatement call;
+			System.out.println("amount: "+amount);
 			switch (type) {
 			case "Deposit":
 				call = connection.prepareCall("{call \"DTUGRP05\".Deposit(?, ?, ?, ?) }");

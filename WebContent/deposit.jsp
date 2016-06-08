@@ -14,7 +14,7 @@
 				<div class="col-sm-5"><input type="number" class="form-control" name="accountID" placeholder="Enter account ID" value="<%=accID%>" required/></div>
 				<br><br>
 				<label class="control-label col-sm-5">Amount:</label>
-				<div class="col-sm-5"><input type="number" class="form-control" name="amount" placeholder="Enter amount" required/>
+				<div class="col-sm-5"><input type="number" step="0.01" class="form-control" name="amount" placeholder="Enter amount" required/>
 				<select class="form-control" name="ISOCode">
     				<option value="DKK" selected>DKK</option>
     				<option value="USD">USD</option>
