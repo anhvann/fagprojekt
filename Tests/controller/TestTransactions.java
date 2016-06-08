@@ -68,6 +68,7 @@ public class TestTransactions {
 	    BigDecimal amount = new BigDecimal("100");
 	    assertEquals(balanceOld.add(amount), balanceNew);
 	}
+
 	@Test
 	public void testDepositDifferentCurrency() throws Exception {
 		BigDecimal balanceOld = db.getAccount(accountID1).getBalance();
@@ -173,7 +174,6 @@ public class TestTransactions {
 	    assertEquals(balanceOld1.subtract(amount), balanceNew1);
 	    assertEquals(balanceOld2.add(amount), balanceNew2);
 	}
-	
 	@Test
 	public void testTransferDifferentCurrency() throws Exception {
 		BigDecimal balanceOld1 = db.getAccount(accountID1).getBalance();
