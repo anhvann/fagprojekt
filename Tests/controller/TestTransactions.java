@@ -5,6 +5,8 @@ import static org.mockito.Mockito.*;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.io.*;
+
+import javax.servlet.FilterChain;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -43,7 +45,7 @@ public class TestTransactions {
 	    when(request.getParameter("cpr")).thenReturn(cpr);
 	    when(request.getParameter("password")).thenReturn(password);
 	    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-
+	    
 	    login.doPost(request, response);
 	    when(session.getAttribute("role")).thenReturn(login.getLoggedInUser());
 		transactionServlet = new Transactions();
@@ -187,8 +189,9 @@ public class TestTransactions {
 	    BigDecimal balanceNew2 = db.getAccount(accountGBP).getBalance();
 	    assertEquals(transactionServlet.getMessage(), "Money Transaction completed!"); //Wrong message in data base
 	    BigDecimal amount = new BigDecimal("75.70");
+	    BigDecimal amount2 = new BigDecimal("7.80");
 	    assertEquals(balanceOld1.subtract(amount), balanceNew1);
-	    assertEquals(balanceOld2.add(amount), balanceNew2);
+	    assertEquals(balanceOld2.add(amount2), balanceNew2);
 	}
 	
 	@Test

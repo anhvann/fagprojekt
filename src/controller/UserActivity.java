@@ -53,9 +53,8 @@ public class UserActivity extends HttpServlet {
 				Date dateObject = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 				java.sql.Date dateSQL = new java.sql.Date(dateObject.getTime());
 				message = db.register(cpr, email, password, name, phone, address, dateSQL, zipcode);
-				System.out.println(message);
 				user = db.getUser(cpr);
-				if (user != null) {
+				if (message.equals("User registered successfully")) {
 					request.setAttribute("accounts", user.getAccounts());
 					request.setAttribute("name", user.getName());
 					request.setAttribute("cpr", cpr);
@@ -108,8 +107,7 @@ public class UserActivity extends HttpServlet {
 				break;
 			case "delete":
 				message = db.deleteUser(cpr);
-				System.out.println(message);
-				if (message.equals("User Deleted")) {
+				if (!message.equals("User Deleted")) {
 					request.setAttribute("message", message);
 					request.setAttribute("toast", true);
 					request.getRequestDispatcher("search.jsp").forward(request, response);

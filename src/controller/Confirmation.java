@@ -18,16 +18,13 @@ import model.Database;
 @WebServlet("/Confirmation")
 public class Confirmation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Confirmation() {
-        super();
-    }
 
+	public Confirmation() {
+		super();
+	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try {
 			Database db = new Database(request.getSession());
 			String accountID = request.getParameter("accountID");
@@ -42,7 +39,7 @@ public class Confirmation extends HttpServlet {
 		    		request.setAttribute("errormessage", "Account does not exist");
 					request.getRequestDispatcher("withdraw.jsp").forward(request, response);
 					break;
-		    	case "Insufficient transfer amout of money" : 
+		    	case "Insufficient transfer amount of money" : 
 		    		request.setAttribute("errormessaage", message);
 		    		request.getRequestDispatcher("transfer.jsp").forward(request,  response);
 		    	case "Money Transfer Invalid Account" :
@@ -72,15 +69,15 @@ public class Confirmation extends HttpServlet {
 					request.setAttribute("accountName", db.getAccount(accountID).getName());
 					request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
 					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
-					request.setAttribute("formCode", "submitted");
 					break;
-				}
+			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 

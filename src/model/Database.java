@@ -159,7 +159,6 @@ public class Database {
 	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount, String ISOCode, String transactionName) throws SQLException {
 		if(session != null){
 			CallableStatement call;
-			System.out.println("amount: "+amount);
 			switch (type) {
 			case "Deposit":
 				call = connection.prepareCall("{call \"DTUGRP05\".Deposit(?, ?, ?, ?) }");
@@ -300,8 +299,7 @@ public class Database {
 		}
 		return null;
 	}
-	//Implement deleteUser in database
-	//Check if the user has no accounts
+	
 	public String deleteUser(String cpr) throws SQLException {
 		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".DeleteUser(?, ?) }");
 		call.setString("vCPRNo", cpr);
