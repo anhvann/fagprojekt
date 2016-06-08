@@ -8,7 +8,7 @@
 				<form action="AccountActivity?ID=${cpr}&action=changeaccount&accountID=<%=request.getParameter("accountID")%>" method="post" target="_self">
 					<label class="control-label col-sm-5">Name:</label>
 					<div class="col-sm-5">
-						<input type="text" class="form-control" name="name" placeholder="Enter name" value="${accountName}">
+						<input type="text" class="form-control" name="accountName" placeholder="Enter name" value="${name}">
 					</div>
 					<br><br>
 					
