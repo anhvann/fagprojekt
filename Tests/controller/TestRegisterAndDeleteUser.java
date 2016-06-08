@@ -34,7 +34,7 @@ public class TestRegisterAndDeleteUser {
 	private String name = "Tommy Hilfiger";
 	private String address = "Jernbanepladsen 65";
 	private String zipcode = "2800";
-	private String date = "02-08-1989";
+	private String date = "1989-08-02";
 	private String phone = "63573311";
 	
 	/*Precondition:

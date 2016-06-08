@@ -5,6 +5,8 @@ import static org.mockito.Mockito.*;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.io.*;
+
+import javax.servlet.FilterChain;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -43,7 +45,7 @@ public class TestTransactions {
 	    when(request.getParameter("cpr")).thenReturn(cpr);
 	    when(request.getParameter("password")).thenReturn(password);
 	    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-
+	    
 	    login.doPost(request, response);
 	    when(session.getAttribute("role")).thenReturn(login.getLoggedInUser());
 		transactionServlet = new Transactions();

@@ -150,4 +150,13 @@ public class TestCreateDeleteAccount {
 		assertEquals(0, numberOfAccountsAfter-numberOfAccountsBefore);
 		assertEquals("Invalid ISO-Code", accountActivityServlet.getMessage());		
 	}
+	
+	// For user interface
+		@Test
+		public void testViewNewAccountPage() throws Exception {
+			action = "newaccount";
+			when(request.getParameter("ID")).thenReturn(clientCPR);
+			when(request.getParameter("action")).thenReturn(action);
+			accountActivityServlet.doPost(request, response);
+		}
 }

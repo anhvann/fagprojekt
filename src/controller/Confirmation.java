@@ -18,66 +18,64 @@ import model.Database;
 @WebServlet("/Confirmation")
 public class Confirmation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Confirmation() {
-        super();
-    }
 
+	public Confirmation() {
+		super();
+	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try {
 			Database db = new Database(request.getSession());
 			String accountID = request.getParameter("accountID");
 			String message = request.getParameter("message");
 			String cpr = db.getOwner(accountID);
 			switch (message) {
-		    	case "Deposit failure" :
+			case "Deposit failure":
 					request.setAttribute("message", "Account does not exist");
 					request.getRequestDispatcher("deposit.jsp").forward(request, response);
-					break;
-		    	case "Withdraw failure" :
-		    		request.setAttribute("message", "Account does not exist");
+				break;
+			case "Withdraw failure":
+					request.setAttribute("message", "Account does not exist");
 					request.getRequestDispatcher("withdraw.jsp").forward(request, response);
-					break;
-		    	case "Money Transaction failure" :
-		    		if (request.getSession().getAttribute("role").equals("c")){
-		    			request.setAttribute("message", "Receiving account does not exist");
-		    			request.getRequestDispatcher("ctransfer.jsp").forward(request, response);
-		    		} else {
-		    			request.setAttribute("message", "One of the accounts does not exist");
-		    			request.getRequestDispatcher("transfer.jsp").forward(request, response);
-		    		}
-		    		break;
-		    	case "Same account failure" :
-		    		request.setAttribute("message", "Sending and receiving account is the same");
-		    		if (request.getSession().getAttribute("role").equals("c")){
-		    			request.getRequestDispatcher("ctransfer.jsp").forward(request, response);
-		    		} else {
-		    			request.getRequestDispatcher("transfer.jsp").forward(request, response);
-		    		}
-		    		break;
-		    	default :
-		    		request.setAttribute("toastmessage", message);
-					request.setAttribute("cpr", cpr);
-					request.setAttribute("toast", true);
-					request.setAttribute("accountID", accountID);
-					request.setAttribute("transactions", db.getTransactions(accountID));
-					request.setAttribute("balance", db.getTransactions(accountID).getLast().getBalanceString());
-					request.setAttribute("accountName", db.getAccount(accountID).getName());
-					request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
-					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
-					request.setAttribute("formCode", "submitted");
-					break;
+				break;
+			case "Money Transaction failure":
+				if (request.getSession().getAttribute("role").equals("c")) { 
+					request.setAttribute("message", "Receiving account does not exist");
+					request.getRequestDispatcher("ctransfer.jsp").forward(request, response);
+				} else {
+					request.setAttribute("message", "Sending account does not exist");
+					request.getRequestDispatcher("transfer.jsp").forward(request, response);
 				}
+				break;
+			case "Same account failure":
+				request.setAttribute("message", "Sending and receiving account is the same");
+				if (request.getSession().getAttribute("role").equals("c")) {
+					request.getRequestDispatcher("ctransfer.jsp").forward(request, response);
+				} else {
+					request.getRequestDispatcher("transfer.jsp").forward(request, response);
+				}
+				break;
+			default:
+				request.setAttribute("toastmessage", message);
+				request.setAttribute("cpr", cpr);
+				request.setAttribute("toast", true);
+				request.setAttribute("accountID", accountID);
+				request.setAttribute("transactions", db.getTransactions(accountID));
+				request.setAttribute("balance", db.getTransactions(accountID).getLast().getBalanceString());
+				request.setAttribute("accountName", db.getAccount(accountID).getName());
+				request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
+				request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+				request.setAttribute("formCode", "submitted");
+				break;
+			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 
