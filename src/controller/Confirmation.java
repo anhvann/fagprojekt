@@ -42,11 +42,12 @@ public class Confirmation extends HttpServlet {
 		    	case "Withdraw Insufficient Balance" :
 		    		request.setAttribute("errormessage", "Insufficient Balance");
 		    		request.getRequestDispatcher("withdraw.jsp").forward(request,  response);
+		    		break;
 		    	case "Transfer Insufficient Balance" : 
 		    		request.setAttribute("errormessage", "Insufficient Balance");
 		    		request.getRequestDispatcher("transfer.jsp").forward(request,  response);
 		    		break;
-		    	case "Money Transfer Invalid Account" :
+		    	case "Transfer Invalid Account" :
 		    		if (request.getSession().getAttribute("role").equals("c")){
 		    			request.setAttribute("errormessage", "Receiving account does not exist");
 		    			request.getRequestDispatcher("ctransfer.jsp").forward(request, response);
