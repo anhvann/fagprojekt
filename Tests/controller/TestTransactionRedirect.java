@@ -1,4 +1,4 @@
-//WHITEBOX: For user interface
+//For user interface
 package controller;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;

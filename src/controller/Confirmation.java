@@ -26,7 +26,7 @@ public class Confirmation extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			Database db = new Database(request.getSession());
+			Database db = new Database();
 			String accountID = request.getParameter("accountID");
 			String message = request.getParameter("message");
 			String cpr = db.getOwner(accountID);

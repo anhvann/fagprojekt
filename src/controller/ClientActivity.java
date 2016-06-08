@@ -19,24 +19,19 @@ public class ClientActivity extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String cpr = request.getParameter("ID");
-		String action = request.getParameter("action");
-		try {
-			Database db = new Database(request.getSession());
-			User user = db.getUser(cpr);
-			String message;
-			request.setAttribute("accounts", user.getAccounts());
-			request.setAttribute("name", user.getName());
-			request.setAttribute("cpr", cpr);
-			switch (action) {
-				case "transfer" :
-					request.getRequestDispatcher("ctransfer.jsp").forward(request, response);
-					break;
+			Database db;
+			try {
+				db = new Database();
+				User user = db.getUser(cpr);
+				request.setAttribute("accounts", user.getAccounts());
+				request.setAttribute("name", user.getName());
+				request.setAttribute("cpr", cpr);
+				request.getRequestDispatcher("ctransfer.jsp").forward(request, response);
+			} catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
+			
 	}
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}

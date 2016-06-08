@@ -1,4 +1,4 @@
-//WHITE BOX: For redirect to user interface
+//For redirect to user interface
 package controller;
 
 import static org.junit.Assert.assertEquals;
@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import model.Database;
 
-public class TestConfirmation {
+public class CoverRedirect {
 	private HttpServletRequest request = mock(HttpServletRequest.class);
 	private HttpServletResponse response = mock(HttpServletResponse.class);
 	private RequestDispatcher dispatcher = mock(RequestDispatcher.class);
@@ -102,5 +102,12 @@ public class TestConfirmation {
 		when(session.getAttribute("role")).thenReturn("c");
 		when(request.getParameter("message")).thenReturn(message);
 		confirmation.doPost(request, response);
+	}
+	
+	@Test
+	public void testViewClientTransferPage() throws Exception {
+		ClientActivity clientActivityServlet = new ClientActivity();
+		when(request.getParameter("ID")).thenReturn("2309911234");
+		clientActivityServlet.doPost(request, response);
 	}
 }

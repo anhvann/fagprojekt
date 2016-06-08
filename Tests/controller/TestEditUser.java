@@ -64,7 +64,7 @@ public class TestEditUser {
 	    when(session.getAttribute("role")).thenReturn(login.getRole());
 	    userActivity = new UserActivity();
 		
-		db = new Database(session);
+		db = new Database();
 		
 		//Reset account to initial values
 	    when(request.getParameter("ID")).thenReturn(clientCpr);
@@ -102,7 +102,20 @@ public class TestEditUser {
 		user = db.getUser(clientCpr); //get updated user
 		assertEquals(email, user.getEmail());
 		assertEquals(name, user.getName());
+		assertEquals("User successfully edited", userActivity.getMessage());
 	}
+	
+	@Test
+	public void testEditInvalidZip() throws Exception {
+		String newzipcode = "0000";
+		
+	    when(request.getParameter("zipcode")).thenReturn(newzipcode);
+		userActivity.doPost(request, response);
+		
+		assertEquals(zipcode, db.getUser(clientCpr).getPostCode());
+		assertEquals("Zipcode not found", userActivity.getMessage()); //Wrong message
+	}
+	
 	//View pages
 	@Test
 	public void testViewEditPage() throws Exception {
@@ -137,78 +150,5 @@ public class TestEditUser {
 	    when(request.getParameter("date")).thenReturn(date);
 	    when(request.getParameter("phone")).thenReturn(phone);
 		userActivity.doPost(request, response);
-	}
-	
-	//Not possible through user interface
-	@Test
-	public void testEditUserLoggedOut() throws Exception {
-		//Logout
-	    when(request.getSession()).thenReturn(null);
-
-		//Edit user
-		String email = "voldemort@gmail.com";
-		String name = "Voldemort";
-		
-		User user = db.getUser(clientCpr);
-		assertEquals("tomriddle@gmail.com", user.getEmail());
-		assertEquals("Tom Marvolo Riddle", user.getName());
-		
-		when(request.getParameter("ID")).thenReturn(clientCpr);
-	    when(request.getParameter("action")).thenReturn(action);
-	    when(request.getParameter("email")).thenReturn(email);
-	    when(request.getParameter("password")).thenReturn(clientPassword);
-	    when(request.getParameter("name")).thenReturn(name);
-	    when(request.getParameter("address")).thenReturn(address);
-	    when(request.getParameter("zipcode")).thenReturn(zipcode);
-	    when(request.getParameter("date")).thenReturn(date);
-	    when(request.getParameter("phone")).thenReturn(phone);
-		userActivity.doPost(request, response);
-
-		user = db.getUser(clientCpr); //get updated user
-		assertEquals("tomriddle@gmail.com", user.getEmail());
-		assertEquals("Tom Marvolo Riddle", user.getName());
-	}
-	
-	@Test
-	public void testEditUserAsClient() throws Exception {
-		//Login
-		String cpr = "3112261111";
-		String password = "slytherin4ever";
-
-		Login login = new Login();
-	    when(request.getSession()).thenReturn(session);
-	    when(request.getParameter("cpr")).thenReturn(cpr);
-	    when(request.getParameter("password")).thenReturn(password);
-	    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-
-	    login.doPost(request, response);
-	    assertEquals("c", login.getRole());
-	    when(session.getAttribute("role")).thenReturn(login.getRole());
-	    userActivity = new UserActivity();
-		
-		db = new Database(session);
-		
-		//Edit user
-		String email = "voldemort@gmail.com";
-		String name = "Voldemort";
-		
-		User user = db.getUser(clientCpr);
-		assertEquals("tomriddle@gmail.com", user.getEmail());
-		assertEquals("Tom Marvolo Riddle", user.getName());
-		
-		when(request.getParameter("ID")).thenReturn(clientCpr);
-	    when(request.getParameter("action")).thenReturn(action);
-	    when(request.getParameter("email")).thenReturn(email);
-	    when(request.getParameter("password")).thenReturn(clientPassword);
-	    when(request.getParameter("name")).thenReturn(name);
-	    when(request.getParameter("address")).thenReturn(address);
-	    when(request.getParameter("zipcode")).thenReturn(zipcode);
-	    when(request.getParameter("date")).thenReturn(date);
-	    when(request.getParameter("phone")).thenReturn(phone);
-		userActivity.doPost(request, response);
-
-		user = db.getUser(clientCpr); //get updated user
-		assertEquals("tomriddle@gmail.com", user.getEmail());
-		assertEquals("Tom Marvolo Riddle", user.getName());
 	}
 }
