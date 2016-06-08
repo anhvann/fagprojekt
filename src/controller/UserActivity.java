@@ -107,11 +107,11 @@ public class UserActivity extends HttpServlet {
 				break;
 			case "delete":
 				message = db.deleteUser(cpr);
-				if (!message.equals("User Deleted")) {
+				if (message.equals("User deleted")) {
 					request.setAttribute("message", message);
 					request.setAttribute("toast", true);
 					request.getRequestDispatcher("search.jsp").forward(request, response);
-				} else {
+				}else {
 					user = db.getUser(cpr);
 					request.setAttribute("errormessage", message);
 					request.setAttribute("accounts", user.getAccounts());

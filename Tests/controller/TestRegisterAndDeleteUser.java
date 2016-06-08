@@ -44,6 +44,7 @@ public class TestRegisterAndDeleteUser {
 	 * 
 	 * User with CPR 0208891133 does not exist
 	 * User with CPR 2309911234 already exists
+	 * User with CPR 3112261111 still has accounts
 	*/
 	@Before
 	public void login() throws ServletException, IOException, ClassNotFoundException, SQLException{
@@ -64,26 +65,13 @@ public class TestRegisterAndDeleteUser {
 	}
 	@Test
 	public void testRegisterAndDeleteSuccess() throws Exception {
-		//Date conversion
-		Date dateObject = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-		java.sql.Date dateSQL = new java.sql.Date(dateObject.getTime());
-		
 		//Register
 		String action = "register";
-		assertNull(db.getUser(clientCpr)); //ensure user does not already exist
+		assertNull(db.getUser(clientCpr)); //ensure user does not already exists
 		
-		callServlet(action);
-		
+		callServlet(action, clientCpr);
 		User user = db.getUser(clientCpr);
 		assertNotNull(user);
-		assertEquals(clientCpr, user.getCPR());
-		assertEquals(email, user.getEmail());
-		assertEquals(clientPassword, user.getPassword());
-		assertEquals(name, user.getName());
-		assertEquals(address, user.getAddress());
-		assertEquals(zipcode, user.getPostCode());
-		assertEquals(dateSQL, user.getDateOfBirth());
-		assertEquals(phone, user.getPhone());
 		assertEquals("User registered successfully",userActivity.getMessage());
 		
 		//Delete
@@ -92,32 +80,27 @@ public class TestRegisterAndDeleteUser {
 	    when(request.getParameter("action")).thenReturn(action);
 	    userActivity.doPost(request, response);
 	    
-	    assertEquals("User Deleted", userActivity.getMessage());
+	    assertEquals("User deleted", userActivity.getMessage());
 	    assertNull(db.getUser(clientCpr));
 	}
+	
 	@Test
 	public void testRegisterUserWithUsedCPR() throws Exception {
 		//Register
 		String action = "register";
-		clientCpr = "2309911234";
+		callServlet(action, "2309911234");
 		
-		callServlet(action);
-		
-		assertEquals("User existed", userActivity.getMessage());
+		assertEquals("User is already registered", userActivity.getMessage());
 	}
 	
 	@Test
-	public void testDeleteNonExistentUser() throws Exception {
-		//Register
+	public void testDeleteUserWithAccounts() throws Exception {
 		String action = "delete";
-		clientCpr = "0208891133";
+		callServlet(action, "3112261111");
 		
-		callServlet(action);
-		
-		assertEquals("Invalid User CPRNo",userActivity.getMessage());
+		assertEquals("User still has account(s)",userActivity.getMessage());
 	}
-	
-	private void callServlet(String action) throws ServletException, IOException {
+	private void callServlet(String action, String clientCpr) throws ServletException, IOException {
 		when(request.getParameter("ID")).thenReturn(clientCpr);
 	    when(request.getParameter("action")).thenReturn(action);
 	    when(request.getParameter("email")).thenReturn(email);

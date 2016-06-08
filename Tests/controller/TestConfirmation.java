@@ -37,16 +37,21 @@ public class TestConfirmation {
 	}
 
 	@Test
-	public void testDepositInvalidAccunt() throws Exception {
-		String message = "Deposit Invalid Account";
-
+	public void testTransactionSuccess() throws Exception {
+		String message = "Successful Transaction"; //any success string
 		when(request.getParameter("message")).thenReturn(message);
 		confirmation.doPost(request, response);
-
 	}
 
 	@Test
-	public void testWithdrawInvalidAccunt() throws Exception {
+	public void testDepositInvalidAccount() throws Exception {
+		String message = "Deposit Invalid Account";
+		when(request.getParameter("message")).thenReturn(message);
+		confirmation.doPost(request, response);
+	}
+
+	@Test
+	public void testWithdrawInvalidAccount() throws Exception {
 		String message = "Withdraw Invalid Account";
 		when(request.getParameter("message")).thenReturn(message);
 		confirmation.doPost(request, response);
@@ -54,15 +59,22 @@ public class TestConfirmation {
 	}
 
 	@Test
-	public void testInsufficientBalance() throws Exception {
-		String message = "Insufficient transfer amount of money";
+	public void testWithdrawInsufficientBalance() throws Exception {
+		String message = "Withdraw Insufficient Balance";
 		when(request.getParameter("message")).thenReturn(message);
 		confirmation.doPost(request, response);
 	}
 
 	@Test
+	public void testTransferInsufficientBalance() throws Exception {
+		String message = "Transfer Insufficient Balance";
+		when(request.getParameter("message")).thenReturn(message);
+		confirmation.doPost(request, response);
+	}
+	
+	@Test
 	public void testEmployeeTransferInvalidAccount() throws Exception {
-		String message = "Money Transfer Invalid Account";
+		String message = "Transfer Invalid Account";
 		when(session.getAttribute("role")).thenReturn("e");
 		when(request.getParameter("message")).thenReturn(message);
 		confirmation.doPost(request, response);
@@ -70,7 +82,7 @@ public class TestConfirmation {
 
 	@Test
 	public void testClientTransferInvalidAccount() throws Exception {
-		String message = "Money Transfer Invalid Account";
+		String message = "Transfer Invalid Account";
 		when(session.getAttribute("role")).thenReturn("c");
 		when(request.getParameter("message")).thenReturn(message);
 		confirmation.doPost(request, response);
