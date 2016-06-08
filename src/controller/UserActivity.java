@@ -107,6 +107,7 @@ public class UserActivity extends HttpServlet {
 				request.getRequestDispatcher("accounts.jsp").forward(request, response);
 				break;
 			case "delete":
+				System.out.println(cpr);
 				message = db.deleteUser(cpr);
 				System.out.println(message);
 				// Insert error message

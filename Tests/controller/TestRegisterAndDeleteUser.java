@@ -62,39 +62,39 @@ public class TestRegisterAndDeleteUser {
 		
 		db = new Database(session);
 	}
-//	@Test
-//	public void testRegisterAndDeleteSuccess() throws Exception {
-//		//Date conversion
-//		Date dateObject = new SimpleDateFormat("dd-MM-yyyy").parse(date);
-//		java.sql.Date dateSQL = new java.sql.Date(dateObject.getTime());
-//		
-//		//Register
-//		String action = "register";
-//		assertNull(db.getUser(newCpr)); //ensure user does not already exist
-//		
-//		callServlet(action);
-//		
-//		User user = db.getUser(newCpr);
-//		assertNotNull(user);
-//		assertEquals(clientCpr, user.getCPR());
-//		assertEquals(email, user.getEmail());
-//		assertEquals(clientPassword, user.getPassword());
-//		assertEquals(name, user.getName());
-//		assertEquals(address, user.getAddress());
-//		assertEquals(zipcode, user.getPostCode());
-//		assertEquals(dateSQL, user.getDateOfBirth());
-//		assertEquals(phone, user.getPhone());
-//		assertEquals("User Created Successfully",userActivity.getMessage());
-//		
-//		//Delete
-//		action = "delete";
-//		when(request.getParameter("ID")).thenReturn(newCpr);
-//	    when(request.getParameter("action")).thenReturn(action);
-//	    userActivity.doPost(request, response);
-//	    
-//	    assertEquals("User deleted successfully", userActivity.getMessage()); //But it's not :|
-//	    assertNull(db.getUser(newCpr));
-//	}
+	@Test
+	public void testRegisterAndDeleteSuccess() throws Exception {
+		//Date conversion
+		Date dateObject = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+		java.sql.Date dateSQL = new java.sql.Date(dateObject.getTime());
+		
+		//Register
+		String action = "register";
+		assertNull(db.getUser(clientCpr)); //ensure user does not already exist
+		
+		callServlet(action);
+		
+		User user = db.getUser(clientCpr);
+		assertNotNull(user);
+		assertEquals(clientCpr, user.getCPR());
+		assertEquals(email, user.getEmail());
+		assertEquals(clientPassword, user.getPassword());
+		assertEquals(name, user.getName());
+		assertEquals(address, user.getAddress());
+		assertEquals(zipcode, user.getPostCode());
+		assertEquals(dateSQL, user.getDateOfBirth());
+		assertEquals(phone, user.getPhone());
+		assertEquals("User registered successfully",userActivity.getMessage());
+		
+		//Delete
+		action = "delete";
+		when(request.getParameter("ID")).thenReturn(clientCpr);
+	    when(request.getParameter("action")).thenReturn(action);
+	    userActivity.doPost(request, response);
+	    
+	    assertEquals("User Deleted", userActivity.getMessage()); //But it's not :|
+	    assertNull(db.getUser(clientCpr));
+	}
 //	@Test
 //	public void testRegisterUserWithUsedCPR() throws Exception {
 //		//Register
@@ -118,16 +118,16 @@ public class TestRegisterAndDeleteUser {
 //		assertEquals("User does not exist",userActivity.getMessage());
 //	}
 //	
-//	private void callServlet(String action) throws ServletException, IOException {
-//		when(request.getParameter("ID")).thenReturn(clientCpr);
-//	    when(request.getParameter("action")).thenReturn(action);
-//	    when(request.getParameter("email")).thenReturn(email);
-//	    when(request.getParameter("password")).thenReturn(clientPassword);
-//	    when(request.getParameter("name")).thenReturn(name);
-//	    when(request.getParameter("address")).thenReturn(address);
-//	    when(request.getParameter("zipcode")).thenReturn(zipcode);
-//	    when(request.getParameter("date")).thenReturn(date);
-//	    when(request.getParameter("phone")).thenReturn(phone);
-//		userActivity.doPost(request, response);
-//	}
+	private void callServlet(String action) throws ServletException, IOException {
+		when(request.getParameter("ID")).thenReturn(clientCpr);
+	    when(request.getParameter("action")).thenReturn(action);
+	    when(request.getParameter("email")).thenReturn(email);
+	    when(request.getParameter("password")).thenReturn(clientPassword);
+	    when(request.getParameter("name")).thenReturn(name);
+	    when(request.getParameter("address")).thenReturn(address);
+	    when(request.getParameter("zipcode")).thenReturn(zipcode);
+	    when(request.getParameter("date")).thenReturn(date);
+	    when(request.getParameter("phone")).thenReturn(phone);
+		userActivity.doPost(request, response);
+	}
 }

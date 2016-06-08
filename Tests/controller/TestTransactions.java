@@ -189,8 +189,9 @@ public class TestTransactions {
 	    BigDecimal balanceNew2 = db.getAccount(accountGBP).getBalance();
 	    assertEquals(transactionServlet.getMessage(), "Money Transaction completed!"); //Wrong message in data base
 	    BigDecimal amount = new BigDecimal("75.70");
+	    BigDecimal amount2 = new BigDecimal("7.80");
 	    assertEquals(balanceOld1.subtract(amount), balanceNew1);
-	    assertEquals(balanceOld2.add(amount), balanceNew2);
+	    assertEquals(balanceOld2.add(amount2), balanceNew2);
 	}
 	
 	@Test
