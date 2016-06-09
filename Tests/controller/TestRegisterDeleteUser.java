@@ -24,7 +24,7 @@ public class TestRegisterDeleteUser {
 	private String clientPassword = "seven";
 	private String name = "Tommy Hilfiger";
 	private String address = "Jernbanepladsen 65";
-	private String zipcode = "2800";
+	private String postcode = "2800";
 	private String date = "1989-08-02";
 	private String phone = "63573311";
 	
@@ -60,7 +60,7 @@ public class TestRegisterDeleteUser {
 		String action = "register";
 		assertNull(db.getUser(clientCpr)); //ensure user does not already exists
 		
-		callServlet(action, clientCpr, zipcode);
+		callServlet(action, clientCpr, postcode);
 		User user = db.getUser(clientCpr);
 		assertNotNull(user);
 		assertEquals("User registered successfully",userActivity.getMessage());
@@ -79,7 +79,7 @@ public class TestRegisterDeleteUser {
 	public void testRegisterUserWithUsedCPR() throws Exception {
 		//Register
 		String action = "register";
-		callServlet(action, "2309911234", zipcode);
+		callServlet(action, "2309911234", postcode);
 		
 		assertEquals("User is already registered", userActivity.getMessage());
 	}
@@ -90,24 +90,25 @@ public class TestRegisterDeleteUser {
 		String action = "register";
 		callServlet(action, "1504902584", "0000");
 		
-		assertEquals("Invalid Zipcode", userActivity.getMessage()); //Wrong message
+		assertEquals("Invalid Postal Code", userActivity.getMessage());
+		assertNull(db.getUser(clientCpr));
 	}
 	
 	@Test
 	public void testDeleteUserWithAccounts() throws Exception {
 		String action = "delete";
-		callServlet(action, "3112261111", zipcode);
+		callServlet(action, "3112261111", postcode);
 		
 		assertEquals("User still has account(s)",userActivity.getMessage());
 	}
-	private void callServlet(String action, String clientCpr, String zipcode) throws ServletException, IOException {
+	private void callServlet(String action, String clientCpr, String postcode) throws ServletException, IOException {
 		when(request.getParameter("ID")).thenReturn(clientCpr);
 	    when(request.getParameter("action")).thenReturn(action);
 	    when(request.getParameter("email")).thenReturn(email);
 	    when(request.getParameter("password")).thenReturn(clientPassword);
 	    when(request.getParameter("name")).thenReturn(name);
 	    when(request.getParameter("address")).thenReturn(address);
-	    when(request.getParameter("zipcode")).thenReturn(zipcode);
+	    when(request.getParameter("postcode")).thenReturn(postcode);
 	    when(request.getParameter("date")).thenReturn(date);
 	    when(request.getParameter("phone")).thenReturn(phone);
 		userActivity.doPost(request, response);

@@ -13,7 +13,8 @@ public class Database {
 	private HttpSession session;
 
 	private String url = "jdbc:db2://192.86.32.54:5040/DALLASB:retrieveMessagesFromServerOnGetMessage=true;emulateParameterMetaDataForZCalls=1;";
-	private String loginString = "Illegal action"; 
+	private String loginString = "Illegal action";
+
 	public Database(HttpSession session) throws ClassNotFoundException, SQLException {
 		connect();
 		this.session = session;
@@ -26,7 +27,7 @@ public class Database {
 	}
 
 	public ArrayList<User> searchFor(String keyword) {
-		if (session.getAttribute("role").equals("e")) {
+		if (session != null && session.getAttribute("role").equals("e")) {
 			ArrayList<String> IDs = new ArrayList<>();
 			ArrayList<User> users = new ArrayList<>();
 
@@ -115,7 +116,7 @@ public class Database {
 	}
 
 	public String newAccount(Account account) throws SQLException {
-		if (session.getAttribute("role").equals("e")) {
+		if (session != null && session.getAttribute("role").equals("e")) {
 			String cpr = account.getOwner().getCPR();
 			String ID = account.getAccountID();
 			String name = account.getName();
@@ -137,7 +138,7 @@ public class Database {
 	}
 
 	public String closeAccount(String accountID) throws SQLException {
-		if (session.getAttribute("role").equals("e")) {
+		if (session != null && session.getAttribute("role").equals("e")) {
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".DeleteAccount(?, ?) }");
 			call.setString("vAccID", accountID);
 			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
@@ -148,7 +149,7 @@ public class Database {
 	}
 
 	public String editAccount(Account account) throws SQLException {
-		if (session.getAttribute("role").equals("e")) {
+		if (session != null && session.getAttribute("role").equals("e")) {
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditAccount(?, ?, ?, ?) }");
 			call.setString("vAccID", account.getAccountID());
 			call.setString("vAccName", account.getName());
@@ -160,8 +161,10 @@ public class Database {
 		return loginString;
 	}
 
-	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount, String ISOCode, String transactionName) throws SQLException {
-		if (session.getAttribute("role").equals("e") || session.getAttribute("role").equals("c")) {
+	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount,
+			String ISOCode, String transactionName) throws SQLException {
+		System.out.println(session);
+		if (session != null && session.getAttribute("loggedinuser") != null) {
 			CallableStatement call;
 			switch (type) {
 			case "Deposit":
@@ -210,11 +213,11 @@ public class Database {
 		return cpr;
 	}
 
-	public String getCity(String zipcode) {
+	public String getCity(String postcode) {
 		String city = null;
 		try {
 			ResultSet resultset = statement
-					.executeQuery("select * from \"DTUGRP05\".\"CITIES\" WHERE \"Postcode\" = '" + zipcode + "'");
+					.executeQuery("select * from \"DTUGRP05\".\"CITIES\" WHERE \"Postcode\" = '" + postcode + "'");
 			if (resultset.next()) {
 				city = resultset.getString("CityName");
 			}
@@ -246,8 +249,9 @@ public class Database {
 		return null;
 	}
 
-	public String register(String cpr, String email, String password, String name, String phone, String address, Date date, String postcode) throws SQLException {
-		if (session.getAttribute("role").equals("e")) {
+	public String register(String cpr, String email, String password, String name, String phone, String address,
+			Date date, String postcode) throws SQLException {
+		if (session != null && session.getAttribute("role").equals("e")) {
 			CallableStatement call = connection
 					.prepareCall("{call \"DTUGRP05\".UserRegister(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
 			call.setString("vCPRNo", cpr);
@@ -293,16 +297,16 @@ public class Database {
 		return user;
 	}
 
-	public String editUser(String cpr, String email, String password, String name, String address, String zipcode,
+	public String editUser(String cpr, String email, String password, String name, String address, String postcode,
 			Date date, String phone) throws SQLException {
-		if (session.getAttribute("role").equals("e")) {
+		if (session != null && session.getAttribute("role").equals("e")) {
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditUser(?, ?, ?, ?, ?, ?, ?, ?, ?) }");
 			call.setString("vCPRNo", cpr);
 			call.setString("vEmail", email);
 			call.setString("vPassword", password);
 			call.setString("vFullName", name);
 			call.setString("vAddress", address);
-			call.setString("vPostcode", zipcode);
+			call.setString("vPostcode", postcode);
 			call.setDate("vDateOfBirth", date);
 			call.setString("vPhone", phone);
 			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
@@ -313,7 +317,7 @@ public class Database {
 	}
 
 	public String deleteUser(String cpr) throws SQLException {
-		if (session.getAttribute("role").equals("e")) {
+		if (session != null && session.getAttribute("role").equals("e")) {
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".DeleteUser(?, ?) }");
 			call.setString("vCPRNo", cpr);
 			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
