@@ -21,7 +21,7 @@ overflow: hidden;
 
 .navbar .nav>li>a {
 	line-height: 15px;
-	padding:20px;
+	padding:18px;
 	color: #45a3bb;
 }
 
@@ -128,7 +128,7 @@ html, body {
 	border: none;
 	background: none;
 	font-size: 20px;
-	padding: 20px;
+	padding: 20px 36px;
 }
 
 #searchbar input#searchbutton {
@@ -148,7 +148,7 @@ html, body {
 }
 .pagetitle {
 	color: grey;
-	padding: 50px 0px 0px 100px;
+	padding: 30px 0px 0px 50px;
 	font-size: 23px;
 }
 .pagesubtitle {

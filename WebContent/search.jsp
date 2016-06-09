@@ -15,7 +15,7 @@
 	<%@include file="employeecheck.jsp" %>
 	<div class="main">
 		<form id=searchbar action="Search" method="post" target="_self">
-			<input id=searchbutton type="submit" value="Search"	style="float: right" />
+			<input id=searchbutton type="submit" value="" style="float: right"/>
 			<div style="overflow: hidden">
 				<input id="searchfield" type="text" name="searchfield"
 					placeholder="Search by name, cpr or phone"
@@ -28,7 +28,7 @@
 				if(users!= null){%>
 				    <div align="center">
 		            <table class="clickable">
-		            	<col width="25%">
+		            	<col width="15%">
 				  		<col width="30%">
 				  		<col width="30%">
 				  		<col width="15%">
