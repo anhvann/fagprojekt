@@ -32,10 +32,16 @@ public class Database {
 			ArrayList<User> users = new ArrayList<>();
 
 			try {
-				ResultSet resultSet = statement
+				String query = "SELECT * FROM \"DTUGRP05\".\"CUSTOMERS\" WHERE \"CPRNo\" LIKE ? OR \"Phone\" LIKE ? OR LOWER(\"FullName\") LIKE ?";
+				PreparedStatement stmt = connection.prepareStatement(query);
+				stmt.setString(1, "%"+keyword+"%");
+				stmt.setString(2, "%"+keyword+"%");
+				stmt.setString(3, "%"+keyword+"%");
+				ResultSet resultSet = stmt.executeQuery();
+				/*ResultSet resultSet = statement
 						.executeQuery("SELECT * FROM \"DTUGRP05\".\"CUSTOMERS\" WHERE \"CPRNo\" LIKE '%" + keyword
 								+ "%' OR \"Phone\" LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%" + keyword
-								+ "%'");
+								+ "%'");*/
 				while (resultSet.next()) {
 					IDs.add(resultSet.getString("CPRNo"));
 				}
