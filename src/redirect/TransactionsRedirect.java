@@ -1,9 +1,7 @@
-package controller;
+package redirect;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,14 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.Database;
 
-/**
- * Servlet implementation class Confirmation
- */
-@WebServlet("/Confirmation")
-public class Confirmation extends HttpServlet {
+@WebServlet("/TransactionsRedirect")
+public class TransactionsRedirect extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public Confirmation() {
+	public TransactionsRedirect() {
 		super();
 	}
 

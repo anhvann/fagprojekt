@@ -1,4 +1,4 @@
-package controller;
+package redirect;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -20,14 +20,14 @@ import model.Database;
 import model.Transaction;
 import model.User;
 
-@WebServlet("/AccountActivity")
-public class AccountActivity extends HttpServlet {
+
+@WebServlet("/AccountActivityRedirect")
+public class AccountActivityRedirect extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Database db = null;
 	private String message;
-	private String accountID;
 
-	public AccountActivity() {
+	public AccountActivityRedirect() {
 		super();
 	}
 
@@ -35,67 +35,6 @@ public class AccountActivity extends HttpServlet {
 		String cpr = request.getParameter("ID");
 		String action = request.getParameter("action");
 		String accountID = request.getParameter("accountID");
-
-		try {
-			Account account;
-			db = new Database(request.getSession());
-			User user = db.getUser(cpr);
-			switch (action) {
-			case "viewaccount":
-				account = db.getAccount(accountID);
-				request.setAttribute("cpr", cpr);
-				request.setAttribute("accountID", accountID);
-				request.setAttribute("accountName", account.getName());
-				request.setAttribute("transactions", account.getTransactions());
-				request.setAttribute("balance", account.getBalanceString());
-				request.setAttribute("ISOCode", account.getISOCode());
-				request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
-				break;
-			case "newaccount":
-				request.setAttribute("cpr", cpr);
-				request.setAttribute("user", user);
-				request.getRequestDispatcher("newaccount.jsp").forward(request, response);
-				break;
-			case "editaccount":
-				account = db.getAccount(accountID);
-				request.setAttribute("accountID", accountID);
-				request.setAttribute("cpr", cpr);
-				request.setAttribute("name", account.getName());
-				request.setAttribute("interest", account.getInterest());
-				request.setAttribute("ISOCode", account.getISOCode());
-				request.setAttribute("owners", account.getOwners());
-				request.getRequestDispatcher("editaccount.jsp").forward(request, response);
-				break;
-			case "addowner" : 
-				request.setAttribute("cpr", cpr);
-				request.setAttribute("accountID", accountID);
-				request.getRequestDispatcher("addowner.jsp").forward(request, response);
-				break;
-			}
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private BigDecimal getBigDecimal(String string) {
-		BigDecimal value = new BigDecimal(string.replaceAll(",", ""));
-		return value;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	// For test
-	public String getAccountID() {
-		return accountID;
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-		doGet(request, response);
-		String cpr = request.getParameter("ID");
-		String action = request.getParameter("action");
-		accountID = request.getParameter("accountID");
 		String accountName = request.getParameter("accountName");
 		String value = request.getParameter("interest");
 		String ISOCode = request.getParameter("ISOCode");
@@ -215,6 +154,16 @@ public class AccountActivity extends HttpServlet {
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private BigDecimal getBigDecimal(String string) {
+		BigDecimal value = new BigDecimal(string.replaceAll(",", ""));
+		return value;
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
 	}
 
 }

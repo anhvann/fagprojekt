@@ -169,8 +169,7 @@ public class Database {
 		return loginString;
 	}
 
-	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount,
-			String ISOCode, String transactionName) throws SQLException {
+	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount, String ISOCode, String transactionName) throws SQLException {
 		if (session != null && session.getAttribute("loggedinuser") != null) {
 			CallableStatement call;
 			switch (type) {
@@ -196,6 +195,9 @@ public class Database {
 				call.setString("vTransName", transactionName);
 				call.setString("vAccID1", accountID);
 				call.setString("vAccID2", accountID2);
+				call.setString("vISOCode", ISOCode);
+				call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+				call.execute();
 				return call.getString("vOutput");
 			}
 		}
