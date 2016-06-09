@@ -73,13 +73,13 @@ public class Transactions extends HttpServlet {
 		    		message = db.processTransaction("Transfer", accountID, accountID2, amount, ISOCode, transactionName);
 		    		break;
 		    }
-    		redirect(response, accountID, message);
+    		redirect(response, accountID, message, cpr);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	private void redirect(HttpServletResponse response, String accountID, String message)throws ServletException, IOException {
-		response.sendRedirect("Confirmation?accountID="+accountID+"&message="+message);
+	private void redirect(HttpServletResponse response, String accountID, String message, String cpr)throws ServletException, IOException {
+		response.sendRedirect("Confirmation?ID="+cpr+"accountID="+accountID+"&message="+message);
 	}
 	public String getMessage(){
 		return message;

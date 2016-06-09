@@ -46,7 +46,7 @@ public class AccountActivity extends HttpServlet {
 		try {
 			db = new Database();
 			if (cpr == null) {
-				cpr = db.getOwner(accountID);
+				System.out.println("cpr is null");
 			}
 			User user = db.getUser(cpr);
 
@@ -70,7 +70,9 @@ public class AccountActivity extends HttpServlet {
 				BigDecimal interest = getBigDecimal(value);
 				BigDecimal balance = getBigDecimal("0");
 				accountID = db.generateAccountID();
-				account = new Account(user, accountID, accountName, balance, interest, ISOCode, new LinkedList<Transaction>());
+				LinkedList<User> owners = new LinkedList<>();
+				owners.add(user);
+				account = new Account(owners, accountID, accountName, balance, interest, ISOCode, new LinkedList<Transaction>());
 				message = user.addAccount(account);
 				request.setAttribute("message", message);
 				request.setAttribute("accounts", user.getAccounts());
@@ -108,6 +110,7 @@ public class AccountActivity extends HttpServlet {
 				request.setAttribute("name", account.getName());
 				request.setAttribute("interest", account.getInterest());
 				request.setAttribute("ISOCode", account.getISOCode());
+				request.setAttribute("owners", account.getOwners());
 				request.getRequestDispatcher("editaccount.jsp").forward(request, response);
 				break;
 			case "changeaccount":
@@ -126,6 +129,32 @@ public class AccountActivity extends HttpServlet {
 				request.setAttribute("balance", account.getBalanceString());
 				request.setAttribute("ISOCode", account.getISOCode());
 				request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+				break;
+			case "addowner" : 
+				request.setAttribute("cpr", cpr);
+				request.setAttribute("accountID", accountID);
+				request.getRequestDispatcher("addowner.jsp").forward(request, response);
+				break;
+			case "share" :
+				account = db.getAccount(accountID);
+				String newCPR = request.getParameter("newOwner");
+				message = db.addOwner(accountID, newCPR);
+				if (message.equals("Ownership added")) {
+					request.setAttribute("message", message);
+					request.setAttribute("toast", true);
+					request.setAttribute("cpr", cpr);
+					request.setAttribute("accountID", accountID);
+					request.setAttribute("accountName", account.getName());
+					request.setAttribute("transactions", account.getTransactions());
+					request.setAttribute("balance", account.getBalanceString());
+					request.setAttribute("ISOCode", account.getISOCode());
+					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
+				} else {
+					request.setAttribute("errormessage", message);
+					request.setAttribute("accountID", accountID);
+					request.setAttribute("newCPR", newCPR);
+					request.getRequestDispatcher("addowner.jsp").forward(request, response);
+				}
 				break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {

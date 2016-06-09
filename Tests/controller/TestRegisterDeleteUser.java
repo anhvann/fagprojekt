@@ -90,7 +90,7 @@ public class TestRegisterDeleteUser {
 		String action = "register";
 		callServlet(action, "1504902584", "0000");
 		
-		assertEquals("Invalid Zipcode", userActivity.getMessage()); //Wrong message
+		assertEquals("Invalid Postal Code", userActivity.getMessage()); //Wrong message
 	}
 	
 	@Test

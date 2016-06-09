@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//WebContent/accountoverview.jsp=ISO-8859-1
+encoding//WebContent/addowner.jsp=ISO-8859-1
 encoding//WebContent/deposit.jsp=ISO-8859-1
 encoding//WebContent/editaccount.jsp=ISO-8859-1
 encoding//WebContent/employeecheck.jsp=ISO-8859-1

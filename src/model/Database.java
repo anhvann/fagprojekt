@@ -70,13 +70,15 @@ public class Database {
 	public LinkedList<Account> getAccounts(User user) {
 		String cpr = user.getCPR();
 		LinkedList<Account> accounts = new LinkedList<>();
+		LinkedList<User> owners = new LinkedList<>();
+		owners.add(user);
 
 		try {
 			ResultSet resultset = statement.executeQuery(
 					"select * from \"DTUGRP05\".\"ACCOUNTS\" LEFT OUTER JOIN \"DTUGRP05\".\"OWNERSHIPS\" ON \"DTUGRP05\".\"ACCOUNTS\".\"AccID\" = \"DTUGRP05\".\"OWNERSHIPS\".\"AccID\" WHERE \"CPRNo\" = '"
 							+ cpr + "' ");
 			while (resultset.next()) {
-				Account acc = new Account(user, resultset.getString("AccID"), resultset.getString("AccName"),
+				Account acc = new Account(owners, resultset.getString("AccID"), resultset.getString("AccName"),
 						resultset.getBigDecimal("Balance"), resultset.getBigDecimal("Interest"),
 						resultset.getString("ISOCode"), null);
 				accounts.add(acc);
@@ -117,8 +119,8 @@ public class Database {
 		return transactions;
 	}
 
-	public String newAccount(Account account) throws SQLException {
-		String cpr = account.getOwner().getCPR();
+	public String newAccount(Account account, User user) throws SQLException {
+		String cpr = user.getCPR();
 		String ID = account.getAccountID();
 		String name = account.getName();
 		BigDecimal balance = account.getBalance();
@@ -188,19 +190,21 @@ public class Database {
 		return "";
 	}
 
-	public String getOwner(String accountID) {
-		String cpr = "";
+	public LinkedList<User> getOwners(String accountID) {
+		LinkedList<User> owners = new LinkedList<>();
+		User user;
 		try {
 			ResultSet resultset = statement
 					.executeQuery("select * from \"DTUGRP05\".\"OWNERSHIPS\" WHERE \"AccID\" = '" + accountID + "'");
-			if (resultset.next()) {
-				cpr = resultset.getString("CPRNo");
+			while (resultset.next()) {
+				 user = getUser(resultset.getString("CPRNo"));
+				 owners.add(user);
 			}
 			resultset.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return cpr;
+		return owners;
 	}
 
 	public String getCity(String zipcode) {
@@ -229,7 +233,7 @@ public class Database {
 				String ISOCode = resultset.getString("ISOCode");
 				resultset.close();
 
-				Account account = new Account(getUser(getOwner(accountID)), accountID, AccName, balance, interest,
+				Account account = new Account(getOwners(accountID), accountID, AccName, balance, interest,
 						ISOCode, getTransactions(accountID));
 				return account;
 			}
@@ -313,5 +317,14 @@ public class Database {
 		String ID = call.getString("vOutput");
 		BigDecimal value = (new BigDecimal(ID)).add(new BigDecimal("1"));
 		return "" + value;
+	}
+
+	public String addOwner(String accountID, String newCPR) throws SQLException {
+		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".AddOwner(?, ?, ?) }");
+		call.setString("vCPRNo", newCPR);
+		call.setString("vAccID", accountID);
+		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+		call.execute();
+		return call.getString("vOutput");
 	}
 }

@@ -30,7 +30,9 @@
 						<a href="UserActivity?ID=${cpr}&action=viewuser">Back to accounts</a>
 					</span>
 					<span style="float:right;">
-						<a href="AccountActivity?ID=${cpr}&action=editaccount&accountID=${accountID}">Edit Account</a> | <a href="AccountActivity?ID=${cpr}&action=closeaccount&accountID=${accountID}">Close Account</a>
+						<a href="AccountActivity?ID=${cpr}&action=editaccount&accountID=${accountID}">Edit Account</a> 
+						| <a href="AccountActivity?ID=${cpr}&action=closeaccount&accountID=${accountID}">Close Account</a>
+						| <a href="AccountActivity?ID=${cpr}&action=addowner&accountID=${accountID}">Add Owner</a>
 					</span>
 					</div>
 				<%}%>

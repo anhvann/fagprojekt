@@ -28,7 +28,7 @@ public class Confirmation extends HttpServlet {
 			Database db = new Database();
 			String accountID = request.getParameter("accountID");
 			String message = request.getParameter("message");
-			String cpr = db.getOwner(accountID);
+			String cpr = request.getParameter("ID");
 			switch (message) {
 		    	case "Deposit Invalid Account" :
 					request.setAttribute("errormessage", "Account does not exist");
