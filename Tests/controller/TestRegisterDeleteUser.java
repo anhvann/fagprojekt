@@ -2,26 +2,17 @@ package controller;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
-
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.*;
-
-import model.Account;
 import model.Database;
-import model.Transaction;
 import model.User;
 
-public class TestRegisterAndDeleteUser {
+public class TestRegisterDeleteUser {
 	private HttpServletRequest request = mock(HttpServletRequest.class);  
 	private HttpServletResponse response = mock(HttpServletResponse.class);
 	private RequestDispatcher dispatcher = mock(RequestDispatcher.class);
@@ -61,7 +52,7 @@ public class TestRegisterAndDeleteUser {
 	    when(session.getAttribute("role")).thenReturn(login.getRole());
 	    userActivity = new UserActivity();
 		
-		db = new Database(session);
+		db = new Database();
 	}
 	@Test
 	public void testRegisterAndDeleteSuccess() throws Exception {
@@ -69,7 +60,7 @@ public class TestRegisterAndDeleteUser {
 		String action = "register";
 		assertNull(db.getUser(clientCpr)); //ensure user does not already exists
 		
-		callServlet(action, clientCpr);
+		callServlet(action, clientCpr, zipcode);
 		User user = db.getUser(clientCpr);
 		assertNotNull(user);
 		assertEquals("User registered successfully",userActivity.getMessage());
@@ -88,19 +79,28 @@ public class TestRegisterAndDeleteUser {
 	public void testRegisterUserWithUsedCPR() throws Exception {
 		//Register
 		String action = "register";
-		callServlet(action, "2309911234");
+		callServlet(action, "2309911234", zipcode);
 		
 		assertEquals("User is already registered", userActivity.getMessage());
 	}
 	
 	@Test
+	public void testRegisterUserInvalidZip() throws Exception {
+		//Register
+		String action = "register";
+		callServlet(action, "1504902584", "0000");
+		
+		assertEquals("Invalid Zipcode", userActivity.getMessage()); //Wrong message
+	}
+	
+	@Test
 	public void testDeleteUserWithAccounts() throws Exception {
 		String action = "delete";
-		callServlet(action, "3112261111");
+		callServlet(action, "3112261111", zipcode);
 		
 		assertEquals("User still has account(s)",userActivity.getMessage());
 	}
-	private void callServlet(String action, String clientCpr) throws ServletException, IOException {
+	private void callServlet(String action, String clientCpr, String zipcode) throws ServletException, IOException {
 		when(request.getParameter("ID")).thenReturn(clientCpr);
 	    when(request.getParameter("action")).thenReturn(action);
 	    when(request.getParameter("email")).thenReturn(email);

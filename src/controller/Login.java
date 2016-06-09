@@ -38,13 +38,12 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		doGet(request, response);
 		String cpr = request.getParameter("cpr");
 		String password = request.getParameter("password");
 		try {
-			db = new Database(request.getSession());
+			db = new Database();
 			String role = db.Login(cpr, password);			
 			if (role == null) {
 				String message = "CPR Number and password did not match";
@@ -67,6 +66,8 @@ public class Login extends HttpServlet {
 		this.role = role;
 		session.setAttribute("role", role);
 		session.setAttribute("loggedinuser", cpr);
+//		response.sendRedirect("LoginRedirect");
+		
 		if (role.equals("e")) {
 			request.setAttribute("toast", false);
 			request.getRequestDispatcher("search.jsp").forward(request, response);

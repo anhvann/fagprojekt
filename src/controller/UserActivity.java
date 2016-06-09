@@ -45,7 +45,7 @@ public class UserActivity extends HttpServlet {
 		String phone = request.getParameter("phone");
 
 		try {
-			db = new Database(request.getSession());
+			db = new Database();
 			User user;
 
 			switch (action) {

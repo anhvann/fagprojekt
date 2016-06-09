@@ -23,10 +23,9 @@ public class Confirmation extends HttpServlet {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			Database db = new Database(request.getSession());
+			Database db = new Database();
 			String accountID = request.getParameter("accountID");
 			String message = request.getParameter("message");
 			String cpr = db.getOwner(accountID);
@@ -81,8 +80,7 @@ public class Confirmation extends HttpServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 

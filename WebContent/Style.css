@@ -60,14 +60,13 @@ overflow: hidden;
 
 .img-logo {
 	position: absolute;
-	height: 65px;
+	height: 48px;
 	width: auto;
 	top: 30px;
 	margin-left: 100px;
 	margin-bottom: 10px;
 	z-index: 10;
 }
-
 
 html, body {
 	height: 100%;
@@ -256,4 +255,10 @@ input[type="radio"] {
 @keyframes fadeout {
     from {bottom: 70px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }

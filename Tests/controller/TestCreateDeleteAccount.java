@@ -56,7 +56,7 @@ public class TestCreateDeleteAccount {
 	    when(session.getAttribute("role")).thenReturn(login.getRole());
 	    accountActivityServlet = new AccountActivity();
 		
-		db = new Database(session);
+		db = new Database();
 	}
 	@Test
 	public void testCreateDeleteAccountSuccess() throws Exception {
