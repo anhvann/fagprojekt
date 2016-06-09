@@ -66,6 +66,8 @@ public class Login extends HttpServlet {
 		this.role = role;
 		session.setAttribute("role", role);
 		session.setAttribute("loggedinuser", cpr);
+//		response.sendRedirect("LoginRedirect");
+		
 		if (role.equals("e")) {
 			request.setAttribute("toast", false);
 			request.getRequestDispatcher("search.jsp").forward(request, response);

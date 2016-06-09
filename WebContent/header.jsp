@@ -7,7 +7,7 @@
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="Style.css">
 <nav class="navbar">
-	<a href="index.jsp"><img class="img-center img-logo" src="http://i.imgur.com/RlR7g0c.png"></a>
+	<a href="index.jsp"><img class="img-center img-logo" src="http://i.imgur.com/m1Fk2Mt.png"></a>
 	<div class="collapse navbar-collapse">
 		<ul class="nav navbar-nav">
 			<li><img class="img-bar" src="http://i.imgur.com/Uf3PuDg.png"></li>
