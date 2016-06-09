@@ -199,13 +199,15 @@ public class Database {
 
 	public LinkedList<User> getOwners(String accountID) {
 		LinkedList<User> owners = new LinkedList<>();
-		User user;
+		LinkedList<String> IDs = new LinkedList<>();
 		try {
 			ResultSet resultset = statement
 					.executeQuery("select * from \"DTUGRP05\".\"OWNERSHIPS\" WHERE \"AccID\" = '" + accountID + "'");
 			while (resultset.next()) {
-				 user = getUser(resultset.getString("CPRNo"));
-				 owners.add(user);
+				 IDs.add(resultset.getString("CPRNo"));
+			}
+			for (String ID : IDs) {
+				owners.add(getUser(ID));
 			}
 			resultset.close();
 		} catch (SQLException e) {

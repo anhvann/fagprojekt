@@ -137,7 +137,7 @@ public class AccountActivity extends HttpServlet {
 				break;
 			case "share" :
 				account = db.getAccount(accountID);
-				String newCPR = request.getParameter("newOwner");
+				String newCPR = request.getParameter("newCPR");
 				message = db.addOwner(accountID, newCPR);
 				if (message.equals("Ownership added")) {
 					request.setAttribute("message", message);
