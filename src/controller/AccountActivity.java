@@ -45,9 +45,6 @@ public class AccountActivity extends HttpServlet {
 
 		try {
 			db = new Database(request.getSession());
-			if (cpr == null) {
-				System.out.println("cpr is null");
-			}
 			User user = db.getUser(cpr);
 
 			switch (action) {
