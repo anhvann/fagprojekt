@@ -23,8 +23,8 @@
 					<label class="control-label col-sm-5" for="address">Address:</label>
 					<div class="col-sm-5"><input type="text" class="form-control" name="address" placeholder="Enter address" value="${address}"></div>
 					<br><br>
-					<label class="control-label col-sm-5" for="address">Zipcode:</label>
-					<div class="col-sm-5"><input type="number" class="form-control" name="zipcode" placeholder="Enter zip code" value="${postcode}"></div>
+					<label class="control-label col-sm-5" for="postcode">Postal code:</label>
+					<div class="col-sm-5"><input type="number" class="form-control" name="postcode" placeholder="Enter postal code" value="${postcode}"></div>
 					<br><br>
 					<label class="control-label col-sm-5">City:</label>
 					<div class="col-sm-5"><input type="text" class="form-control" name="city" readonly="readonly" value="${city}"></div>

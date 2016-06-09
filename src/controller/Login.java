@@ -46,33 +46,23 @@ public class Login extends HttpServlet {
 				request.setAttribute("message", message);
 				request.getRequestDispatcher("login.jsp").forward(request, response);
 			} else if (role.equals("e")) {
-				setSession(request, response, cpr, "e", null);
+				setSession(request, response, cpr, "e");
 			} else {
 				User user = db.getUser(cpr);
-				setSession(request, response, cpr, "c", user);
+				setSession(request, response, cpr, "c");
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void setSession(HttpServletRequest request, HttpServletResponse response, String cpr, String role, User user) throws ServletException, IOException {
+	private void setSession(HttpServletRequest request, HttpServletResponse response, String cpr, String role) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		this.loggedinuser = cpr;
 		this.role = role;
 		session.setAttribute("role", role);
 		session.setAttribute("loggedinuser", cpr);
-//		response.sendRedirect("LoginRedirect");
-		
-		if (role.equals("e")) {
-			request.setAttribute("toast", false);
-			request.getRequestDispatcher("search.jsp").forward(request, response);
-		} else {
-			request.setAttribute("accounts", user.getAccounts());
-			request.setAttribute("name", user.getName());
-			request.setAttribute("cpr", cpr);
-			request.getRequestDispatcher("accounts.jsp").forward(request, response);
-		}
+		response.sendRedirect("LoginRedirect");
 	}
 
 	protected String getLoggedInUser() {

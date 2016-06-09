@@ -85,7 +85,7 @@ public class TestRegisterDeleteUser {
 	}
 	
 	@Test
-	public void testRegisterUserInvalidZip() throws Exception {
+	public void testRegisterUserInvalidPostcode() throws Exception {
 		//Register
 		String action = "register";
 		callServlet(action, "1504902584", "0000");

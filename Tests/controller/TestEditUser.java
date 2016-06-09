@@ -107,7 +107,7 @@ public class TestEditUser {
 	}
 	
 	@Test
-	public void testEditInvalidZip() throws Exception {
+	public void testEditInvalidPostCode() throws Exception {
 		String newpostcode = "0000";
 		
 	    when(request.getParameter("postcode")).thenReturn(newpostcode);

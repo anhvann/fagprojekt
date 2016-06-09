@@ -34,6 +34,40 @@ public class UserActivity extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String action = request.getParameter("action");
+		String cpr = request.getParameter("ID");
+
+		try {
+			db = new Database(request.getSession());
+			User user;
+			switch (action) {
+			case "viewuser":
+				user = db.getUser(cpr);
+				request.setAttribute("accounts", user.getAccounts());
+				request.setAttribute("name", user.getName());
+				request.setAttribute("cpr", cpr);
+				request.getRequestDispatcher("accounts.jsp").forward(request, response);
+				break;
+			case "edit":
+				user = db.getUser(cpr);
+				request.setAttribute("cpr", cpr);
+				request.setAttribute("email", user.getEmail());
+				request.setAttribute("password", user.getPassword());
+				request.setAttribute("phone", user.getPhone());
+				request.setAttribute("name", user.getName());
+				request.setAttribute("address", user.getAddress());
+				request.setAttribute("postcode", user.getPostCode());
+				request.setAttribute("city", db.getCity(user.getPostCode()));
+				request.setAttribute("date", user.getDateOfBirth());
+				request.getRequestDispatcher("userInfo.jsp").forward(request, response);
+				break;
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String cpr = request.getParameter("ID");
 		String action = request.getParameter("action");
 		String email = request.getParameter("email");
@@ -55,84 +89,34 @@ public class UserActivity extends HttpServlet {
 				message = db.register(cpr, email, password, name, phone, address, dateSQL, postcode);
 				user = db.getUser(cpr);
 				if (message.equals("User registered successfully")) {
-					request.setAttribute("accounts", user.getAccounts());
-					request.setAttribute("name", user.getName());
-					request.setAttribute("cpr", cpr);
-					request.setAttribute("message", message);
-					request.setAttribute("toast", true);
-					request.getRequestDispatcher("accounts.jsp").forward(request, response);
+					response.sendRedirect(
+							"UserActivityRedirect?action=" + action + "&cpr=" + cpr + "&message=" + message);
 				} else {
-					request.setAttribute("ID", cpr);
-					request.setAttribute("email", email);
-					request.setAttribute("name", name);
-					request.setAttribute("phone", phone);
-					request.setAttribute("address", address);
-					request.setAttribute("date", date);
-					request.setAttribute("postcode", postcode);
-					request.setAttribute("errormessage", message);
-					request.getRequestDispatcher("register.jsp").forward(request, response);
+					response.sendRedirect("UserActivityRedirect?action=" + action + "&cpr=" + cpr + "&email=" + email
+							+ "&name=" + name + "&phone=" + phone + "&address=" + address + "&date=" + date
+							+ "&postcode=" + postcode + "&message=" + message);
 				}
-				break;
-			case "viewuser":
-				user = db.getUser(cpr);
-				request.setAttribute("accounts", user.getAccounts());
-				request.setAttribute("name", user.getName());
-				request.setAttribute("cpr", cpr);
-				request.getRequestDispatcher("accounts.jsp").forward(request, response);
-				break;
-			case "edit":
-				user = db.getUser(cpr);
-				request.setAttribute("cpr", cpr);
-				request.setAttribute("email", user.getEmail());
-				request.setAttribute("password", user.getPassword());
-				request.setAttribute("phone", user.getPhone());
-				request.setAttribute("name", user.getName());
-				request.setAttribute("address", user.getAddress());
-				request.setAttribute("postcode", user.getPostCode());
-				request.setAttribute("city", db.getCity(user.getPostCode()));
-				request.setAttribute("date", user.getDateOfBirth());
-				request.getRequestDispatcher("userInfo.jsp").forward(request, response);
 				break;
 			case "change":
 				user = db.getUser(cpr);
 				dateObject = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 				dateSQL = new java.sql.Date(dateObject.getTime());
 				message = db.editUser(cpr, email, password, name, address, postcode, dateSQL, phone);
-				request.setAttribute("message", message);
-				request.setAttribute("toast", true);
-				request.setAttribute("accounts", user.getAccounts());
-				request.setAttribute("name", user.getName());
-				request.setAttribute("cpr", cpr);
-				request.getRequestDispatcher("accounts.jsp").forward(request, response);
+				response.sendRedirect("UserActivityRedirect?action=" + action + "&cpr=" + cpr + "&message=" + message);
 				break;
 			case "delete":
 				message = db.deleteUser(cpr);
 				if (message.equals("User deleted")) {
-					request.setAttribute("message", message);
-					request.setAttribute("toast", true);
-					request.getRequestDispatcher("search.jsp").forward(request, response);
-				}else {
-					user = db.getUser(cpr);
-					request.setAttribute("errormessage", message);
-					request.setAttribute("accounts", user.getAccounts());
-					request.setAttribute("name", user.getName());
-					request.setAttribute("cpr", cpr);
-					request.getRequestDispatcher("accounts.jsp").forward(request, response);
+					response.sendRedirect("UserActivityRedirect?action=" + action);
+				} else {
+					response.sendRedirect(
+							"UserActivityRedirect?action=" + action + "&cpr=" + cpr + "&message=" + message);
 				}
 				break;
 			}
 		} catch (ClassNotFoundException | SQLException | ParseException e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
 	}
 
 	public String getMessage() {

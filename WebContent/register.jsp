@@ -25,8 +25,8 @@
 				<label class="control-label col-sm-5" for="address">Address*:</label>
 				<div class="col-sm-5"><input type="text" class="form-control" name="address" placeholder="Enter address" value="${address}" required></div>
 				<br><br>
-				<label class="control-label col-sm-5" for="zipcode">Zip code*:</label>
-				<div class="col-sm-5"><input type="text" class="form-control" name="zipcode" placeholder="Enter zipcode" pattern="[0-9]{4,4}" maxlength="4" value="${zipcode}" required></div>
+				<label class="control-label col-sm-5" for="postcode">Postal code*:</label>
+				<div class="col-sm-5"><input type="text" class="form-control" name="postcode" placeholder="Enter postal code" pattern="[0-9]{4,4}" maxlength="4" value="${zipcode}" required></div>
 				<br><br>
 				<label class="control-label col-sm-5" for="date">Date of birth*:</label>
 				<div class="col-sm-5"><input type="Date" class="form-control" name="date" placeholder="Enter date of birth" value="${date}" required></div>
