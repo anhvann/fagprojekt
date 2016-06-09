@@ -89,9 +89,10 @@ public class TestRegisterDeleteUser {
 		//Register
 		String action = "register";
 		callServlet(action, "1504902584", "0000");
-		
+
 		assertEquals("Invalid Postal Code", userActivity.getMessage());
 		assertNull(db.getUser(clientCpr));
+
 	}
 	
 	@Test

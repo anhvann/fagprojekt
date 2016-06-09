@@ -10,12 +10,12 @@ import java.util.Locale;
 public class Account {
 
 	private String accountID, ISOCode, name;
-	private User user;
+	private LinkedList<User> owners;
 	private BigDecimal balance, interest;
 	private LinkedList<Transaction> transactions;
 	
-	public Account(User user, String accountID, String name, BigDecimal balance, BigDecimal interest, String ISOCode, LinkedList<Transaction> transactions) {
-		this.user = user;
+	public Account(LinkedList<User> owners, String accountID, String name, BigDecimal balance, BigDecimal interest, String ISOCode, LinkedList<Transaction> transactions) {
+		this.owners = owners;
 		this.accountID = accountID;
 		this.name = name;
 		this.interest = interest;
@@ -65,8 +65,8 @@ public class Account {
 		this.ISOCode = ISOCode;
 	}
 	
-	public User getOwner() {
-		return user;
+	public LinkedList<User> getOwners() {
+		return owners;
 	}
 	
 	public LinkedList<Transaction> getTransactions() {

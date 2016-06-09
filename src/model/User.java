@@ -81,7 +81,7 @@ public class User {
 
 	public String addAccount(Account account) throws ClassNotFoundException, SQLException {
 		accounts.add(account);
-		return bank.newAccount(account);
+		return bank.newAccount(account, this);
 	}
 
 	public String getCPR() {

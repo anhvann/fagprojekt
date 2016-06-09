@@ -19,10 +19,10 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Anh Van/OneDrive/02122 Fagprojekt/db2jcc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Anh Van/OneDrive/02122 Fagprojekt/db2jcc_license_cisuz.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Anh Van/OneDrive/02122 Fagprojekt/hamcrest-core-1.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Anh Van/OneDrive/02122 Fagprojekt/junit-4.12.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Anh Van/OneDrive/02122 Fagprojekt/mockito-all-1.9.5.jar"/>
+	<classpathentry kind="lib" path="D:/Java/JDBClib/db2jcc.jar"/>
+	<classpathentry kind="lib" path="D:/Java/JDBClib/db2jcc_license_cisuz.jar"/>
+	<classpathentry kind="lib" path="D:/Java/JDBClib/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="lib" path="D:/Java/JDBClib/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="D:/Java/JDBClib/mockito-all-1.9.5.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
