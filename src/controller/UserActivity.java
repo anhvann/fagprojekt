@@ -40,19 +40,19 @@ public class UserActivity extends HttpServlet {
 		String password = request.getParameter("password");
 		String name = request.getParameter("name");
 		String address = request.getParameter("address");
-		String zipcode = request.getParameter("zipcode");
+		String postcode = request.getParameter("postcode");
 		String date = request.getParameter("date");
 		String phone = request.getParameter("phone");
 
 		try {
-			db = new Database();
+			db = new Database(request.getSession());
 			User user;
 
 			switch (action) {
 			case "register":
 				Date dateObject = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 				java.sql.Date dateSQL = new java.sql.Date(dateObject.getTime());
-				message = db.register(cpr, email, password, name, phone, address, dateSQL, zipcode);
+				message = db.register(cpr, email, password, name, phone, address, dateSQL, postcode);
 				user = db.getUser(cpr);
 				if (message.equals("User registered successfully")) {
 					request.setAttribute("accounts", user.getAccounts());
@@ -68,7 +68,7 @@ public class UserActivity extends HttpServlet {
 					request.setAttribute("phone", phone);
 					request.setAttribute("address", address);
 					request.setAttribute("date", date);
-					request.setAttribute("zipcode", zipcode);
+					request.setAttribute("postcode", postcode);
 					request.setAttribute("errormessage", message);
 					request.getRequestDispatcher("register.jsp").forward(request, response);
 				}
@@ -97,7 +97,7 @@ public class UserActivity extends HttpServlet {
 				user = db.getUser(cpr);
 				dateObject = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 				dateSQL = new java.sql.Date(dateObject.getTime());
-				message = db.editUser(cpr, email, password, name, address, zipcode, dateSQL, phone);
+				message = db.editUser(cpr, email, password, name, address, postcode, dateSQL, phone);
 				request.setAttribute("message", message);
 				request.setAttribute("toast", true);
 				request.setAttribute("accounts", user.getAccounts());

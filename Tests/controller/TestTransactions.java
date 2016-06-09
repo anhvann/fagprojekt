@@ -48,10 +48,11 @@ public class TestTransactions {
 	    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
 	    
 	    login.doPost(request, response);
-	    when(session.getAttribute("role")).thenReturn(login.getLoggedInUser());
+	    when(session.getAttribute("role")).thenReturn(login.getRole());
+	    when(session.getAttribute("loggedinuser")).thenReturn(login.getLoggedInUser());
 		transactionServlet = new Transactions();
 		
-		db = new Database();
+		db = new Database(session);
 	}
 	
 	@Test
@@ -59,13 +60,13 @@ public class TestTransactions {
 		BigDecimal balanceOld = db.getAccount(accountID1).getBalance();
 	    when(request.getParameter("action")).thenReturn("deposit");
 	    when(request.getParameter("accountID")).thenReturn(accountID1);
-	    when(request.getParameter("amount")).thenReturn("100");
+	    when(request.getParameter("amount")).thenReturn("400");
 	    when(request.getParameter("ISOCode")).thenReturn("DKK");
 	    when(request.getParameter("ID")).thenReturn(clientCPR);
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew = db.getAccount(accountID1).getBalance();
-	    assertEquals(transactionServlet.getMessage(), "Deposit completed");
-	    BigDecimal amount = new BigDecimal("100");
+	    assertEquals("Deposit completed", transactionServlet.getMessage());
+	    BigDecimal amount = new BigDecimal("400");
 	    assertEquals(balanceOld.add(amount), balanceNew);
 	}
 
@@ -81,7 +82,7 @@ public class TestTransactions {
 	    when(request.getParameter("ID")).thenReturn(clientCPR);
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew = db.getAccount(accountID1).getBalance();
-	    assertEquals(transactionServlet.getMessage(), "Deposit completed");
+	    assertEquals("Deposit completed", transactionServlet.getMessage());
 	    BigDecimal amount = new BigDecimal("73.30");
 	    assertEquals(balanceOld.add(amount), balanceNew);
 	}
@@ -110,7 +111,7 @@ public class TestTransactions {
 	    when(request.getParameter("ID")).thenReturn(clientCPR);
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew = db.getAccount(accountID1).getBalance();
-	    assertEquals(transactionServlet.getMessage(), "Withdraw completed");
+	    assertEquals("Withdraw completed", transactionServlet.getMessage());
 	    BigDecimal amount = new BigDecimal("100");
 	    assertEquals(balanceOld.subtract(amount), balanceNew);
 	}
@@ -125,7 +126,7 @@ public class TestTransactions {
 	    when(request.getParameter("ID")).thenReturn(clientCPR);
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew = db.getAccount(accountID1).getBalance();
-	    assertEquals(transactionServlet.getMessage(), "Withdraw completed");
+	    assertEquals("Withdraw completed", transactionServlet.getMessage());
 	    BigDecimal amount = new BigDecimal("75.70");
 	    assertEquals(balanceOld.subtract(amount), balanceNew);
 	}
@@ -140,7 +141,7 @@ public class TestTransactions {
 	    when(request.getParameter("ID")).thenReturn(clientCPR);
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew = db.getAccount(accountID1).getBalance();
-	    assertEquals(transactionServlet.getMessage(), "Withdraw Invalid Account");
+	    assertEquals("Withdraw Invalid Account",transactionServlet.getMessage());
 	    assertEquals(balanceOld, balanceNew);
 	}
 	
@@ -256,7 +257,7 @@ public class TestTransactions {
 	    when(request.getParameter("ID")).thenReturn(clientCPR);
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew = db.getAccount(accountID1).getBalance();
-	    assertEquals(transactionServlet.getMessage(), "Invalid amount");
+	    assertEquals("Invalid amount", transactionServlet.getMessage());
 	    assertEquals(balanceOld, balanceNew);
 	}
 	
@@ -270,6 +271,20 @@ public class TestTransactions {
 	    when(request.getParameter("ID")).thenReturn(clientCPR);
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew = db.getAccount(accountID1).getBalance();
+	    assertEquals(balanceOld, balanceNew);
+	}
+	@Test
+	public void testNotLoggedIn() throws Exception {
+	    when(request.getSession()).thenReturn(null);
+		BigDecimal balanceOld = db.getAccount(accountID1).getBalance();
+	    when(request.getParameter("action")).thenReturn("deposit");
+	    when(request.getParameter("accountID")).thenReturn(accountID1);
+	    when(request.getParameter("amount")).thenReturn("100");
+	    when(request.getParameter("ISOCode")).thenReturn("DKK");
+	    when(request.getParameter("ID")).thenReturn(clientCPR);
+	    transactionServlet.doPost(request, response);
+	    BigDecimal balanceNew = db.getAccount(accountID1).getBalance();
+	    assertEquals("Illegal action", transactionServlet.getMessage());
 	    assertEquals(balanceOld, balanceNew);
 	}
 }

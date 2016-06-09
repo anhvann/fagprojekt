@@ -56,7 +56,7 @@ public class TestEditAccount {
 		when(session.getAttribute("role")).thenReturn(login.getRole());
 		accountActivityServlet = new AccountActivity();
 
-		db = new Database();
+		db = new Database(session);
 
 		// Reset account to initial values
 		currency = db.getAccount(accountID).getISOCode();

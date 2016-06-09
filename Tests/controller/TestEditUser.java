@@ -32,7 +32,7 @@ public class TestEditUser {
 	private String clientPassword = "slytherin4ever";
 	private String name = "Tom Marvolo Riddle";
 	private String address = "Anker Engelunds Vej 2";
-	private String zipcode = "2800";
+	private String postcode = "2800";
 	private String date = "31-12-1926";
 	private String phone = "02059811";
 	
@@ -45,7 +45,7 @@ public class TestEditUser {
 	 * 		Password: slytherin4ever
 	 * 		Name: Tom Marvolo Riddle
 	 * 		Address: Anker Engelunds Vej 2 
-	 * 		Zipcode: 2800
+	 * 		postcode: 2800
 	 * 		Date of Birth: 31-12-1926
 	 * 		Phone: 02059811
 	*/
@@ -64,7 +64,7 @@ public class TestEditUser {
 	    when(session.getAttribute("role")).thenReturn(login.getRole());
 	    userActivity = new UserActivity();
 		
-		db = new Database();
+	    db = new Database(session);
 		
 		//Reset account to initial values
 	    when(request.getParameter("ID")).thenReturn(clientCpr);
@@ -73,7 +73,7 @@ public class TestEditUser {
 	    when(request.getParameter("password")).thenReturn(clientPassword);
 	    when(request.getParameter("name")).thenReturn(name);
 	    when(request.getParameter("address")).thenReturn(address);
-	    when(request.getParameter("zipcode")).thenReturn(zipcode);
+	    when(request.getParameter("postcode")).thenReturn(postcode);
 	    when(request.getParameter("date")).thenReturn(date);
 	    when(request.getParameter("phone")).thenReturn(phone);
 		userActivity.doPost(request, response);
@@ -94,26 +94,27 @@ public class TestEditUser {
 	    when(request.getParameter("password")).thenReturn(clientPassword);
 	    when(request.getParameter("name")).thenReturn(name);
 	    when(request.getParameter("address")).thenReturn(address);
-	    when(request.getParameter("zipcode")).thenReturn(zipcode);
+	    when(request.getParameter("postcode")).thenReturn(postcode);
 	    when(request.getParameter("date")).thenReturn(date);
 	    when(request.getParameter("phone")).thenReturn(phone);
 		userActivity.doPost(request, response);
 
 		user = db.getUser(clientCpr); //get updated user
+		assertEquals("User Edit completed", userActivity.getMessage());
 		assertEquals(email, user.getEmail());
 		assertEquals(name, user.getName());
-		assertEquals("User successfully edited", userActivity.getMessage());
+		
 	}
 	
 	@Test
 	public void testEditInvalidZip() throws Exception {
-		String newzipcode = "0000";
+		String newpostcode = "0000";
 		
-	    when(request.getParameter("zipcode")).thenReturn(newzipcode);
+	    when(request.getParameter("postcode")).thenReturn(newpostcode);
 		userActivity.doPost(request, response);
 		
-		assertEquals(zipcode, db.getUser(clientCpr).getPostCode());
-		assertEquals("Zipcode not found", userActivity.getMessage()); //Wrong message
+		assertEquals(postcode, db.getUser(clientCpr).getPostCode());
+		assertEquals("Invalid Postal Code", userActivity.getMessage());
 	}
 	
 	//View pages
@@ -129,7 +130,7 @@ public class TestEditUser {
 	    when(request.getParameter("password")).thenReturn(clientPassword);
 	    when(request.getParameter("name")).thenReturn(name);
 	    when(request.getParameter("address")).thenReturn(address);
-	    when(request.getParameter("zipcode")).thenReturn(zipcode);
+	    when(request.getParameter("postcode")).thenReturn(postcode);
 	    when(request.getParameter("date")).thenReturn(date);
 	    when(request.getParameter("phone")).thenReturn(phone);
 		userActivity.doPost(request, response);
@@ -146,7 +147,7 @@ public class TestEditUser {
 	    when(request.getParameter("password")).thenReturn(clientPassword);
 	    when(request.getParameter("name")).thenReturn(name);
 	    when(request.getParameter("address")).thenReturn(address);
-	    when(request.getParameter("zipcode")).thenReturn(zipcode);
+	    when(request.getParameter("postcode")).thenReturn(postcode);
 	    when(request.getParameter("date")).thenReturn(date);
 	    when(request.getParameter("phone")).thenReturn(phone);
 		userActivity.doPost(request, response);

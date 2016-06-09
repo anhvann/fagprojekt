@@ -31,11 +31,7 @@ public class Login extends HttpServlet {
 		super();
 	}
 
-	/**
-	 * @see Servlet#init(ServletConfig)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
@@ -43,7 +39,7 @@ public class Login extends HttpServlet {
 		String cpr = request.getParameter("cpr");
 		String password = request.getParameter("password");
 		try {
-			db = new Database();
+			db = new Database(request.getSession());
 			String role = db.Login(cpr, password);			
 			if (role == null) {
 				String message = "CPR Number and password did not match";
