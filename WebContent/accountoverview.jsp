@@ -31,7 +31,9 @@
 					</span>
 					<span style="float:right;">
 						<a href="AccountActivity?ID=${cpr}&action=editaccount&accountID=${accountID}">Edit Account</a> 
-						| <a href="AccountActivity?ID=${cpr}&action=closeaccount&accountID=${accountID}">Close Account</a>
+						| <form input style="display: inline;" action="AccountActivity?ID=${cpr}&action=closeaccount&accountID=${accountID}" method="post">
+  							<button type="submit" name="delete"" class="btn-link">Close Account</button>
+						</form> 
 						| <a href="AccountActivity?ID=${cpr}&action=addowner&accountID=${accountID}">Add Owner</a>
 					</span>
 					</div>

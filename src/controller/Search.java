@@ -3,23 +3,18 @@ package controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import model.Account;
 import model.Database;
 import model.User;
 
 @WebServlet("/Search")
 public class Search extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private ArrayList<User> results = new ArrayList<>();
 	Database db = null;
 	
 	public Search() {
@@ -28,7 +23,6 @@ public class Search extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String input = request.getParameter("searchfield");
-		ArrayList<User> results = null;
 		
 		try {
 			db = new Database(request.getSession());
@@ -54,4 +48,7 @@ public class Search extends HttpServlet {
 		doGet(request, response);
 	}
 
+	public ArrayList<User> getResults(){
+		return results;
+	}
 }

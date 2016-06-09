@@ -38,10 +38,6 @@ public class Database {
 				stmt.setString(2, "%"+keyword+"%");
 				stmt.setString(3, "%"+keyword+"%");
 				ResultSet resultSet = stmt.executeQuery();
-				/*ResultSet resultSet = statement
-						.executeQuery("SELECT * FROM \"DTUGRP05\".\"CUSTOMERS\" WHERE \"CPRNo\" LIKE '%" + keyword
-								+ "%' OR \"Phone\" LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%" + keyword
-								+ "%'");*/
 				while (resultSet.next()) {
 					IDs.add(resultSet.getString("CPRNo"));
 				}

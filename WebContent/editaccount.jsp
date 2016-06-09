@@ -7,7 +7,7 @@
 	<div class="main" >
 			<div class="pagetitle">Edit Account</div>
 			<hr width="95%" noshade>
-				<form action="AccountActivity?ID=${cpr}&action=changeaccount&accountID=<%=request.getParameter("accountID")%>" method="post" target="_self">
+				<form action="AccountActivity?ID=${cpr}&action=changeaccount&accountID=${accountID}" method="post" target="_self">
 					<label class="control-label col-sm-5">Owner(s):</label>
 					<div class="col-sm-5">
 						<%LinkedList<User> users = (LinkedList<User>) request.getAttribute("owners");%>

@@ -79,7 +79,7 @@ public class Transactions extends HttpServlet {
 		}
 	}
 	private void redirect(HttpServletResponse response, String accountID, String message, String cpr)throws ServletException, IOException {
-		response.sendRedirect("TransactionsRedirect?ID="+cpr+"accountID="+accountID+"&message="+message);
+		response.sendRedirect("TransactionsRedirect?ID="+cpr+"&accountID="+accountID+"&message="+message);
 	}
 	public String getMessage(){
 		return message;

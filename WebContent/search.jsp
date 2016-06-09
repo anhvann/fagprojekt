@@ -15,7 +15,6 @@
 	<%@include file="employeecheck.jsp" %>
 	<div class="main">
 		<form id=searchbar action="Search" method="post" target="_self">
-			<input id=searchbutton type="submit" value="" style="float: right"/>
 			<div style="overflow: hidden">
 				<input id="searchfield" type="text" name="searchfield"
 					placeholder="Search by name, cpr or phone"

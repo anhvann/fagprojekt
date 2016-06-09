@@ -184,6 +184,9 @@ td{
 	cursor: pointer;
 	background-color: #f5f5f5
 }
+button:focus {
+	outline:0;
+}
 
 label {
 	display: inline-block;
