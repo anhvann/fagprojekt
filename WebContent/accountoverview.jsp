@@ -26,6 +26,9 @@
 					<div align="right">
 					<font size="2" color="red">${errormessage}</font>
 					<br>
+					<span style="float:left;">
+						<a href="UserActivity?ID=${cpr}&action=viewuser">Back to accounts</a>
+					</span>
 					<span style="float:right;">
 						<a href="AccountActivity?ID=${cpr}&action=editaccount&accountID=${accountID}">Edit Account</a> | <a href="AccountActivity?ID=${cpr}&action=closeaccount&accountID=${accountID}">Close Account</a>
 					</span>

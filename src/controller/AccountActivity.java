@@ -119,10 +119,13 @@ public class AccountActivity extends HttpServlet {
 				message = user.editAccount(account);
 				request.setAttribute("message", message);
 				request.setAttribute("toast", true);
-				request.setAttribute("accounts", user.getAccounts());
-				request.setAttribute("name", user.getName());
 				request.setAttribute("cpr", cpr);
-				request.getRequestDispatcher("accounts.jsp").forward(request, response);
+				request.setAttribute("accountID", accountID);
+				request.setAttribute("accountName", account.getName());
+				request.setAttribute("transactions", account.getTransactions());
+				request.setAttribute("balance", account.getBalanceString());
+				request.setAttribute("ISOCode", account.getISOCode());
+				request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 				break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
