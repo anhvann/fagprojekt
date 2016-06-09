@@ -64,7 +64,7 @@ public class TestEditUser {
 	    when(session.getAttribute("role")).thenReturn(login.getRole());
 	    userActivity = new UserActivity();
 		
-		db = new Database();
+	    db = new Database(session);
 		
 		//Reset account to initial values
 	    when(request.getParameter("ID")).thenReturn(clientCpr);

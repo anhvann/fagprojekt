@@ -21,7 +21,7 @@ public class ClientActivity extends HttpServlet {
 		String cpr = request.getParameter("ID");
 			Database db;
 			try {
-				db = new Database();
+				db = new Database(request.getSession());
 				User user = db.getUser(cpr);
 				request.setAttribute("accounts", user.getAccounts());
 				request.setAttribute("name", user.getName());

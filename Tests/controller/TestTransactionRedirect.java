@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.junit.Before;
 import org.junit.Test;
-import model.Database;
 
 public class TestTransactionRedirect {
 	private HttpServletRequest request = mock(HttpServletRequest.class);

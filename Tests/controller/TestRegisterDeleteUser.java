@@ -52,7 +52,7 @@ public class TestRegisterDeleteUser {
 	    when(session.getAttribute("role")).thenReturn(login.getRole());
 	    userActivity = new UserActivity();
 		
-		db = new Database();
+	    db = new Database(session);
 	}
 	@Test
 	public void testRegisterAndDeleteSuccess() throws Exception {

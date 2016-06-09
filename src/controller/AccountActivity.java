@@ -44,7 +44,7 @@ public class AccountActivity extends HttpServlet {
 		Account account;
 
 		try {
-			db = new Database();
+			db = new Database(request.getSession());
 			if (cpr == null) {
 				cpr = db.getOwner(accountID);
 			}

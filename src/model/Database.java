@@ -1,16 +1,8 @@
 package model;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Scanner;
-
 import javax.servlet.http.HttpSession;
 
 import java.sql.*;
@@ -18,11 +10,13 @@ import java.sql.*;
 public class Database {
 	private Connection connection;
 	private Statement statement;
+	private HttpSession session;
 
-	protected String url = "jdbc:db2://192.86.32.54:5040/DALLASB:retrieveMessagesFromServerOnGetMessage=true;emulateParameterMetaDataForZCalls=1;";
-
-	public Database() throws ClassNotFoundException, SQLException {
+	private String url = "jdbc:db2://192.86.32.54:5040/DALLASB:retrieveMessagesFromServerOnGetMessage=true;emulateParameterMetaDataForZCalls=1;";
+	private String loginString = "Illegal action"; 
+	public Database(HttpSession session) throws ClassNotFoundException, SQLException {
 		connect();
+		this.session = session;
 	}
 
 	private void connect() throws ClassNotFoundException, SQLException {
@@ -32,25 +26,28 @@ public class Database {
 	}
 
 	public ArrayList<User> searchFor(String keyword) {
-		ArrayList<String> IDs = new ArrayList<>();
-		ArrayList<User> users = new ArrayList<>();
+		if (session.getAttribute("role").equals("e")) {
+			ArrayList<String> IDs = new ArrayList<>();
+			ArrayList<User> users = new ArrayList<>();
 
-		try {
-			ResultSet resultSet = statement
-					.executeQuery("SELECT * FROM \"DTUGRP05\".\"CUSTOMERS\" WHERE \"CPRNo\" LIKE '%" + keyword
-							+ "%' OR \"Phone\" LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%" + keyword
-							+ "%'");
-			while (resultSet.next()) {
-				IDs.add(resultSet.getString("CPRNo"));
+			try {
+				ResultSet resultSet = statement
+						.executeQuery("SELECT * FROM \"DTUGRP05\".\"CUSTOMERS\" WHERE \"CPRNo\" LIKE '%" + keyword
+								+ "%' OR \"Phone\" LIKE '%" + keyword + "%' OR LOWER(\"FullName\") LIKE '%" + keyword
+								+ "%'");
+				while (resultSet.next()) {
+					IDs.add(resultSet.getString("CPRNo"));
+				}
+				resultSet.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-			resultSet.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+			for (String ID : IDs) {
+				users.add(getUser(ID));
+			}
+			return users;
 		}
-		for (String ID : IDs) {
-			users.add(getUser(ID));
-		}
-		return users;
+		return null;
 	}
 
 	public String Login(String cpr, String password) throws SQLException {
@@ -118,74 +115,84 @@ public class Database {
 	}
 
 	public String newAccount(Account account) throws SQLException {
-		String cpr = account.getOwner().getCPR();
-		String ID = account.getAccountID();
-		String name = account.getName();
-		BigDecimal balance = account.getBalance();
-		BigDecimal interest = account.getInterest();
-		String ISOCode = account.getISOCode();
-		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".CreateAccount(?, ?, ?, ?, ?, ?, ?) }");
-		call.setString("vCPRNo", cpr);
-		call.setString("vAccID", ID);
-		call.setBigDecimal("vAmount", balance);
-		call.setBigDecimal("vInterest", interest);
-		call.setString("vAccName", name);
-		call.setString("vISOCode", ISOCode);
-		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
-		call.execute();
-		return call.getString("vOutput");
-	}
-
-	public String closeAccount(String accountID) throws SQLException {
-		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".DeleteAccount(?, ?) }");
-		call.setString("vAccID", accountID);
-		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
-		call.execute();
-		return call.getString("vOutput");
-	}
-
-	public String editAccount(Account account) throws SQLException {
-		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditAccount(?, ?, ?, ?) }");
-		call.setString("vAccID", account.getAccountID());
-		call.setString("vAccName", account.getName());
-		call.setBigDecimal("vInterest", account.getInterest());
-		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
-		call.execute();
-		return call.getString("vOutput");
-	}
-
-	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount,
-			String ISOCode, String transactionName) throws SQLException {
-		CallableStatement call;
-		switch (type) {
-		case "Deposit":
-			call = connection.prepareCall("{call \"DTUGRP05\".Deposit(?, ?, ?, ?) }");
-			call.setString("vAccID", accountID);
-			call.setBigDecimal("vAmount", amount);
-			call.setString("vISOCode", ISOCode);
-			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
-			call.execute();
-			return call.getString("vOutput");
-		case "Withdraw":
-			call = connection.prepareCall("{call \"DTUGRP05\".withdraw(?, ?, ?, ?) }");
-			call.setString("vAccID", accountID);
-			call.setBigDecimal("vAmount", amount);
-			call.setString("vISOCode", ISOCode);
-			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
-			call.execute();
-			return call.getString("vOutput");
-		case "Transfer":
-			call = connection.prepareCall("{call \"DTUGRP05\".MoneyTransfer(?, ?, ?, ?, ?, ?) }");
-			call.setBigDecimal("vTransfer", amount);
-			call.setString("vTransName", transactionName);
-			call.setString("vAccID1", accountID);
-			call.setString("vAccID2", accountID2);
+		if (session.getAttribute("role").equals("e")) {
+			String cpr = account.getOwner().getCPR();
+			String ID = account.getAccountID();
+			String name = account.getName();
+			BigDecimal balance = account.getBalance();
+			BigDecimal interest = account.getInterest();
+			String ISOCode = account.getISOCode();
+			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".CreateAccount(?, ?, ?, ?, ?, ?, ?) }");
+			call.setString("vCPRNo", cpr);
+			call.setString("vAccID", ID);
+			call.setBigDecimal("vAmount", balance);
+			call.setBigDecimal("vInterest", interest);
+			call.setString("vAccName", name);
 			call.setString("vISOCode", ISOCode);
 			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
 			call.execute();
 			return call.getString("vOutput");
 		}
-		return "";
+		return loginString;
+	}
+
+	public String closeAccount(String accountID) throws SQLException {
+		if (session.getAttribute("role").equals("e")) {
+			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".DeleteAccount(?, ?) }");
+			call.setString("vAccID", accountID);
+			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+			call.execute();
+			return call.getString("vOutput");
+		}
+		return loginString;
+	}
+
+	public String editAccount(Account account) throws SQLException {
+		if (session.getAttribute("role").equals("e")) {
+			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditAccount(?, ?, ?, ?) }");
+			call.setString("vAccID", account.getAccountID());
+			call.setString("vAccName", account.getName());
+			call.setBigDecimal("vInterest", account.getInterest());
+			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+			call.execute();
+			return call.getString("vOutput");
+		}
+		return loginString;
+	}
+
+	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount, String ISOCode, String transactionName) throws SQLException {
+		if (session.getAttribute("role").equals("e") || session.getAttribute("role").equals("c")) {
+			CallableStatement call;
+			switch (type) {
+			case "Deposit":
+				call = connection.prepareCall("{call \"DTUGRP05\".Deposit(?, ?, ?, ?) }");
+				call.setString("vAccID", accountID);
+				call.setBigDecimal("vAmount", amount);
+				call.setString("vISOCode", ISOCode);
+				call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+				call.execute();
+				return call.getString("vOutput");
+			case "Withdraw":
+				call = connection.prepareCall("{call \"DTUGRP05\".withdraw(?, ?, ?, ?) }");
+				call.setString("vAccID", accountID);
+				call.setBigDecimal("vAmount", amount);
+				call.setString("vISOCode", ISOCode);
+				call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+				call.execute();
+				return call.getString("vOutput");
+			case "Transfer":
+				call = connection.prepareCall("{call \"DTUGRP05\".MoneyTransfer(?, ?, ?, ?, ?, ?) }");
+				call.setBigDecimal("vTransfer", amount);
+				call.setString("vTransName", transactionName);
+				call.setString("vAccID1", accountID);
+				call.setString("vAccID2", accountID2);
+				call.setString("vISOCode", ISOCode);
+				call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+				call.execute();
+				return call.getString("vOutput");
+			}
+		}
+		return loginString;
 	}
 
 	public String getOwner(String accountID) {
@@ -239,28 +246,31 @@ public class Database {
 		return null;
 	}
 
-	public String register(String cpr, String email, String password, String name, String phone, String address,
-			Date date, String postcode) throws SQLException {
-		CallableStatement call = connection
-				.prepareCall("{call \"DTUGRP05\".UserRegister(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
-		call.setString("vCPRNo", cpr);
-		call.setString("vEmail", email);
-		call.setString("vPassword", password);
-		call.setString("vRoleID", "c");
-		call.setString("vFullName", name);
-		call.setString("vPhone", phone);
-		call.setString("vAddress", address);
-		call.setDate("vDateOfBirth", date);
-		call.setString("vPostcode", postcode);
-		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
-		call.execute();
-		return call.getString("vOutput");
+	public String register(String cpr, String email, String password, String name, String phone, String address, Date date, String postcode) throws SQLException {
+		if (session.getAttribute("role").equals("e")) {
+			CallableStatement call = connection
+					.prepareCall("{call \"DTUGRP05\".UserRegister(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+			call.setString("vCPRNo", cpr);
+			call.setString("vEmail", email);
+			call.setString("vPassword", password);
+			call.setString("vRoleID", "c");
+			call.setString("vFullName", name);
+			call.setString("vPhone", phone);
+			call.setString("vAddress", address);
+			call.setDate("vDateOfBirth", date);
+			call.setString("vPostcode", postcode);
+			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+			call.execute();
+			return call.getString("vOutput");
+		}
+		return loginString;
 	}
 
 	public User getUser(String cpr) {
 		User user = null;
 		try {
-			ResultSet resultset = statement.executeQuery("select * from \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "'");
+			ResultSet resultset = statement
+					.executeQuery("select * from \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "'");
 			if (resultset.next()) {
 				user = new User(this, cpr);
 				String email = resultset.getString("Email");
@@ -283,27 +293,34 @@ public class Database {
 		return user;
 	}
 
-	public String editUser(String cpr, String email, String password, String name, String address, String zipcode, Date date, String phone) throws SQLException {
-		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditUser(?, ?, ?, ?, ?, ?, ?, ?, ?) }");
-		call.setString("vCPRNo", cpr);
-		call.setString("vEmail", email);
-		call.setString("vPassword", password);
-		call.setString("vFullName", name);
-		call.setString("vAddress", address);
-		call.setString("vPostcode", zipcode);
-		call.setDate("vDateOfBirth", date);
-		call.setString("vPhone", phone);
-		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
-		call.execute();
-		return call.getString("vOutput");
+	public String editUser(String cpr, String email, String password, String name, String address, String zipcode,
+			Date date, String phone) throws SQLException {
+		if (session.getAttribute("role").equals("e")) {
+			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditUser(?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+			call.setString("vCPRNo", cpr);
+			call.setString("vEmail", email);
+			call.setString("vPassword", password);
+			call.setString("vFullName", name);
+			call.setString("vAddress", address);
+			call.setString("vPostcode", zipcode);
+			call.setDate("vDateOfBirth", date);
+			call.setString("vPhone", phone);
+			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+			call.execute();
+			return call.getString("vOutput");
+		}
+		return loginString;
 	}
 
 	public String deleteUser(String cpr) throws SQLException {
-		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".DeleteUser(?, ?) }");
-		call.setString("vCPRNo", cpr);
-		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
-		call.execute();
-		return call.getString("vOutput");
+		if (session.getAttribute("role").equals("e")) {
+			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".DeleteUser(?, ?) }");
+			call.setString("vCPRNo", cpr);
+			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+			call.execute();
+			return call.getString("vOutput");
+		}
+		return loginString;
 	}
 
 	public String generateAccountID() throws SQLException {

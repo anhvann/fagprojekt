@@ -51,7 +51,7 @@ public class TestTransactions {
 	    when(session.getAttribute("role")).thenReturn(login.getLoggedInUser());
 		transactionServlet = new Transactions();
 		
-		db = new Database();
+		db = new Database(session);
 	}
 	
 	@Test

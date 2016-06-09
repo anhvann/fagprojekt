@@ -60,7 +60,7 @@ public class Transactions extends HttpServlet {
 	    }
 		
 		try {
-			Database db = new Database();
+			Database db = new Database(request.getSession());
 			
 		    switch (action) {
 		    	case "deposit" :
