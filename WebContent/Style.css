@@ -15,10 +15,6 @@
 }
 
 
-.navbar-collapse.in {
-overflow: hidden;
-}
-
 .navbar .nav>li>a {
 	line-height: 15px;
 	padding:18px;

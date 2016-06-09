@@ -32,8 +32,7 @@ public class UserActivity extends HttpServlet {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
 		String cpr = request.getParameter("ID");
 
@@ -46,6 +45,7 @@ public class UserActivity extends HttpServlet {
 				request.setAttribute("accounts", user.getAccounts());
 				request.setAttribute("name", user.getName());
 				request.setAttribute("cpr", cpr);
+				
 				request.getRequestDispatcher("accounts.jsp").forward(request, response);
 				break;
 			case "edit":
@@ -61,6 +61,14 @@ public class UserActivity extends HttpServlet {
 				request.setAttribute("date", user.getDateOfBirth());
 				request.getRequestDispatcher("userInfo.jsp").forward(request, response);
 				break;
+			case "delete":
+				message = db.deleteUser(cpr);
+				if (message.equals("User deleted")) {
+					response.sendRedirect("UserActivityRedirect?action=" + action + "&cpr=" + cpr + "&message=" + message);
+				} else {
+					response.sendRedirect("UserActivityRedirect?action=" + action + "&cpr=" + cpr + "&message=" + message);
+				}
+				break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
@@ -68,6 +76,7 @@ public class UserActivity extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
 		String cpr = request.getParameter("ID");
 		String action = request.getParameter("action");
 		String email = request.getParameter("email");
@@ -89,8 +98,7 @@ public class UserActivity extends HttpServlet {
 				message = db.register(cpr, email, password, name, phone, address, dateSQL, postcode);
 				user = db.getUser(cpr);
 				if (message.equals("User registered successfully")) {
-					response.sendRedirect(
-							"UserActivityRedirect?action=" + action + "&cpr=" + cpr + "&message=" + message);
+					response.sendRedirect("UserActivityRedirect?action=" + action + "&cpr=" + cpr + "&message=" + message);
 				} else {
 					response.sendRedirect("UserActivityRedirect?action=" + action + "&cpr=" + cpr + "&email=" + email
 							+ "&name=" + name + "&phone=" + phone + "&address=" + address + "&date=" + date
@@ -103,15 +111,6 @@ public class UserActivity extends HttpServlet {
 				dateSQL = new java.sql.Date(dateObject.getTime());
 				message = db.editUser(cpr, email, password, name, address, postcode, dateSQL, phone);
 				response.sendRedirect("UserActivityRedirect?action=" + action + "&cpr=" + cpr + "&message=" + message);
-				break;
-			case "delete":
-				message = db.deleteUser(cpr);
-				if (message.equals("User deleted")) {
-					response.sendRedirect("UserActivityRedirect?action=" + action);
-				} else {
-					response.sendRedirect(
-							"UserActivityRedirect?action=" + action + "&cpr=" + cpr + "&message=" + message);
-				}
 				break;
 			}
 		} catch (ClassNotFoundException | SQLException | ParseException e) {

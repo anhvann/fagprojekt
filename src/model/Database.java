@@ -255,8 +255,7 @@ public class Database {
 	public String register(String cpr, String email, String password, String name, String phone, String address,
 			Date date, String postcode) throws SQLException {
 		if (session != null && session.getAttribute("role").equals("e")) {
-			CallableStatement call = connection
-					.prepareCall("{call \"DTUGRP05\".UserRegister(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".UserRegister(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
 			call.setString("vCPRNo", cpr);
 			call.setString("vEmail", email);
 			call.setString("vPassword", password);

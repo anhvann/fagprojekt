@@ -23,8 +23,12 @@
 				<div align="left">
 					<font size="2" color="red">${errormessage}</font>
 					<br>
-					<font size="2"></font><span style="float:left;">
-						<a href="UserActivity?ID=${cpr}&action=edit">Edit User Information</a> | <a href="UserActivity?ID=${cpr}&action=delete">Delete User</a>
+					<font size="2"></font>
+					<span style="float:left;">
+						<a href="UserActivity?ID=${cpr}&action=edit">Edit User Information</a> | 
+						<form input style="display: inline;" action="UserActivity?ID=${cpr}&action=delete" method="post">
+  							<button type="submit" name="delete"" class="btn-link">Delete User</button>
+						</form> 
 					</span>
 					<span style="float:right;">
 						<a href="AccountActivity?ID=${cpr}&action=newaccount">Create New Account</a>
