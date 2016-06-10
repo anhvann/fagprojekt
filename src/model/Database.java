@@ -74,9 +74,10 @@ public class Database {
 		owners.add(user);
 
 		try {
-			ResultSet resultset = statement.executeQuery(
-					"select * from \"DTUGRP05\".\"ACCOUNTS\" LEFT OUTER JOIN \"DTUGRP05\".\"OWNERSHIPS\" ON \"DTUGRP05\".\"ACCOUNTS\".\"AccID\" = \"DTUGRP05\".\"OWNERSHIPS\".\"AccID\" WHERE \"CPRNo\" = '"
-							+ cpr + "' ");
+			String query = "select * from \"DTUGRP05\".\"ACCOUNTS\" LEFT OUTER JOIN \"DTUGRP05\".\"OWNERSHIPS\" ON \"DTUGRP05\".\"ACCOUNTS\".\"AccID\" = \"DTUGRP05\".\"OWNERSHIPS\".\"AccID\" WHERE \"CPRNo\" = ? ";
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setString(1, cpr);
+			ResultSet resultset = stmt.executeQuery();
 			while (resultset.next()) {
 				Account acc = new Account(owners, resultset.getString("AccID"), resultset.getString("AccName"),
 						resultset.getBigDecimal("Balance"), resultset.getBigDecimal("Interest"),
@@ -98,8 +99,10 @@ public class Database {
 		LinkedList<Transaction> transactions = new LinkedList<>();
 
 		try {
-			ResultSet resultset = statement
-					.executeQuery("select * from \"DTUGRP05\".\"TRANSACTIONS\" WHERE \"AccID\" = '" + accountID + "'");
+			String query = "select * from \"DTUGRP05\".\"TRANSACTIONS\" WHERE \"AccID\" = ?";
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setString(1, accountID);
+			ResultSet resultset = stmt.executeQuery();
 			while (resultset.next()) {
 				BigDecimal amount = resultset.getBigDecimal("Amount");
 				if (resultset.getString("TransType").equals("Transaction Send Money")
@@ -127,6 +130,7 @@ public class Database {
 			BigDecimal balance = account.getBalance();
 			BigDecimal interest = account.getInterest();
 			String ISOCode = account.getISOCode();
+			
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".CreateAccount(?, ?, ?, ?, ?, ?, ?) }");
 			call.setString("vCPRNo", cpr);
 			call.setString("vAccID", ID);
@@ -204,8 +208,10 @@ public class Database {
 		LinkedList<User> owners = new LinkedList<>();
 		LinkedList<String> IDs = new LinkedList<>();
 		try {
-			ResultSet resultset = statement
-					.executeQuery("select * from \"DTUGRP05\".\"OWNERSHIPS\" WHERE \"AccID\" = '" + accountID + "'");
+			String query = "select * from \"DTUGRP05\".\"OWNERSHIPS\" WHERE \"AccID\" = ?";
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setString(1, accountID);
+			ResultSet resultset = stmt.executeQuery();
 			while (resultset.next()) {
 				 IDs.add(resultset.getString("CPRNo"));
 			}
@@ -222,8 +228,10 @@ public class Database {
 	public String getCity(String postcode) {
 		String city = null;
 		try {
-			ResultSet resultset = statement
-					.executeQuery("select * from \"DTUGRP05\".\"CITIES\" WHERE \"Postcode\" = '" + postcode + "'");
+			String query = "select * from \"DTUGRP05\".\"CITIES\" WHERE \"Postcode\" = ?";
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setString(1, postcode);
+			ResultSet resultset = stmt.executeQuery();
 			if (resultset.next()) {
 				city = resultset.getString("CityName");
 			}
@@ -236,8 +244,10 @@ public class Database {
 
 	public Account getAccount(String accountID) {
 		try {
-			ResultSet resultset = statement
-					.executeQuery("select * from \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = '" + accountID + "'");
+			String query = "select * from \"DTUGRP05\".\"ACCOUNTS\" WHERE \"AccID\" = ?";
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setString(1, accountID);
+			ResultSet resultset = stmt.executeQuery();
 			if (resultset.next()) {
 				BigDecimal balance = resultset.getBigDecimal("Balance");
 				BigDecimal interest = resultset.getBigDecimal("Interest");
@@ -278,8 +288,10 @@ public class Database {
 	public User getUser(String cpr) {
 		User user = null;
 		try {
-			ResultSet resultset = statement
-					.executeQuery("select * from \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = '" + cpr + "'");
+			String query = "select * from \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = ?";
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setString(1, cpr);
+			ResultSet resultset = stmt.executeQuery();
 			if (resultset.next()) {
 				user = new User(this, cpr);
 				String email = resultset.getString("Email");
