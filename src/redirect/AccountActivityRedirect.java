@@ -100,6 +100,17 @@ public class AccountActivityRedirect extends HttpServlet {
 					request.getRequestDispatcher("addowner.jsp").forward(request, response);
 				}
 				break;
+			case "deleteowner" :
+				request.setAttribute("message", message);
+				request.setAttribute("toast", true);
+				request.setAttribute("cpr", cpr);
+				request.setAttribute("accountID", accountID);
+				request.setAttribute("accountName", account.getName());
+				request.setAttribute("transactions", account.getTransactions());
+				request.setAttribute("balance", account.getBalanceString());
+				request.setAttribute("ISOCode", account.getISOCode());
+				request.getRequestDispatcher("editaccount.jsp").forward(request, response);
+			
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();

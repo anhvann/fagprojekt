@@ -12,7 +12,9 @@
 					<div class="col-sm-5">
 						<%LinkedList<User> users = (LinkedList<User>) request.getAttribute("owners");%>
 						<%for (User user : users){%>
-							<%=user.getName()%> (<%=user.getCPR()%>)<br>
+							<%=user.getName()%> (<%=user.getCPR()%>) 
+							<a href="AccountActivity?ID=<%user.getCPR();%>&accountID=${accountID}&action=deleteowner">Remove</a>
+							<br>
 						<%}%>
 					</div>
 					<br><br>

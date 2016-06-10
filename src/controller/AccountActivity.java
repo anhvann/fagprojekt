@@ -124,10 +124,12 @@ public class AccountActivity extends HttpServlet {
 				response.sendRedirect("AccountActivityRedirect?action="+action+"&ID="+cpr+"&accountID="+accountID+"&message="+message);
 				break;
 			case "share" :
-				account = db.getAccount(accountID);
 				message = db.addOwner(accountID, newCPR);
-				
 				response.sendRedirect("AccountActivityRedirect?action="+action+"&ID="+cpr+"&newID="+newCPR+"&accountID="+accountID+"&message="+message);
+				break;
+			case "deleteowner" :
+				message = db.deleteOwner(accountID, newCPR);
+				response.sendRedirect("AccountActivityRedirect?action="+action+"&ID="+cpr+"&accountID="+accountID+"&message="+message);
 				break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
