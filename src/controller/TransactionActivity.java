@@ -22,12 +22,12 @@ import model.Database;
 import model.Transaction;
 import model.User;
 
-@WebServlet("/Transactions")
-public class Transactions extends HttpServlet {
+@WebServlet("/TransactionActivity")
+public class TransactionActivity extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private String message ="";
     
-    public Transactions() {
+    public TransactionActivity() {
         super();
     }
 
@@ -79,7 +79,7 @@ public class Transactions extends HttpServlet {
 		}
 	}
 	private void redirect(HttpServletResponse response, String accountID, String message, String cpr)throws ServletException, IOException {
-		response.sendRedirect("TransactionsRedirect?ID="+cpr+"&accountID="+accountID+"&message="+message);
+		response.sendRedirect("TransactionActivityRedirect?ID="+cpr+"&accountID="+accountID+"&message="+message);
 	}
 	public String getMessage(){
 		return message;

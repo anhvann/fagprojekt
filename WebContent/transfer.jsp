@@ -12,7 +12,7 @@
 		if (accID == null){
 			accID = "\"\"";
 		} %>
-			<form class="form-inline" action="Transactions?action=transfer" method="post" target="_self">
+			<form class="form-inline" action="TransactionActivity?action=transfer" method="post" target="_self">
 				<label class="control-label col-sm-5">Transaction name:</label>
 				<div class="col-sm-5"><input type="text" class="form-control" name="transName" placeholder="Enter transaction name"/></div>
 				<br><br>

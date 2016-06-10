@@ -9,7 +9,7 @@
 		if (accID == null){
 			accID = "\"\"";
 		} %>
-			<form class="form-inline" action="Transactions?action=withdraw" method="post" target="_self">
+			<form class="form-inline" action="TransactionActivity?action=withdraw" method="post" target="_self">
 				<label class="control-label col-sm-5">Account:</label>
 				<div class="col-sm-5"><input type="number" class="form-control" name="accountID" placeholder="Enter account ID" value="<%=accID%>" required/></div>
 				<br><br>

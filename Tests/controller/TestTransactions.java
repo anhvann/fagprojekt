@@ -19,7 +19,7 @@ public class TestTransactions {
 	private HttpServletResponse response = mock(HttpServletResponse.class);
 	private RequestDispatcher dispatcher = mock(RequestDispatcher.class);
 	private HttpSession session = mock(HttpSession.class);
-	private Transactions transactionServlet;
+	private TransactionActivity transactionServlet;
 	private Database db;
 	private String clientCPR = "2309911234";
 	private String accountID1 = "85327386530327"; //DKK
@@ -50,7 +50,7 @@ public class TestTransactions {
 	    login.doPost(request, response);
 	    when(session.getAttribute("role")).thenReturn(login.getRole());
 	    when(session.getAttribute("loggedinuser")).thenReturn(login.getLoggedInUser());
-		transactionServlet = new Transactions();
+		transactionServlet = new TransactionActivity();
 		
 		db = new Database(session);
 	}

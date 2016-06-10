@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.Database;
 
-@WebServlet("/TransactionsRedirect")
-public class TransactionsRedirect extends HttpServlet {
+@WebServlet("/TransactionActivityRedirect")
+public class TransactionActivityRedirect extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public TransactionsRedirect() {
+	public TransactionActivityRedirect() {
 		super();
 	}
 
