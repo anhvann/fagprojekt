@@ -45,7 +45,6 @@ public class UserActivity extends HttpServlet {
 				request.setAttribute("accounts", user.getAccounts());
 				request.setAttribute("name", user.getName());
 				request.setAttribute("cpr", cpr);
-				
 				request.getRequestDispatcher("accounts.jsp").forward(request, response);
 				break;
 			case "edit":

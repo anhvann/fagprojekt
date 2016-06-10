@@ -349,4 +349,13 @@ public class Database {
 		call.execute();
 		return call.getString("vOutput");
 	}
+
+	public String deleteOwner(String accountID, String newCPR) throws SQLException {
+		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".RemoveOwner(?, ?, ?) }");
+		call.setString("vCPRNo", newCPR);
+		call.setString("vAccID", accountID);
+		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+		call.execute();
+		return call.getString("vOutput");
+	}
 }
