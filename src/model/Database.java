@@ -14,6 +14,8 @@ public class Database {
 
 	private String url = "jdbc:db2://192.86.32.54:5040/DALLASB:retrieveMessagesFromServerOnGetMessage=true;emulateParameterMetaDataForZCalls=1;";
 	private String loginString = "Illegal action";
+	private String invalidCPR = "CPR number is invalid";
+	private String invalidPhone = "Phone number is invalid";
 
 	public Database(HttpSession session) throws ClassNotFoundException, SQLException {
 		connect();
@@ -268,6 +270,12 @@ public class Database {
 	public String register(String cpr, String email, String password, String name, String phone, String address,
 			Date date, String postcode) throws SQLException {
 		if (session != null && session.getAttribute("role").equals("e")) {
+			if(cpr.length() != 10){
+				return invalidCPR;
+			}
+			if(phone.length() != 8){
+				return invalidPhone;
+			}
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".UserRegister(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
 			call.setString("vCPRNo", cpr);
 			call.setString("vEmail", email);
@@ -318,6 +326,12 @@ public class Database {
 			Date date, String phone) throws SQLException {
 		if (session != null && session.getAttribute("role").equals("e")) {
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditUser(?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+			if(cpr.length() != 10){
+				return invalidCPR;
+			}
+			if(phone.length() != 8){
+				return invalidPhone;
+			}
 			call.setString("vCPRNo", cpr);
 			call.setString("vEmail", email);
 			call.setString("vPassword", password);

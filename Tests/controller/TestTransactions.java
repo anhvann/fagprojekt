@@ -5,13 +5,10 @@ import static org.mockito.Mockito.*;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.io.*;
-
-import javax.servlet.FilterChain;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import org.junit.*;
-
 import model.*;
 
 public class TestTransactions {
@@ -24,6 +21,8 @@ public class TestTransactions {
 	private String clientCPR = "2309911234";
 	private String accountID1 = "85327386530327"; //DKK
 	private String accountID2 = "85327386530329"; //DDK
+	private String accountID3 = "85327386530331"; //DDK
+	private String CPR3 = "0306628962";
 	private String accountGBP = "85327386530328";
 	
 	/*Precondition: 
@@ -33,6 +32,7 @@ public class TestTransactions {
 	 * 
 	 * Account 85327386530327 may not have more than 1,000,000 DKK
 	 * Account 85327386530327 may not have less than 400 DDK
+	 * Account 85327386530331 may not have less than 100 DDK
 	 * Account 00000000000000 does not exist
 	 */
 	
@@ -70,6 +70,21 @@ public class TestTransactions {
 	    assertEquals(balanceOld.add(amount), balanceNew);
 	}
 
+	@Test
+	public void testDepositSuccess2() throws Exception {
+		BigDecimal balanceOld = db.getAccount(accountID3).getBalance();
+	    when(request.getParameter("action")).thenReturn("deposit");
+	    when(request.getParameter("accountID")).thenReturn(accountID3);
+	    when(request.getParameter("amount")).thenReturn("50");
+	    when(request.getParameter("ISOCode")).thenReturn("DKK");
+	    when(request.getParameter("ID")).thenReturn(CPR3);
+	    transactionServlet.doPost(request, response);
+	    BigDecimal balanceNew = db.getAccount(accountID3).getBalance();
+	    assertEquals("Deposit completed", transactionServlet.getMessage());
+	    BigDecimal amount = new BigDecimal("50");
+	    assertEquals(balanceOld.add(amount), balanceNew);
+	}
+	
 	@Test
 	public void testDepositDifferentCurrency() throws Exception {
 		BigDecimal balanceOld = db.getAccount(accountID1).getBalance();
@@ -158,6 +173,25 @@ public class TestTransactions {
 	
 	@Test
 	public void testTransferSuccess() throws Exception {
+		BigDecimal balanceOld1 = db.getAccount(accountID1).getBalance();
+		BigDecimal balanceOld2 = db.getAccount(accountID2).getBalance();
+	    when(request.getParameter("action")).thenReturn("transfer");
+	    when(request.getParameter("accountID")).thenReturn(accountID1);
+	    when(request.getParameter("accountID2")).thenReturn(accountID2);
+	    when(request.getParameter("transName")).thenReturn("Loan");
+	    when(request.getParameter("amount")).thenReturn("100");
+	    when(request.getParameter("ISOCode")).thenReturn("DKK");
+	    when(request.getParameter("ID")).thenReturn(clientCPR);
+	    transactionServlet.doPost(request, response);
+	    BigDecimal balanceNew1 = db.getAccount(accountID1).getBalance();
+	    BigDecimal balanceNew2 = db.getAccount(accountID2).getBalance();
+	    assertEquals("Transfer completed", transactionServlet.getMessage());
+	    BigDecimal amount = new BigDecimal("100");
+	    assertEquals(balanceOld1.subtract(amount), balanceNew1);
+	    assertEquals(balanceOld2.add(amount), balanceNew2);
+	}
+	@Test
+	public void testTransferSuccess2() throws Exception {
 		BigDecimal balanceOld1 = db.getAccount(accountID1).getBalance();
 		BigDecimal balanceOld2 = db.getAccount(accountID2).getBalance();
 	    when(request.getParameter("action")).thenReturn("transfer");

@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -48,6 +49,7 @@ public class AccountActivity extends HttpServlet {
 				request.setAttribute("transactions", account.getTransactions());
 				request.setAttribute("balance", account.getBalanceString());
 				request.setAttribute("ISOCode", account.getISOCode());
+				request.getSession().setAttribute("userpage", cpr);
 				request.getRequestDispatcher("accountoverview.jsp").forward(request, response);
 				break;
 			case "newaccount":
