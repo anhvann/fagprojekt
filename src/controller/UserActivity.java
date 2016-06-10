@@ -61,14 +61,6 @@ public class UserActivity extends HttpServlet {
 				request.setAttribute("date", user.getDateOfBirth());
 				request.getRequestDispatcher("userInfo.jsp").forward(request, response);
 				break;
-			case "delete":
-				message = db.deleteUser(cpr);
-				if (message.equals("User deleted")) {
-					response.sendRedirect("UserActivityRedirect?action=" + action + "&cpr=" + cpr + "&message=" + message);
-				} else {
-					response.sendRedirect("UserActivityRedirect?action=" + action + "&cpr=" + cpr + "&message=" + message);
-				}
-				break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
@@ -86,7 +78,6 @@ public class UserActivity extends HttpServlet {
 		String postcode = request.getParameter("postcode");
 		String date = request.getParameter("date");
 		String phone = request.getParameter("phone");
-
 		try {
 			db = new Database(request.getSession());
 			User user;
@@ -112,7 +103,16 @@ public class UserActivity extends HttpServlet {
 				message = db.editUser(cpr, email, password, name, address, postcode, dateSQL, phone);
 				response.sendRedirect("UserActivityRedirect?action=" + action + "&cpr=" + cpr + "&message=" + message);
 				break;
+			case "delete":
+				message = db.deleteUser(cpr);
+				if (message.equals("User deleted")) {
+					response.sendRedirect("UserActivityRedirect?action=" + action + "&cpr=" + cpr + "&message=" + message);
+				} else {
+					response.sendRedirect("UserActivityRedirect?action=" + action + "&cpr=" + cpr + "&message=" + message);
+				}
+				break;
 			}
+			
 		} catch (ClassNotFoundException | SQLException | ParseException e) {
 			e.printStackTrace();
 		}
