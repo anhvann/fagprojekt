@@ -1,6 +1,6 @@
 <!DOCTYPE HTML><%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html>
-<div class="container">
+<div id="wrap">
 	<%@ page import="java.util.LinkedList"%>
 	<%@ page import="model.User" %>
 	<%@include file="employeecheck.jsp" %>
@@ -20,13 +20,13 @@
 					<br><br>
 					<label class="control-label col-sm-5">Name:</label>
 					<div class="col-sm-5">
-						<input type="text" class="form-control" name="accountName" placeholder="Enter name" value="${name}">
+						<input type="text" class="form-control" name="accountName" placeholder="Enter name" value="${name}" required>
 					</div>
 					<br><br>
 					
 					<label class="control-label col-sm-5">Interest:</label>
 					<div class="col-sm-5">
-						<input type="text" class="form-control" name="interest" placeholder="Enter interest" value="${interest}">
+						<input type="number" step="0.01" class="form-control" name="interest" placeholder="Enter interest" value="${interest}" required>
 					</div>
 					<br><br>
 					<label class="control-label col-sm-5">Currency:</label>

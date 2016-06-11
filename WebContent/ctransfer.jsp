@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html>
-<div class="container">
+<div id="wrap">
 	<%@include file="clientcheck.jsp" %>
 	<%@ page import="java.util.LinkedList"%>
 	<%@ page import="model.Account" %>
@@ -9,7 +9,7 @@
 		<hr width="95%" noshade>
 			<form class="form-inline" action="TransactionActivity?action=transfer" method="post" target="_self">
 				<label class="control-label col-sm-5">Transaction name:</label>
-				<div class="col-sm-5"><input type="text" class="form-control" name="transName" placeholder="Enter transaction name"/></div>
+				<div class="col-sm-5"><input type="text" class="form-control" name="transName" placeholder="Enter transaction name" required/></div>
 				<br><br>
 				<label class="control-label col-sm-5">Sending Account:</label>
 				<div class="col-sm-5"><select class="form-control" name="accountID">
@@ -22,10 +22,10 @@
   				
 				<br><br>
 				<label class="control-label col-sm-5">Receiving Account:</label>
-				<div class="col-sm-5"><input type="text" class="form-control" name="accountID2" placeholder="Enter account ID"/></div>
+				<div class="col-sm-5"><input type="text" class="form-control" name="accountID2" placeholder="Enter account ID" required/></div>
 				<br><br>
 				<label class="control-label col-sm-5">Amount:</label>
-				<div class="col-sm-5"><input type="text" class="form-control" name="amount" placeholder="Enter amount"/>
+				<div class="col-sm-5"><input type="text" class="form-control" name="amount" placeholder="Enter amount" min="0" step="0.01" required/>
 				<select class="form-control" name="ISOCode">
     				<option value="DKK" selected>DKK</option>
     				<option value="USD">USD</option>

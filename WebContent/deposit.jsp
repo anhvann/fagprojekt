@@ -1,16 +1,20 @@
 <!DOCTYPE HTML><%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html>
-<div class="container">
+<div id="wrap">
 	<%@include file="employeecheck.jsp" %>
 	<div class="main">
 		<div class="pagetitle">Deposit money</div>
 		<hr width="95%" noshade>
+				<%String accID = request.getParameter("accountID");
+		if (accID == null){
+			accID = "\"\"";
+		} %>
 			<form class="form-inline" action="TransactionActivity?action=deposit" method="post" target="_self">
 				<label class="control-label col-sm-5">Account:</label>
-				<div class="col-sm-5"><input type="number" class="form-control" name="accountID" placeholder="Enter account ID" value="${accountID}" required/></div>
+				<div class="col-sm-5"><input type="number" class="form-control" name="accountID" placeholder="Enter account ID" value="<%=accID%>" required/></div>
 				<br><br>
 				<label class="control-label col-sm-5">Amount:</label>
-				<div class="col-sm-5"><input type="number" step="0.01" class="form-control" name="amount" placeholder="Enter amount" required/>
+				<div class="col-sm-5"><input type="number" step="0.01" class="form-control" name="amount" placeholder="Enter amount" min="0" step="0.01" required/>
 				<select class="form-control" name="ISOCode">
     				<option value="DKK" selected>DKK</option>
     				<option value="USD">USD</option>
@@ -44,6 +48,7 @@
 				<div class="col-sm-offset-5 col-sm-5"><font size="2"><font color="red">${errormessage}</font></font><br>
 				<input type="submit" class="btn btn-default" name="depositButton" value="Deposit"></div>
 			</form>		
+			</div>
 	</div>
 </div>
 <%@include file="footer.jsp"%>

@@ -67,47 +67,51 @@
 html, body {
 	height: 100%;
 }
-
-.container {
-	width: 100%;
-	padding: 0;
-	height: 100%;
-}
-
 .main {
 	z-index: 1;
 	background: #ffffff;
-	overflow: autO;
+	overflow: auto;
 	min-height: 300px;
-	padding-bottom: 100px;
+	padding-bottom: 50px;
 }
-
+.front {
+	z-index: 1;
+	background: #faf3f2;
+	min-height: 250px;
+	overflow:hidden;
+}
+#wrap {min-height: 100%;}
 .footer {
-	z-index: -1;
-	position: absolute;
-	bottom: 0;
-	line-height: 50px;
-	height: 50px;
-	width: 100%;
 	background: url("http://i.imgur.com/Uf3PuDg.png");
 	background-size: auto 50px;
+	z-index: -1;
+	width: 100%;
+	line-height: 50px;
 	color: #959595;
 	text-align: center;
 	font-size: 12px;
-}
-/* On small screens, set height to 'auto' for sidenav and grid 
-@media screen and (max-width: 767px) {
-	.sidenav {
-		height: auto;
-		padding: 15px;
-	}
-	.row.content {
-		height: auto;
-	}
+	rgin-top: -50px;
+	height: 50px;
+	clear: both;
 }
 .carousel-inner img {
 	margin: auto;
-}*/
+}
+
+.carousel-control {
+	position: absolute;
+    top: 350px;
+    height: 80px;
+    background: none !important;
+
+}
+.carousel .carousel-control {
+  visibility: hidden;
+}
+.carousel:hover .carousel-control {
+  visibility: visible;
+}
+
 #loginform {
 	margin: 100px auto;
 	width: 250px;

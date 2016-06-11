@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<div class="container">
+<div id="wrap">
 	<%@include file="header.jsp"%>
 	<%if ((session.getAttribute("loggedinuser") != null) && (session.getAttribute("loggedinuser") != "")) {
 	response.sendRedirect("index.jsp");

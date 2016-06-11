@@ -1,6 +1,6 @@
 <!DOCTYPE HTML><%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html>
-<div class="container">
+<div id="wrap">
 	<%@include file="employeecheck.jsp" %>
 	<div class="main">
 		<div class="pagetitle">Create new user account</div>

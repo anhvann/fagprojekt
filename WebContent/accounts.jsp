@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+
 <link rel="stylesheet" type="text/css" href="Style.css">
 <script>
 	function toast() {
@@ -8,6 +8,8 @@
 	    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 	}
 </script>
+<html>
+<div id="wrap">
 <div class="container">
 	<%@include file="sessioncheck.jsp" %>
 	<%@ page import="java.sql.*"%>
@@ -66,6 +68,7 @@
    				toast();
     		}
     	</script>
+</div>
 </div>
 <%@include file="footer.jsp"%>
 </html>
