@@ -106,7 +106,7 @@ public class AccountActivity extends HttpServlet {
 				response.sendRedirect("AccountActivityRedirect?action="+action+"&ID="+cpr+"&message="+message);
 				break;
 			case "closeaccount":
-				message = db.closeAccount(accountID);
+				message = user.closeAccount(accountID);
 				if (message.equals("Cannot delete because account has money")) {
 					response.sendRedirect("AccountActivityRedirect?action="+action+"&ID="+cpr+"&accountID="+accountID+"&message="+message);
 				} else if (message.equals("Account deleted")){
