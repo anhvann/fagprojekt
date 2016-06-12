@@ -20,8 +20,8 @@ public class TestTransactions {
 	private Database db;
 	private String clientCPR = "2309911234";
 	private String accountID1 = "85327386530327"; //DKK
-	private String accountID2 = "85327386530329"; //DDK
-	private String accountID3 = "85327386530331"; //DDK
+	private String accountID2 = "85327386530329"; //DKK
+	private String accountID3 = "85327386530331"; //DKK
 	private String CPR3 = "0306628962";
 	private String accountGBP = "85327386530328";
 	
@@ -31,8 +31,8 @@ public class TestTransactions {
 	 * 		Password: vanvan
 	 * 
 	 * Account 85327386530327 may not have more than 1,000,000 DKK
-	 * Account 85327386530327 may not have less than 400 DDK
-	 * Account 85327386530331 may not have less than 100 DDK
+	 * Account 85327386530327 may not have less than 400 DKK
+	 * Account 85327386530331 may not have less than 100 DKK
 	 * Account 00000000000000 does not exist
 	 */
 	
