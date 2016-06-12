@@ -72,8 +72,8 @@ public class Database {
 	public LinkedList<Account> getAccounts(User user) {
 		String cpr = user.getCPR();
 		LinkedList<Account> accounts = new LinkedList<>();
-		LinkedList<User> owners = new LinkedList<>();
-		owners.add(user);
+		LinkedList<String> owners = new LinkedList<>();
+		owners.add(cpr);
 
 		try {
 			String query = "select * from \"DTUGRP05\".\"ACCOUNTS\" LEFT OUTER JOIN \"DTUGRP05\".\"OWNERSHIPS\" ON \"DTUGRP05\".\"ACCOUNTS\".\"AccID\" = \"DTUGRP05\".\"OWNERSHIPS\".\"AccID\" WHERE \"CPRNo\" = ? ";
@@ -256,8 +256,12 @@ public class Database {
 				String AccName = resultset.getString("AccName");
 				String ISOCode = resultset.getString("ISOCode");
 				resultset.close();
-
-				Account account = new Account(getOwners(accountID), accountID, AccName, balance, interest,
+				
+				LinkedList<String> IDs = new LinkedList<>();
+				for (User user : getOwners(accountID)) {
+					IDs.add(user.getCPR());
+				}
+				Account account = new Account(IDs, accountID, AccName, balance, interest,
 						ISOCode, getTransactions(accountID));
 				return account;
 			}

@@ -64,7 +64,7 @@ public class AccountActivity extends HttpServlet {
 				request.setAttribute("name", account.getName());
 				request.setAttribute("interest", account.getInterest());
 				request.setAttribute("ISOCode", account.getISOCode());
-				request.setAttribute("owners", account.getOwners());
+				request.setAttribute("owners", db.getOwners(accountID));
 				request.getRequestDispatcher("editaccount.jsp").forward(request, response);
 				break;
 			case "addowner" : 
@@ -98,8 +98,8 @@ public class AccountActivity extends HttpServlet {
 				BigDecimal interest = getBigDecimal(value);
 				BigDecimal balance = getBigDecimal("0");
 				accountID = db.generateAccountID();
-				LinkedList<User> owners = new LinkedList<>();
-				owners.add(user);
+				LinkedList<String> owners = new LinkedList<>();
+				owners.add(cpr);
 				account = new Account(owners, accountID, accountName, balance, interest, ISOCode, new LinkedList<Transaction>());
 				message = user.addAccount(account);
 				
