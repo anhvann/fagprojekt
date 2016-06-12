@@ -2,6 +2,7 @@
 <html>
 <link rel="stylesheet" type="text/css" href="Style.css">
 <div class="footer">
+	<br>
 	<p>Uniccol Bank A/S licensed 2016</p>
 </div>
 </html>
