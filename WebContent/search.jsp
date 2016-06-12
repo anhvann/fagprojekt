@@ -2,7 +2,6 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="model.User" %>
-<html>
 <link rel="stylesheet" type="text/css" href="Style.css">
 <script>
 	function toast() {
@@ -11,7 +10,8 @@
 	    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 	}
 </script>
-<div class="container">
+<html>
+<div id="wrap">
 	<%@include file="employeecheck.jsp" %>
 	<div class="main">
 		<form id=searchbar action="Search" method="post" target="_self">

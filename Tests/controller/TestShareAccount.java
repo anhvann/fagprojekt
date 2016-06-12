@@ -52,19 +52,31 @@
 //	}
 //
 //	@Test
-//	public void testAddRemoveOwnderSuccess() throws Exception {
+//	public void testAddRemoveOwnerSuccess() throws Exception {
 //		//Add
-//		int ownersBefore = db.getOwners(accountID).size();
-//		int accountsBefore = db.getAccounts(db.getUser(clientCPR)).size();
+////		int ownersBefore = db.getOwners(accountID).size();
+////		int accountsBefore = db.getAccounts(db.getUser(clientCPR)).size();
+////		when(request.getParameter("action")).thenReturn("share");
+////		when(request.getParameter("accountID")).thenReturn(accountID);
+////		when(request.getParameter("newCPR")).thenReturn(clientCPR);
+////		accountActivityServlet.doPost(request, response);
+////		
+////		assertEquals("Ownership already exists", accountActivityServlet.getMessage());
+////		int ownersAfter = db.getOwners(accountID).size();
+////		int accountsAfter = db.getAccounts(db.getUser(clientCPR)).size();;
+////		assertEquals(1, ownersAfter-ownersBefore);
+////		assertEquals(1, accountsAfter-accountsBefore);
+//		
+//		//Remove
+//		when(request.getParameter("action")).thenReturn("deleteowner");
 //		when(request.getParameter("accountID")).thenReturn(accountID);
 //		when(request.getParameter("newCPR")).thenReturn(clientCPR);
 //		accountActivityServlet.doPost(request, response);
-//		int ownersAfter = db.getOwners(accountID).size();
-//		int accountsAfter = db.getAccounts(db.getUser(clientCPR)).size();;
-//		assertEquals(1, ownersAfter-ownersBefore);
-//		assertEquals(1, accountsAfter-accountsBefore);
 //		
-//		//Remove
-//		
+//		assertEquals("Owner removed", accountActivityServlet.getMessage());
+//		int ownersFinal = db.getOwners(accountID).size();
+//		int accountFinal = db.getAccounts(db.getUser(clientCPR)).size();;
+////		assertEquals(-1, ownersAfter-ownersBefore);
+////		assertEquals(-1, accountsAfter-accountsBefore);
 //	}
 //}
