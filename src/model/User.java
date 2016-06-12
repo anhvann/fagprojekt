@@ -11,7 +11,6 @@ public class User {
 	private String cpr, email, password, name, phone, address, postCode, roleID;
 	private Date dateOfBirth;
 	private LinkedList<Account> accounts;
-	private LinkedList<Transaction> transactions;
 	private Database bank;
 
 	public User(Database database, String cpr) {
@@ -70,10 +69,6 @@ public class User {
 	public void setAccounts(LinkedList<Account> accounts) {
 		this.accounts = accounts;
 	}
-
-	public void setTransactions(LinkedList<Transaction> transactions) {
-		this.transactions = transactions;
-	}
 	
 	public String editAccount(Account account) throws ClassNotFoundException, SQLException {
 		return bank.editAccount(account);
@@ -88,13 +83,14 @@ public class User {
 		return cpr;
 	}
 
-	public void closeAccount(String accID) {
+	public String closeAccount(String accID) throws SQLException {
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountID().equals(accID)) {
 				accounts.remove(i);
 				break;
 			}
 		}
+		return bank.closeAccount(accID);
 	}
 
 	public Account getAccount(String accID) {
@@ -104,10 +100,6 @@ public class User {
 			}
 		}
 		return null;
-	}
-
-	public LinkedList<Transaction> getTransactions() {
-		return transactions;
 	}
 
 	public BigDecimal getBalance(String accountID) {
