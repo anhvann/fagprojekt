@@ -28,25 +28,18 @@ public class Database {
 		statement = connection.createStatement();
 	}
 
-	public ArrayList<User> searchFor(String keyword) {
+	public ArrayList<User> searchFor(String keyword) throws SQLException {
 		if (session != null && session.getAttribute("role").equals("e")) {
 			ArrayList<String> IDs = new ArrayList<>();
 			ArrayList<User> users = new ArrayList<>();
-
-			try {
-				String query = "SELECT * FROM \"DTUGRP05\".\"CUSTOMERS\" WHERE \"CPRNo\" LIKE ? OR \"Phone\" LIKE ? OR LOWER(\"FullName\") LIKE ?";
-				PreparedStatement stmt = connection.prepareStatement(query);
-				stmt.setString(1, "%"+keyword+"%");
-				stmt.setString(2, "%"+keyword+"%");
-				stmt.setString(3, "%"+keyword+"%");
-				ResultSet resultSet = stmt.executeQuery();
+			
+			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".KeywordSearch(?) }");
+			call.setString("vKeyword", keyword);
+			call.execute();
+			ResultSet resultSet = call.getResultSet();		
 				while (resultSet.next()) {
 					IDs.add(resultSet.getString("CPRNo"));
 				}
-				resultSet.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 			for (String ID : IDs) {
 				users.add(getUser(ID));
 			}
