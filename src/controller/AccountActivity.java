@@ -32,7 +32,8 @@ public class AccountActivity extends HttpServlet {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String cpr = request.getParameter("ID");
 		String action = request.getParameter("action");
 		String accountID = request.getParameter("accountID");
@@ -67,7 +68,7 @@ public class AccountActivity extends HttpServlet {
 				request.setAttribute("owners", db.getOwners(accountID));
 				request.getRequestDispatcher("editaccount.jsp").forward(request, response);
 				break;
-			case "addowner" : 
+			case "addowner":
 				request.setAttribute("cpr", cpr);
 				request.setAttribute("accountID", accountID);
 				request.getRequestDispatcher("addowner.jsp").forward(request, response);
@@ -78,7 +79,8 @@ public class AccountActivity extends HttpServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 		String cpr = request.getParameter("ID");
 		String action = request.getParameter("action");
@@ -93,25 +95,28 @@ public class AccountActivity extends HttpServlet {
 			db = new Database(request.getSession());
 			User user = db.getUser(cpr);
 
-			switch (action) {	
+			switch (action) {
 			case "createaccount":
 				BigDecimal interest = getBigDecimal(value);
 				BigDecimal balance = getBigDecimal("0");
 				accountID = db.generateAccountID();
 				LinkedList<String> owners = new LinkedList<>();
 				owners.add(cpr);
-				account = new Account(owners, accountID, accountName, balance, interest, ISOCode, new LinkedList<Transaction>());
+				account = new Account(owners, accountID, accountName, balance, interest, ISOCode,
+						new LinkedList<Transaction>());
 				message = user.addAccount(account);
-				
-				response.sendRedirect("AccountActivityRedirect?action="+action+"&ID="+cpr+"&message="+message);
+				response.sendRedirect(
+						"AccountActivityRedirect?action=" + action + "&ID=" + cpr + "&message=" + message);
 				break;
 			case "closeaccount":
 				message = user.closeAccount(accountID);
 				if (message.equals("Cannot delete because account has money")) {
-					response.sendRedirect("AccountActivityRedirect?action="+action+"&ID="+cpr+"&accountID="+accountID+"&message="+message);
-				} else if (message.equals("Account deleted")){
+					response.sendRedirect("AccountActivityRedirect?action=" + action + "&ID=" + cpr + "&accountID="
+							+ accountID + "&message=" + message);
+				} else if (message.equals("Account deleted")) {
 					user.closeAccount(accountID);
-					response.sendRedirect("AccountActivityRedirect?action="+action+"&ID="+cpr+"&message="+message);
+					response.sendRedirect(
+							"AccountActivityRedirect?action=" + action + "&ID=" + cpr + "&message=" + message);
 				}
 				break;
 			case "changeaccount":
@@ -121,18 +126,23 @@ public class AccountActivity extends HttpServlet {
 				account.setInterest(interest);
 				account.setISOCode(ISOCode);
 				message = user.editAccount(account);
-				response.sendRedirect("AccountActivityRedirect?action="+action+"&ID="+cpr+"&accountID="+accountID+"&message="+message);
+				response.sendRedirect("AccountActivityRedirect?action=" + action + "&ID=" + cpr + "&accountID="
+						+ accountID + "&message=" + message);
 				break;
-			case "share" :
+			case "share":
 				message = db.addOwner(accountID, newCPR);
-				response.sendRedirect("AccountActivityRedirect?action="+action+"&ID="+cpr+"&newID="+newCPR+"&accountID="+accountID+"&message="+message);
+				response.sendRedirect("AccountActivityRedirect?action=" + action + "&ID=" + cpr + "&newID=" + newCPR
+						+ "&accountID=" + accountID + "&message=" + message);
 				break;
-			case "deleteowner" :
+			case "deleteowner":
 				message = db.deleteOwner(accountID, newCPR);
-				response.sendRedirect("AccountActivityRedirect?action="+action+"&ID="+cpr+"&accountID="+accountID+"&message="+message);
+				response.sendRedirect("AccountActivityRedirect?action=" + action + "&ID=" + cpr + "&accountID="
+						+ accountID + "&message=" + message);
 				break;
 			}
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (ClassNotFoundException |
+
+				SQLException e) {
 			e.printStackTrace();
 		}
 	}
