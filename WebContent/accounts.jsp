@@ -16,7 +16,6 @@
 	<%@ page import="java.sql.*"%>
 	<%@ page import="java.util.LinkedList"%>
 	<%@ page import="model.Account"%>
-	<div class="container">
 		<div class="main">
 			<div class="pagetitle">${name} (${cpr})</div>
 			<hr width="95%" noshade>
@@ -71,7 +70,7 @@
 				</table>
 			</div>
 		</div>
-		</table>
+		<br><br><br>
 		<div id="successtoast">${message}</div>
 		<script>
 			if (
@@ -81,6 +80,5 @@
 			}
 		</script>
 	</div>
-</div>
 <%@include file="footer.jsp"%>
 </html>
