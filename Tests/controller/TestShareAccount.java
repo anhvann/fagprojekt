@@ -32,6 +32,7 @@ public class TestShareAccount {
 	 * 		CPR: 9876543219 
 	 * 		Password: vanvan
 	 * User 3112261111 is not an owner of account 85327386530334
+	 * No user has CPR number: 0000000000
 	 */
 	@Before
 	public void login() throws ServletException, IOException, ClassNotFoundException, SQLException {
@@ -77,8 +78,8 @@ public class TestShareAccount {
 		assertEquals("Ownership removed", accountActivityServlet.getMessage());
 		int ownersFinal = db.getOwners(accountID).size();
 		int accountFinal = db.getAccounts(db.getUser(clientCPR)).size();;
-		//assertEquals(-1, ownersAfter-ownersBefore);
-		//assertEquals(-1, accountsAfter-accountsBefore);
+		assertEquals(-1, ownersFinal-ownersAfter);
+		assertEquals(-1, accountFinal-accountsAfter);
 	}
 	@Test
 	public void testAddOwnerWhoIsAlreadyOwner() throws Exception {
@@ -93,7 +94,25 @@ public class TestShareAccount {
 		assertEquals("Ownership already exists", accountActivityServlet.getMessage());
 		int ownersAfter = db.getOwners(accountID).size();
 		int accountsAfter = db.getAccounts(db.getUser(clientCPROwner)).size();;
-		assertEquals(1, ownersAfter-ownersBefore);
-		assertEquals(1, accountsAfter-accountsBefore);
+		assertEquals(0, ownersAfter-ownersBefore);
+		assertEquals(0, accountsAfter-accountsBefore);
+	}
+	
+	@Test
+	public void testAddNonExistentOwner() throws Exception {
+		//Add
+		int ownersBefore = db.getOwners(accountID).size();
+		when(request.getParameter("action")).thenReturn("share");
+		when(request.getParameter("accountID")).thenReturn(accountID);
+		when(request.getParameter("newCPR")).thenReturn("0000000000");
+		accountActivityServlet.doPost(request, response);
+		
+		assertEquals("Invalid User", accountActivityServlet.getMessage());
+		int ownersAfter = db.getOwners(accountID).size();
+		assertEquals(0, ownersAfter-ownersBefore);
+	}
+	@Test
+	public void testRemoveUserWhoisNotOwner(){
+		
 	}
 }
