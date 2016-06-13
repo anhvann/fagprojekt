@@ -94,7 +94,6 @@ public class AccountActivity extends HttpServlet {
 		try {
 			db = new Database(request.getSession());
 			User user = db.getUser(cpr);
-
 			switch (action) {
 			case "createaccount":
 				BigDecimal interest = getBigDecimal(value);
@@ -136,8 +135,7 @@ public class AccountActivity extends HttpServlet {
 				break;
 			case "deleteowner":
 				message = db.deleteOwner(accountID, newCPR);
-				response.sendRedirect("AccountActivityRedirect?action=" + action + "&ID=" + cpr + "&accountID="
-						+ accountID + "&message=" + message);
+				response.sendRedirect("AccountActivityRedirect?action="+action+"&newCPR="+cpr+"&accountID="+accountID+"&message="+message);
 				break;
 			}
 		} catch (ClassNotFoundException |
