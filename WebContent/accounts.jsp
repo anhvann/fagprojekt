@@ -18,21 +18,23 @@
 	<%@ page import="model.Account"%>
 	<div class="container">
 		<div class="main">
-			<div class="pagetitle">${name} (${cpr})</div>
+			<div class="pagetitle">${name}(${cpr})</div>
 			<hr width="95%" noshade>
 			<div align="center">
 				<div class="content">
 					<p style="text-align: left;">
-						<%if (session.getAttribute("role").equals("e")) {%>
+						<%
+							if (session.getAttribute("role").equals("e")) {
+						%>
 					
 					<div align="left">
 						<font size="2" color="red">${errormessage}</font> <br> <font
 							size="2"></font> <span style="float: left;"> <a
 							href="UserActivity?ID=${cpr}&action=edit">Edit User
 								Information</a> |
-							<form input style="display: inline;"
+							<form style="display: inline;"
 								action="UserActivity?ID=${cpr}&action=delete" method="post">
-								<button type="submit" name="delete" " class="btn-link">Delete
+								<button type="submit" name="delete" class="btn-link">Delete
 									User</button>
 							</form>
 						</span> <span style="float: right;"> <a
@@ -44,7 +46,6 @@
 						}
 					%>
 					<br>
-					</p>
 				</div>
 				<table class="clickable">
 					<col width="20%">
@@ -69,9 +70,9 @@
 						}
 					%>
 				</table>
+				<br> <br> <br>
 			</div>
 		</div>
-		</table>
 		<div id="successtoast">${message}</div>
 		<script>
 			if (
