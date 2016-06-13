@@ -38,8 +38,8 @@
 					<div class="col-sm-offset-5 col-sm-5">
 						<input type="submit" class="btn btn-default" name="saveChanges" value="Save Changes">
 					</div>
-				</form>	
-			</hr>
+				</form>
+			<br><br><br><br>
 	</div>
 </div>
 <%@include file="footer.jsp"%>

@@ -84,28 +84,16 @@ public class TestShareAccount {
 	public void testAddOwnerWhoIsAlreadyOwner() throws Exception {
 		//Add
 		int ownersBefore = db.getOwners(accountID).size();
-		int accountsBefore = db.getAccounts(db.getUser(clientCPR)).size();
+		int accountsBefore = db.getAccounts(db.getUser(clientCPROwner)).size();
 		when(request.getParameter("action")).thenReturn("share");
 		when(request.getParameter("accountID")).thenReturn(accountID);
-		when(request.getParameter("newCPR")).thenReturn(clientCPR);
+		when(request.getParameter("newCPR")).thenReturn(clientCPROwner);
 		accountActivityServlet.doPost(request, response);
 		
 		assertEquals("Ownership already exists", accountActivityServlet.getMessage());
 		int ownersAfter = db.getOwners(accountID).size();
-		int accountsAfter = db.getAccounts(db.getUser(clientCPR)).size();;
+		int accountsAfter = db.getAccounts(db.getUser(clientCPROwner)).size();;
 		assertEquals(1, ownersAfter-ownersBefore);
 		assertEquals(1, accountsAfter-accountsBefore);
-		
-		//Remove
-		when(request.getParameter("action")).thenReturn("deleteowner");
-		when(request.getParameter("accountID")).thenReturn(accountID);
-		when(request.getParameter("newCPR")).thenReturn(clientCPR);
-		accountActivityServlet.doPost(request, response);
-		
-		assertEquals("Ownership removed", accountActivityServlet.getMessage());
-		int ownersFinal = db.getOwners(accountID).size();
-		int accountFinal = db.getAccounts(db.getUser(clientCPR)).size();;
-		//assertEquals(-1, ownersAfter-ownersBefore);
-		//assertEquals(-1, accountsAfter-accountsBefore);
 	}
 }
