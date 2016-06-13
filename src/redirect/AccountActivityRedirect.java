@@ -41,6 +41,7 @@ public class AccountActivityRedirect extends HttpServlet {
 			Database db = new Database(request.getSession());
 			User user = db.getUser(cpr);
 			Account account = db.getAccount(accountID);
+			System.out.println("user: " + user + ", account: " + account);
 			switch (action) {
 			case "createaccount":
 				request.setAttribute("message", message);
@@ -101,15 +102,21 @@ public class AccountActivityRedirect extends HttpServlet {
 				}
 				break;
 			case "deleteowner" :
-				request.setAttribute("message", message);
-				request.setAttribute("toast", true);
+				if (message.equals("Ownership added")) {
+					request.setAttribute("message", message);
+					request.setAttribute("toast", true);
+				} else {
+					request.setAttribute("errormessage", message);
+				}
 				request.setAttribute("cpr", cpr);
 				request.setAttribute("accountID", accountID);
 				request.setAttribute("accountName", account.getName());
 				request.setAttribute("transactions", account.getTransactions());
 				request.setAttribute("balance", account.getBalanceString());
 				request.setAttribute("ISOCode", account.getISOCode());
+				request.setAttribute("owners", db.getOwners(accountID));
 				request.getRequestDispatcher("editaccount.jsp").forward(request, response);
+				break;
 			
 			}
 		} catch (ClassNotFoundException | SQLException e) {

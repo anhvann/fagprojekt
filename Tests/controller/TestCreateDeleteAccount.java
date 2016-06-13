@@ -103,6 +103,7 @@ public class TestCreateDeleteAccount {
 		action = "closeaccount";
 		User user = db.getUser(clientCPR);
 		int numberOfAccountsBefore = db.getAccounts(user).size();
+		when(request.getParameter("ID")).thenReturn(clientCPR);
 		when(request.getParameter("action")).thenReturn(action);
 		when(request.getParameter("accountID")).thenReturn(accountID);
 		accountActivityServlet.doPost(request, response);	
@@ -118,6 +119,7 @@ public class TestCreateDeleteAccount {
 		accountID = "00000000000000";
 		action = "closeaccount";
 
+		when(request.getParameter("ID")).thenReturn(clientCPR);
 		when(request.getParameter("action")).thenReturn(action);
 		when(request.getParameter("accountID")).thenReturn(accountID);
 		accountActivityServlet.doPost(request, response);	
