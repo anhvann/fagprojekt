@@ -85,10 +85,42 @@ public class TestEditAccount {
 		accountActivityServlet.doPost(request, response);
 
 		Account account = db.getAccount(accountID); // Get updated account
+		assertEquals("Account Edited", accountActivityServlet.getMessage());
 		assertEquals(accountName, account.getName());
-		assertEquals(interestBD, account.getInterest());
+		assertEquals(new BigDecimal(interest), account.getInterest());
 	}
 	
+	@Test
+	public void testNotLoggedIn() throws Exception {
+		String newaccountName = "Transportation";
+		String newinterest = "0.020";
+		
+		when(request.getSession()).thenReturn(null);
+		when(request.getParameter("accountName")).thenReturn(newaccountName);
+		when(request.getParameter("interest")).thenReturn(newinterest);
+		accountActivityServlet.doPost(request, response);
+
+		Account account = db.getAccount(accountID); // Get updated account
+		assertEquals("Illegal action", accountActivityServlet.getMessage());
+		assertEquals(accountName, account.getName());
+		assertEquals(new BigDecimal(interest), account.getInterest());
+	}
+	
+	@Test
+	public void testEditAsClient() throws Exception {
+		String newaccountName = "Transportation";
+		String newinterest = "0.020";
+		
+		when(session.getAttribute("role")).thenReturn("c");
+		when(request.getParameter("accountName")).thenReturn(newaccountName);
+		when(request.getParameter("interest")).thenReturn(newinterest);
+		accountActivityServlet.doPost(request, response);
+
+		Account account = db.getAccount(accountID); // Get updated account
+		assertEquals("Illegal action", accountActivityServlet.getMessage());
+		assertEquals(accountName, account.getName());
+		assertEquals(new BigDecimal(interest), account.getInterest());
+	}
 	
 	//For user interface
 	@Test

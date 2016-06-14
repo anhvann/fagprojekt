@@ -18,7 +18,7 @@
 <div id="wrap">
 		<%@include file="sessioncheck.jsp"%>
 		<div class="main">
-			<div class="pagetitle">${accountName}(${accountID})</div>
+			<div class="pagetitle">${accountName} (${accountID})</div>
 			<hr width="95%" noshade>
 			<div align="center">
 				<div class="content">

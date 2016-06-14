@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
-
+import model.Currency;
 import java.sql.*;
 
 public class Database {
@@ -14,8 +14,9 @@ public class Database {
 
 	private String url = "jdbc:db2://192.86.32.54:5040/DALLASB:retrieveMessagesFromServerOnGetMessage=true;emulateParameterMetaDataForZCalls=1;";
 	private String loginString = "Illegal action";
-	private String invalidCPR = "CPR number is invalid";
-	private String invalidPhone = "Phone number is invalid";
+	private String invalidCPR = "Invalid CPR number";
+	private String invalidPhone = "Invalid phone number";
+	private String invalidPostCode = "Invalid postal code";
 
 	public Database(HttpSession session) throws ClassNotFoundException, SQLException {
 		connect();
@@ -32,14 +33,14 @@ public class Database {
 		if (session != null && session.getAttribute("role").equals("e")) {
 			ArrayList<String> IDs = new ArrayList<>();
 			ArrayList<User> users = new ArrayList<>();
-			
+
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".KeywordSearch(?) }");
 			call.setString("vKeyword", keyword);
 			call.execute();
-			ResultSet resultSet = call.getResultSet();		
-				while (resultSet.next()) {
-					IDs.add(resultSet.getString("CPRNo"));
-				}
+			ResultSet resultSet = call.getResultSet();
+			while (resultSet.next()) {
+				IDs.add(resultSet.getString("CPRNo"));
+			}
 			for (String ID : IDs) {
 				users.add(getUser(ID));
 			}
@@ -125,7 +126,7 @@ public class Database {
 			BigDecimal balance = account.getBalance();
 			BigDecimal interest = account.getInterest();
 			String ISOCode = account.getISOCode();
-			
+
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".CreateAccount(?, ?, ?, ?, ?, ?, ?) }");
 			call.setString("vCPRNo", cpr);
 			call.setString("vAccID", ID);
@@ -164,26 +165,31 @@ public class Database {
 		return loginString;
 	}
 
-	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount, String ISOCode, String transactionName) throws SQLException {
-		if (session != null && session.getAttribute("loggedinuser") != null) {
+	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount,
+			String ISOCode, String transactionName) throws SQLException {
+		if (session != null) {
 			CallableStatement call;
 			switch (type) {
 			case "Deposit":
-				call = connection.prepareCall("{call \"DTUGRP05\".Deposit(?, ?, ?, ?) }");
-				call.setString("vAccID", accountID);
-				call.setBigDecimal("vAmount", amount);
-				call.setString("vISOCode", ISOCode);
-				call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
-				call.execute();
-				return call.getString("vOutput");
+				if (session.getAttribute("role").equals("e")) {
+					call = connection.prepareCall("{call \"DTUGRP05\".Deposit(?, ?, ?, ?) }");
+					call.setString("vAccID", accountID);
+					call.setBigDecimal("vAmount", amount);
+					call.setString("vISOCode", ISOCode);
+					call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+					call.execute();
+					return call.getString("vOutput");
+				}
 			case "Withdraw":
-				call = connection.prepareCall("{call \"DTUGRP05\".withdraw(?, ?, ?, ?) }");
-				call.setString("vAccID", accountID);
-				call.setBigDecimal("vAmount", amount);
-				call.setString("vISOCode", ISOCode);
-				call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
-				call.execute();
-				return call.getString("vOutput");
+				if (session.getAttribute("role").equals("e")) {
+					call = connection.prepareCall("{call \"DTUGRP05\".withdraw(?, ?, ?, ?) }");
+					call.setString("vAccID", accountID);
+					call.setBigDecimal("vAmount", amount);
+					call.setString("vISOCode", ISOCode);
+					call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+					call.execute();
+					return call.getString("vOutput");
+				}
 			case "Transfer":
 				call = connection.prepareCall("{call \"DTUGRP05\".MoneyTransfer(?, ?, ?, ?, ?, ?) }");
 				call.setBigDecimal("vTransfer", amount);
@@ -208,7 +214,7 @@ public class Database {
 			stmt.setString(1, accountID);
 			ResultSet resultset = stmt.executeQuery();
 			while (resultset.next()) {
-				 IDs.add(resultset.getString("CPRNo"));
+				IDs.add(resultset.getString("CPRNo"));
 			}
 			for (String ID : IDs) {
 				owners.add(getUser(ID));
@@ -249,13 +255,13 @@ public class Database {
 				String AccName = resultset.getString("AccName");
 				String ISOCode = resultset.getString("ISOCode");
 				resultset.close();
-				
+
 				LinkedList<String> IDs = new LinkedList<>();
 				for (User user : getOwners(accountID)) {
 					IDs.add(user.getCPR());
 				}
-				Account account = new Account(IDs, accountID, AccName, balance, interest,
-						ISOCode, getTransactions(accountID));
+				Account account = new Account(IDs, accountID, AccName, balance, interest, ISOCode,
+						getTransactions(accountID));
 				return account;
 			}
 		} catch (SQLException e) {
@@ -267,13 +273,17 @@ public class Database {
 	public String register(String cpr, String email, String password, String name, String phone, String address,
 			Date date, String postcode) throws SQLException {
 		if (session != null && session.getAttribute("role").equals("e")) {
-			if(cpr.length() != 10){
+			if (cpr.length() != 10) {
 				return invalidCPR;
 			}
-			if(phone.length() != 8){
+			if (phone.length() != 8) {
 				return invalidPhone;
 			}
-			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".UserRegister(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+			if (postcode.length() != 4) {
+				return invalidPostCode;
+			}
+			CallableStatement call = connection
+					.prepareCall("{call \"DTUGRP05\".UserRegister(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
 			call.setString("vCPRNo", cpr);
 			call.setString("vEmail", email);
 			call.setString("vPassword", password);
@@ -292,6 +302,9 @@ public class Database {
 
 	public User getUser(String cpr) {
 		User user = null;
+		if (cpr != null && cpr.length() != 10) {
+			return null;
+		}
 		try {
 			String query = "select * from \"DTUGRP05\".\"USERS\" WHERE \"CPRNo\" = ?";
 			PreparedStatement stmt = connection.prepareStatement(query);
@@ -323,11 +336,11 @@ public class Database {
 			Date date, String phone) throws SQLException {
 		if (session != null && session.getAttribute("role").equals("e")) {
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditUser(?, ?, ?, ?, ?, ?, ?, ?, ?) }");
-			if(cpr.length() != 10){
-				return invalidCPR;
-			}
-			if(phone.length() != 8){
+			if (phone.length() != 8) {
 				return invalidPhone;
+			}
+			if (postcode.length() != 4) {
+				return invalidPostCode;
 			}
 			call.setString("vCPRNo", cpr);
 			call.setString("vEmail", email);
@@ -365,20 +378,48 @@ public class Database {
 	}
 
 	public String addOwner(String accountID, String newCPR) throws SQLException {
-		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".AddOwner(?, ?, ?) }");
-		call.setString("vCPRNo", newCPR);
-		call.setString("vAccID", accountID);
-		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
-		call.execute();
-		return call.getString("vOutput");
+		if (session != null && session.getAttribute("role").equals("e")) {
+			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".AddOwner(?, ?, ?) }");
+			call.setString("vCPRNo", newCPR);
+			call.setString("vAccID", accountID);
+			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+			call.execute();
+			return call.getString("vOutput");
+		}
+		return loginString;
 	}
 
 	public String deleteOwner(String accountID, String newCPR) throws SQLException {
-		CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".RemoveOwner(?, ?, ?) }");
-		call.setString("vCPRNo", newCPR);
-		call.setString("vAccID", accountID);
-		call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
-		call.execute();
-		return call.getString("vOutput");
+		if (session != null && session.getAttribute("role").equals("e")) {
+			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".RemoveOwner(?, ?, ?) }");
+			call.setString("vCPRNo", newCPR);
+			call.setString("vAccID", accountID);
+			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
+			call.execute();
+			return call.getString("vOutput");
+		}
+		return loginString;
+	}
+
+	public ArrayList<Currency> getExchangeRates() {
+		ArrayList<Currency> rates = new ArrayList<>();
+		String query = "SELECT * FROM \"DTUGRP05\".\"CURRENCIES\" WHERE \"ISOCode\" <> 'DKK';";
+		PreparedStatement stmt;
+		try {
+			stmt = connection.prepareStatement(query);
+			ResultSet resultset = stmt.executeQuery();
+			while (resultset.next()) {
+				String ISO = resultset.getString("ISOCode");
+				String country = resultset.getString("Country");
+				BigDecimal buyRate = resultset.getBigDecimal("BuyRate");
+				BigDecimal sellRate = resultset.getBigDecimal("SellRate");
+				Currency cur = new Currency(ISO, country, buyRate, sellRate);
+				rates.add(cur);
+			}
+			resultset.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rates;
 	}
 }

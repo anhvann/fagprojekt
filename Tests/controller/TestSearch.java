@@ -67,9 +67,19 @@ public class TestSearch {
 	    assertEquals(1, searchServlet.getResults().size());
 	}
 	
+	//Not possible through interface
 	@Test
 	public void testSearchNotLoggedIn() throws Exception {
 	    when(request.getSession()).thenReturn(null);
+		when(request.getParameter("searchfield")).thenReturn("Buzz");
+		
+	    searchServlet.doPost(request, response);
+	    assertNull(searchServlet.getResults());
+	}
+	
+	@Test
+	public void testSearchAsClient() throws Exception {
+	    when(request.getSession().getAttribute("role")).thenReturn("c");
 		when(request.getParameter("searchfield")).thenReturn("Buzz");
 		
 	    searchServlet.doPost(request, response);

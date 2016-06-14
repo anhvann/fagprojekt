@@ -310,22 +310,38 @@ public class TestTransactions {
 	}
 	
 	@Test
-	public void testInvalidAction() throws Exception {
+	public void testNotLoggedIn() throws Exception {
+	    when(request.getSession()).thenReturn(null);
 		BigDecimal balanceOld = db.getAccount(accountID1).getBalance();
-	    when(request.getParameter("action")).thenReturn("depo");
+	    when(request.getParameter("action")).thenReturn("deposit");
 	    when(request.getParameter("accountID")).thenReturn(accountID1);
 	    when(request.getParameter("amount")).thenReturn("100");
 	    when(request.getParameter("ISOCode")).thenReturn("DKK");
 	    when(request.getParameter("ID")).thenReturn(clientCPR);
 	    transactionServlet.doPost(request, response);
 	    BigDecimal balanceNew = db.getAccount(accountID1).getBalance();
+	    assertEquals("Illegal action", transactionServlet.getMessage());
 	    assertEquals(balanceOld, balanceNew);
 	}
 	@Test
-	public void testNotLoggedIn() throws Exception {
-	    when(request.getSession()).thenReturn(null);
+	public void testDepositAsClient() throws Exception {
+	    when(request.getSession().getAttribute("role")).thenReturn("c");
 		BigDecimal balanceOld = db.getAccount(accountID1).getBalance();
 	    when(request.getParameter("action")).thenReturn("deposit");
+	    when(request.getParameter("accountID")).thenReturn(accountID1);
+	    when(request.getParameter("amount")).thenReturn("400");
+	    when(request.getParameter("ISOCode")).thenReturn("DKK");
+	    when(request.getParameter("ID")).thenReturn(clientCPR);
+	    transactionServlet.doPost(request, response);
+	    BigDecimal balanceNew = db.getAccount(accountID1).getBalance();
+	    assertEquals("Illegal action", transactionServlet.getMessage());
+	    assertEquals(balanceOld, balanceNew);
+	}
+	@Test
+	public void testWithdrawAsClient() throws Exception {
+	    when(request.getSession().getAttribute("role")).thenReturn("c");
+		BigDecimal balanceOld = db.getAccount(accountID1).getBalance();
+	    when(request.getParameter("action")).thenReturn("withdraw");
 	    when(request.getParameter("accountID")).thenReturn(accountID1);
 	    when(request.getParameter("amount")).thenReturn("100");
 	    when(request.getParameter("ISOCode")).thenReturn("DKK");

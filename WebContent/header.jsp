@@ -19,9 +19,8 @@ if ((session.getAttribute("loggedinuser") == null) || (session.getAttribute("log
 	<div class="navigationarea">
 		<ul class="nav navbar-nav">
 			<li><a href="index.jsp">Home</a></li>
-			<li><a href="#">Welcome</a></li>
-			<li><a href="#">Contact</a></li>
-			<li><a href="#">Help</a></li>
+			<li><a href="CurrencyExchangeRates">Currency Exchange Rates</a></li>
+			<li><a href="contact.jsp">Contact</a></li>
 		</ul>
 			<div id="loginlink">
 		<ul class="nav navbar-nav pull-right">
@@ -48,6 +47,7 @@ if ((session.getAttribute("loggedinuser") == null) || (session.getAttribute("log
 		<ul class="nav navbar-nav">
 			<li><a href="UserActivity?ID=<%=session.getAttribute("loggedinuser")%>&action=viewuser">Accounts</a></li>
 			<li><a href="ClientActivity?ID=<%=session.getAttribute("loggedinuser")%>&action=transfer">Transfer</a></li>
+			<li><a href="CurrencyExchangeRates">Currency Exchange Rates</a></li>
 		</ul>
 	</div>
 	<div id="loginlink">

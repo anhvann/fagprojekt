@@ -36,6 +36,7 @@ public class TestRegisterDeleteUser {
 	 * User with CPR 0208891133 does not exist
 	 * User with CPR 2309911234 already exists
 	 * User with CPR 3112261111 still has accounts
+	 * User with CPR 1805935555 has no accounts
 	*/
 	@Before
 	public void login() throws ServletException, IOException, ClassNotFoundException, SQLException{
@@ -60,10 +61,10 @@ public class TestRegisterDeleteUser {
 		String action = "register";
 		assertNull(db.getUser(clientCpr)); //ensure user does not already exists
 		
-		callServlet(action, clientCpr, postcode);
+		callServlet(action, clientCpr, postcode, phone);
 		User user = db.getUser(clientCpr);
-		assertNotNull(user);
 		assertEquals("User registered successfully",userActivity.getMessage());
+		assertNotNull(user);
 		
 		//Delete
 		action = "delete";
@@ -79,7 +80,7 @@ public class TestRegisterDeleteUser {
 	public void testRegisterUserWithUsedCPR() throws Exception {
 		//Register
 		String action = "register";
-		callServlet(action, "2309911234", postcode);
+		callServlet(action, "2309911234", postcode, phone);
 		
 		assertEquals("User is already registered", userActivity.getMessage());
 	}
@@ -88,7 +89,7 @@ public class TestRegisterDeleteUser {
 	public void testRegisterUserInvalidPostcode() throws Exception {
 		//Register
 		String action = "register";
-		callServlet(action, "1504902584", "0000");
+		callServlet(action, "1504902584", "0000", phone);
 
 		assertEquals("Invalid Postal Code", userActivity.getMessage());
 		assertNull(db.getUser(clientCpr));
@@ -98,11 +99,36 @@ public class TestRegisterDeleteUser {
 	@Test
 	public void testDeleteUserWithAccounts() throws Exception {
 		String action = "delete";
-		callServlet(action, "3112261111", postcode);
+		callServlet(action, "3112261111", postcode, phone);
 		
 		assertEquals("User still has account(s)",userActivity.getMessage());
 	}
-	private void callServlet(String action, String clientCpr, String postcode) throws ServletException, IOException {
+	
+	@Test
+	public void testRegisterInvalidPostCode() throws Exception {
+		String action = "register";
+		callServlet(action, clientCpr, "280", phone);
+		
+		assertEquals("Invalid postal code", userActivity.getMessage());
+	}
+	
+	@Test
+	public void testRegisterInvalidPhone() throws Exception {
+		String action = "register";
+		callServlet(action, clientCpr, postcode, "635733111");
+		
+		assertEquals("Invalid phone number", userActivity.getMessage());
+	}
+	
+	@Test
+	public void testRegisterInvalidCPR() throws Exception {
+		String action = "register";
+		callServlet(action, "02088911333", postcode, phone);
+		
+		assertEquals("Invalid CPR number", userActivity.getMessage());
+	}
+	
+	private void callServlet(String action, String clientCpr, String postcode, String phone) throws ServletException, IOException {
 		when(request.getParameter("ID")).thenReturn(clientCpr);
 	    when(request.getParameter("action")).thenReturn(action);
 	    when(request.getParameter("email")).thenReturn(email);
@@ -113,5 +139,53 @@ public class TestRegisterDeleteUser {
 	    when(request.getParameter("date")).thenReturn(date);
 	    when(request.getParameter("phone")).thenReturn(phone);
 		userActivity.doPost(request, response);
+	}
+	
+	//Not possible through user interface
+	@Test
+	public void testRegisterNotLoggedIn() throws Exception {
+		when(request.getSession()).thenReturn(null);
+		String action = "register";
+		assertNull(db.getUser(clientCpr)); //ensure user does not already exists
+		
+		callServlet(action, clientCpr, postcode, phone);
+		User user = db.getUser(clientCpr);
+		assertEquals("Illegal action",userActivity.getMessage());
+		assertNull(user);
+	}
+	@Test
+	public void testRegisterAsClient() throws Exception {
+		when(request.getSession().getAttribute("role")).thenReturn("c");
+		String action = "register";
+		assertNull(db.getUser(clientCpr)); //ensure user does not already exists
+		
+		callServlet(action, clientCpr, postcode, phone);
+		User user = db.getUser(clientCpr);
+		assertNull(user);
+		assertEquals("Illegal action",userActivity.getMessage());
+	}
+	@Test
+	public void testDeleteNotLoggedIn() throws Exception {
+		when(request.getSession()).thenReturn(null);
+		String action = "delete";
+		String clientCpr = "1805935555";
+		when(request.getParameter("ID")).thenReturn(clientCpr);
+	    when(request.getParameter("action")).thenReturn(action);
+	    userActivity.doPost(request, response);
+	    
+	    assertEquals("Illegal action", userActivity.getMessage());
+	    assertNotNull(db.getUser(clientCpr));
+	}
+	@Test
+	public void testDeleteAsClient() throws Exception {
+		when(request.getSession().getAttribute("role")).thenReturn("c");
+		String action = "delete";
+		String clientCpr = "1805935555";
+		when(request.getParameter("ID")).thenReturn(clientCpr);
+	    when(request.getParameter("action")).thenReturn(action);
+	    userActivity.doPost(request, response);
+	    
+	    assertEquals("Illegal action", userActivity.getMessage());
+	    assertNotNull(db.getUser(clientCpr));
 	}
 }

@@ -30,9 +30,13 @@ public class TestShareAccount {
 	private String accountID = "85327386530334";
 
 	/*
-	 * Precondition: Employee: CPR: 9876543219 Password: vanvan User 3112261111
-	 * is not an owner of account 85327386530334 No user has CPR number:
-	 * 0000000000
+	 * Precondition: 
+	 * 	Employee: 
+	 * 		CPR: 9876543219 
+	 * 		Password: vanvan 
+	 * User 3112261111 is not an owner of account 85327386530334 
+	 * No user has CPR number: 0000000000
+	 * User 2309911234 and user 3112261111 share account 85327386530339
 	 */
 	@Before
 	public void login() throws ServletException, IOException, ClassNotFoundException, SQLException {
@@ -121,5 +125,48 @@ public class TestShareAccount {
 		when(request.getParameter("accountID")).thenReturn(accountID);
 		when(request.getParameter("newCPR")).thenReturn(clientCPR);
 		accountActivityServlet.doPost(request, response);
+	}
+	
+	//Not possible through user interface
+	@Test
+	public void testAddNotLoggedIn() throws Exception {
+		when(request.getSession()).thenReturn(null);
+		when(request.getParameter("action")).thenReturn("share");
+		when(request.getParameter("accountID")).thenReturn(accountID);
+		when(request.getParameter("newCPR")).thenReturn(clientCPR);
+		accountActivityServlet.doPost(request, response);
+
+		assertEquals("Illegal action", accountActivityServlet.getMessage());
+	}
+	@Test
+	public void testAddAsClient() throws Exception {
+		when(request.getSession().getAttribute("role")).thenReturn("c");
+		when(request.getParameter("action")).thenReturn("share");
+		when(request.getParameter("accountID")).thenReturn(accountID);
+		when(request.getParameter("newCPR")).thenReturn(clientCPR);
+		accountActivityServlet.doPost(request, response);
+
+		assertEquals("Illegal action", accountActivityServlet.getMessage());
+	}
+	
+	@Test
+	public void testRemoveNotLoggedIn() throws Exception {
+		when(request.getSession()).thenReturn(null);
+		when(request.getParameter("action")).thenReturn("deleteowner");
+		when(request.getParameter("accountID")).thenReturn("85327386530339");
+		when(request.getParameter("newCPR")).thenReturn("3112261111");
+		accountActivityServlet.doPost(request, response);
+
+		assertEquals("Illegal action", accountActivityServlet.getMessage());
+	}
+	@Test
+	public void testRemoveAsClient() throws Exception {
+		when(request.getSession().getAttribute("role")).thenReturn("c");
+		when(request.getParameter("action")).thenReturn("deleteowner");
+		when(request.getParameter("accountID")).thenReturn("85327386530339");
+		when(request.getParameter("newCPR")).thenReturn("3112261111");
+		accountActivityServlet.doPost(request, response);
+
+		assertEquals("Illegal action", accountActivityServlet.getMessage());
 	}
 }

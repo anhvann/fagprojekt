@@ -88,15 +88,8 @@ public class TestEditUser {
 		assertEquals("tomriddle@gmail.com", user.getEmail());
 		assertEquals("Tom Marvolo Riddle", user.getName());
 		
-		when(request.getParameter("ID")).thenReturn(clientCpr);
-	    when(request.getParameter("action")).thenReturn(action);
 	    when(request.getParameter("email")).thenReturn(email);
-	    when(request.getParameter("password")).thenReturn(clientPassword);
 	    when(request.getParameter("name")).thenReturn(name);
-	    when(request.getParameter("address")).thenReturn(address);
-	    when(request.getParameter("postcode")).thenReturn(postcode);
-	    when(request.getParameter("date")).thenReturn(date);
-	    when(request.getParameter("phone")).thenReturn(phone);
 		userActivity.doPost(request, response);
 
 		user = db.getUser(clientCpr); //get updated user
@@ -115,6 +108,28 @@ public class TestEditUser {
 		
 		assertEquals(postcode, db.getUser(clientCpr).getPostCode());
 		assertEquals("Invalid Postal Code", userActivity.getMessage());
+	}
+	
+	@Test
+	public void testEditInvalidPostCode2() throws Exception {
+		String newPostCode = "28000"; //five digits
+		
+	    when(request.getParameter("postcode")).thenReturn(newPostCode);
+		userActivity.doPost(request, response);
+		
+		assertEquals(postcode, db.getUser(clientCpr).getPostCode());
+		assertEquals("Invalid postal code", userActivity.getMessage());
+	}
+	
+	@Test
+	public void testInvalidPhoneNumber() throws Exception {
+		String newpPhoneNumber = "125488693"; //nine digits
+ 		
+	    when(request.getParameter("phone")).thenReturn(newpPhoneNumber);
+		userActivity.doPost(request, response);
+		
+		assertEquals(phone, db.getUser(clientCpr).getPhone());
+		assertEquals("Invalid phone number", userActivity.getMessage());
 	}
 	
 	//View pages
@@ -151,5 +166,46 @@ public class TestEditUser {
 	    when(request.getParameter("date")).thenReturn(date);
 	    when(request.getParameter("phone")).thenReturn(phone);
 		userActivity.doPost(request, response);
+	}
+	
+	//Not possible through user interface
+	@Test
+	public void testNotLoggedIn() throws Exception {
+		when(request.getSession()).thenReturn(null);
+		String newemail = "voldemort@gmail.com";
+		String newname = "Voldemort";
+		
+		User user = db.getUser(clientCpr);
+		assertEquals("tomriddle@gmail.com", user.getEmail());
+		assertEquals("Tom Marvolo Riddle", user.getName());
+		
+	    when(request.getParameter("email")).thenReturn(newemail);
+	    when(request.getParameter("name")).thenReturn(newname);
+		userActivity.doPost(request, response);
+
+		user = db.getUser(clientCpr);
+		assertEquals("Illegal action", userActivity.getMessage());
+		assertEquals(email, user.getEmail());
+		assertEquals(name, user.getName());
+	}
+	
+	@Test
+	public void testEditAsClient() throws Exception {
+		when(request.getSession().getAttribute("role")).thenReturn("c");
+		String newemail = "voldemort@gmail.com";
+		String newname = "Voldemort";
+		
+		User user = db.getUser(clientCpr);
+		assertEquals("tomriddle@gmail.com", user.getEmail());
+		assertEquals("Tom Marvolo Riddle", user.getName());
+		
+	    when(request.getParameter("email")).thenReturn(newemail);
+	    when(request.getParameter("name")).thenReturn(newname);
+		userActivity.doPost(request, response);
+
+		user = db.getUser(clientCpr);
+		assertEquals("Illegal action", userActivity.getMessage());
+		assertEquals(email, user.getEmail());
+		assertEquals(name, user.getName());
 	}
 }
