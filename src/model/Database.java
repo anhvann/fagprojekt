@@ -167,6 +167,8 @@ public class Database {
 
 	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount,
 			String ISOCode, String transactionName) throws SQLException {
+		System.out.println(type);
+		System.out.println(accountID);
 		if (session != null) {
 			CallableStatement call;
 			switch (type) {
@@ -180,6 +182,7 @@ public class Database {
 					call.execute();
 					return call.getString("vOutput");
 				}
+				break;
 			case "Withdraw":
 				if (session.getAttribute("role").equals("e")) {
 					call = connection.prepareCall("{call \"DTUGRP05\".withdraw(?, ?, ?, ?) }");
@@ -190,6 +193,7 @@ public class Database {
 					call.execute();
 					return call.getString("vOutput");
 				}
+				break;
 			case "Transfer":
 				call = connection.prepareCall("{call \"DTUGRP05\".MoneyTransfer(?, ?, ?, ?, ?, ?) }");
 				call.setBigDecimal("vTransfer", amount);
