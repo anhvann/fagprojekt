@@ -20,7 +20,7 @@
 				<!-- third item -->
 				<div class="item">
 					<a href="buysellrate.jsp"><img
-						src="http://i.imgur.com/nUoRVGb.png"></a>
+						src="http://i.imgur.com/Nc3Lygm.png"></a>
 				</div>
 			</div>
 			<a class="left carousel-control" href="#myCarousel" role="button"
