@@ -8,10 +8,14 @@
 	<div class="main">
 		<div class="pagetitle">Remove Owner(s)</div>
 		<hr width="95%" noshade>
-			<div align="left">
-				<a href="AccountActivity?ID=${cpr}&action=viewaccount&accountID=${accountID}">Back to
-								account</a>
+					<div align="center">
+			<div class="content">
+				<span style="float: left;"> <a
+					href="AccountActivity?ID=${cpr}&action=viewaccount&accountID=${accountID}">Back
+						to account</a>
+				</span><br><br>
 			</div>
+		</div>
 			<label class="control-label col-sm-5">Owners:</label>
 			<div class="col-sm-5">
 				<%LinkedList<User> users = (LinkedList<User>) request.getAttribute("owners");%>

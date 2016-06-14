@@ -32,20 +32,11 @@
 					
 					<div align="right">
 						<font size="2" color="red">${errormessage}</font> <br> <span
-							style="float: left;"> <a
-							href="UserActivity?ID=${cpr}&action=viewuser">Back to
-								accounts</a>
-						</span> <span style="float: right;"> <a
-							href="AccountActivity?ID=${cpr}&action=editaccount&accountID=${accountID}">Edit
-								Account</a> |
-							<form input style="display: inline;"
-								action="AccountActivity?ID=${cpr}&action=closeaccount&accountID=${accountID}"
-								method="post">
-								<button type="submit" name="delete" " class="btn-link">Close
-									Account</button>
-							</form> | <a
-							href="AccountActivity?ID=${cpr}&action=addowner&accountID=${accountID}">Add
-								Owner</a>
+							style="float: left;"> <a href="UserActivity?ID=${cpr}&action=viewuser">Back to accounts</a>
+						</span> <span style="float: right;"> <a href="AccountActivity?ID=${cpr}&action=editaccount&accountID=${accountID}">Edit Account</a> |
+							<form style="display: inline;" action="AccountActivity?ID=${cpr}&action=closeaccount&accountID=${accountID}" method="post">
+								<button type="submit" name="delete" class="btn-link">Close Account</button>
+							</form> | <a href="AccountActivity?ID=${cpr}&action=addowner&accountID=${accountID}">Add Owner</a>
 								| <a href="AccountActivity?ID=${cpr}&action=removeowner&accountID=${accountID}">
 								Remove owner(s)</a>
 						</span>
