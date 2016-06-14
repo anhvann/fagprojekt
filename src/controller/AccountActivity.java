@@ -73,6 +73,17 @@ public class AccountActivity extends HttpServlet {
 				request.setAttribute("accountID", accountID);
 				request.getRequestDispatcher("addowner.jsp").forward(request, response);
 				break;
+			case "removeowner" :
+				account = db.getAccount(accountID);
+				System.out.println(account);
+				request.setAttribute("cpr", cpr);
+				System.out.println(cpr);
+				request.setAttribute("owners", db.getOwners(accountID));
+				System.out.println(db.getOwners(accountID));
+				request.setAttribute("accountID", accountID);
+				System.out.println(accountID);
+				request.getRequestDispatcher("removeowner.jsp").forward(request, response);
+				break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
@@ -134,7 +145,7 @@ public class AccountActivity extends HttpServlet {
 				break;
 			case "deleteowner":
 				message = db.deleteOwner(accountID, newCPR);
-				response.sendRedirect("AccountActivityRedirect?action="+action+"&newCPR="+cpr+"&accountID="+accountID+"&message="+message);
+				response.sendRedirect("AccountActivityRedirect?ID="+cpr+"&action="+action+"&newCPR="+cpr+"&accountID="+accountID+"&message="+message);
 				break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {

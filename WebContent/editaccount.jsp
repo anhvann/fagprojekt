@@ -8,6 +8,7 @@
 	<div class="main" >
 			<div class="pagetitle">Edit Account</div>
 			<hr width="95%" noshade>
+			<form action="AccountActivity?ID=${cpr}&action=changeaccount&accountID=${accountID}" method="post" target="_self">
 					<label class="control-label col-sm-5">Owner(s):</label>
 					<div class="col-sm-5">
 						<%LinkedList<User> users = (LinkedList<User>) request.getAttribute("owners");%>
@@ -16,15 +17,10 @@
 						<%} else {%>
 						<%for (User user : users){%>
 							<%=user.getName()%> (<%=user.getCPR()%>) 
-							<form style="display: inline;"
-								action="AccountActivity?newCPR=<%=user.getCPR()%>&accountID=${accountID}&action=deleteowner" method="post">
-								<button type="submit" name="remove" class="btn-link">Remove</button>
-							</form>
 							<br>
 						<%}}%>
 					</div>
 					<br><br>
-					<form action="AccountActivity?ID=${cpr}&action=changeaccount&accountID=${accountID}" method="post" target="_self">
 					<label class="control-label col-sm-5">Name:</label>
 					<div class="col-sm-5">
 						<input type="text" class="form-control" name="accountName" placeholder="Enter name" value="${name}" required>

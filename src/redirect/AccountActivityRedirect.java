@@ -102,7 +102,7 @@ public class AccountActivityRedirect extends HttpServlet {
 				}
 				break;
 			case "deleteowner" :
-				if (message.equals("Ownership added")) {
+				if (message.equals("Ownership removed")) {
 					request.setAttribute("message", message);
 					request.setAttribute("toast", true);
 				} else {
@@ -110,12 +110,8 @@ public class AccountActivityRedirect extends HttpServlet {
 				}
 				request.setAttribute("cpr", cpr);
 				request.setAttribute("accountID", accountID);
-				request.setAttribute("accountName", account.getName());
-				request.setAttribute("transactions", account.getTransactions());
-				request.setAttribute("balance", account.getBalanceString());
-				request.setAttribute("ISOCode", account.getISOCode());
 				request.setAttribute("owners", db.getOwners(accountID));
-				request.getRequestDispatcher("editaccount.jsp").forward(request, response);
+				request.getRequestDispatcher("removeowner.jsp").forward(request, response);
 				break;
 			
 			}

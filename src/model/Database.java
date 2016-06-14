@@ -180,6 +180,7 @@ public class Database {
 					call.execute();
 					return call.getString("vOutput");
 				}
+				break;
 			case "Withdraw":
 				if (session.getAttribute("role").equals("e")) {
 					call = connection.prepareCall("{call \"DTUGRP05\".withdraw(?, ?, ?, ?) }");
@@ -190,6 +191,7 @@ public class Database {
 					call.execute();
 					return call.getString("vOutput");
 				}
+				break;
 			case "Transfer":
 				call = connection.prepareCall("{call \"DTUGRP05\".MoneyTransfer(?, ?, ?, ?, ?, ?) }");
 				call.setBigDecimal("vTransfer", amount);

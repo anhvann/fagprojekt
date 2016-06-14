@@ -2,10 +2,16 @@
 	contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html>
 <div id="wrap">
+	<%@ page import="java.util.LinkedList"%>
+	<%@ page import="model.User" %>
 	<%@include file="employeecheck.jsp"%>
 	<div class="main">
 		<div class="pagetitle">Add Owner</div>
 		<hr width="95%" noshade>
+			<div align="left">
+			<a href="AccountActivity?ID=${cpr}&action=viewaccount&accountID=${accountID}">Back to
+								account</a>
+			</div>
 		<form
 			action="AccountActivity?ID=${cpr}&action=share&accountID=${accountID}"
 			method="post" target="_self">

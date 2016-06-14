@@ -351,4 +351,5 @@ public class TestTransactions {
 	    assertEquals("Illegal action", transactionServlet.getMessage());
 	    assertEquals(balanceOld, balanceNew);
 	}
+	
 }

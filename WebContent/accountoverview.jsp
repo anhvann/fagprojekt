@@ -46,6 +46,8 @@
 							</form> | <a
 							href="AccountActivity?ID=${cpr}&action=addowner&accountID=${accountID}">Add
 								Owner</a>
+								| <a href="AccountActivity?ID=${cpr}&action=removeowner&accountID=${accountID}">
+								Remove owner(s)</a>
 						</span>
 					</div>
 					<%
