@@ -167,6 +167,8 @@ public class Database {
 
 	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount,
 			String ISOCode, String transactionName) throws SQLException {
+		System.out.println(type);
+		System.out.println(accountID);
 		if (session != null) {
 			CallableStatement call;
 			switch (type) {
