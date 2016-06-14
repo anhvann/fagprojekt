@@ -45,6 +45,7 @@ public class TestRegisterDeleteUser {
 
 		Login login = new Login();
 	    when(request.getSession()).thenReturn(session);
+	    when(request.getSession().getAttribute("loggedinuser")).thenReturn(cpr);
 	    when(request.getParameter("cpr")).thenReturn(cpr);
 	    when(request.getParameter("password")).thenReturn(password);
 	    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
@@ -144,7 +145,7 @@ public class TestRegisterDeleteUser {
 	//Not possible through user interface
 	@Test
 	public void testRegisterNotLoggedIn() throws Exception {
-		when(request.getSession()).thenReturn(null);
+		when(request.getSession().getAttribute("loggedinuser")).thenReturn(null);
 		String action = "register";
 		assertNull(db.getUser(clientCpr)); //ensure user does not already exists
 		
@@ -166,7 +167,7 @@ public class TestRegisterDeleteUser {
 	}
 	@Test
 	public void testDeleteNotLoggedIn() throws Exception {
-		when(request.getSession()).thenReturn(null);
+		when(request.getSession().getAttribute("loggedinuser")).thenReturn(null);
 		String action = "delete";
 		String clientCpr = "1805935555";
 		when(request.getParameter("ID")).thenReturn(clientCpr);

@@ -24,6 +24,9 @@ public class LoginRedirect extends HttpServlet {
 		String role = (String) request.getSession().getAttribute("role");
 		String cpr = (String) request.getSession().getAttribute("loggedinuser");
 		Database db;
+		if(role == null){
+			return;
+		}
 		try {
 			db = new Database(request.getSession());
 			User user = db.getUser(cpr);

@@ -50,6 +50,7 @@ public class TestEditAccount {
 		when(request.getSession()).thenReturn(session);
 		when(request.getParameter("cpr")).thenReturn(cpr);
 		when(request.getParameter("password")).thenReturn(password);
+		when(request.getSession().getAttribute("loggedinuser")).thenReturn(cpr);
 		when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
 
 		login.doPost(request, response);
@@ -95,7 +96,7 @@ public class TestEditAccount {
 		String newaccountName = "Transportation";
 		String newinterest = "0.020";
 		
-		when(request.getSession()).thenReturn(null);
+		when(request.getSession().getAttribute("loggedinuser")).thenReturn(null);
 		when(request.getParameter("accountName")).thenReturn(newaccountName);
 		when(request.getParameter("interest")).thenReturn(newinterest);
 		accountActivityServlet.doPost(request, response);

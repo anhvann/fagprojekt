@@ -48,6 +48,7 @@ public class TestSearch {
 	    when(request.getSession()).thenReturn(session);
 	    when(request.getParameter("cpr")).thenReturn(cpr);
 	    when(request.getParameter("password")).thenReturn(password);
+	    when(request.getSession().getAttribute("loggedinuser")).thenReturn(cpr);
 	    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
 
 	    login.doPost(request, response);
@@ -70,7 +71,7 @@ public class TestSearch {
 	//Not possible through interface
 	@Test
 	public void testSearchNotLoggedIn() throws Exception {
-	    when(request.getSession()).thenReturn(null);
+		when(request.getSession().getAttribute("loggedinuser")).thenReturn(null);
 		when(request.getParameter("searchfield")).thenReturn("Buzz");
 		
 	    searchServlet.doPost(request, response);

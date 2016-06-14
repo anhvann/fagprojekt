@@ -45,6 +45,7 @@ public class TestTransactions {
 	    when(request.getSession()).thenReturn(session);
 	    when(request.getParameter("cpr")).thenReturn(cpr);
 	    when(request.getParameter("password")).thenReturn(password);
+	    when(request.getSession().getAttribute("loggedinuser")).thenReturn(cpr);
 	    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
 	    
 	    login.doPost(request, response);
@@ -311,7 +312,7 @@ public class TestTransactions {
 	
 	@Test
 	public void testNotLoggedIn() throws Exception {
-	    when(request.getSession()).thenReturn(null);
+		when(request.getSession().getAttribute("loggedinuser")).thenReturn(null);
 		BigDecimal balanceOld = db.getAccount(accountID1).getBalance();
 	    when(request.getParameter("action")).thenReturn("deposit");
 	    when(request.getParameter("accountID")).thenReturn(accountID1);

@@ -30,7 +30,7 @@ public class Database {
 	}
 
 	public ArrayList<User> searchFor(String keyword) throws SQLException {
-		if (session != null && session.getAttribute("role").equals("e")) {
+		if (session.getAttribute("loggedinuser") != null && session.getAttribute("role").equals("e")) {
 			ArrayList<String> IDs = new ArrayList<>();
 			ArrayList<User> users = new ArrayList<>();
 
@@ -119,7 +119,7 @@ public class Database {
 	}
 
 	public String newAccount(Account account, User user) throws SQLException {
-		if (session != null && session.getAttribute("role").equals("e")) {
+		if (session.getAttribute("loggedinuser") != null && session.getAttribute("role").equals("e")) {
 			String cpr = user.getCPR();
 			String ID = account.getAccountID();
 			String name = account.getName();
@@ -142,7 +142,7 @@ public class Database {
 	}
 
 	public String closeAccount(String accountID) throws SQLException {
-		if (session != null && session.getAttribute("role").equals("e")) {
+		if (session.getAttribute("loggedinuser") != null && session.getAttribute("role").equals("e")) {
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".DeleteAccount(?, ?) }");
 			call.setString("vAccID", accountID);
 			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
@@ -153,7 +153,7 @@ public class Database {
 	}
 
 	public String editAccount(Account account) throws SQLException {
-		if (session != null && session.getAttribute("role").equals("e")) {
+		if (session.getAttribute("loggedinuser") != null && session.getAttribute("role").equals("e")) {
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditAccount(?, ?, ?, ?) }");
 			call.setString("vAccID", account.getAccountID());
 			call.setString("vAccName", account.getName());
@@ -167,9 +167,7 @@ public class Database {
 
 	public String processTransaction(String type, String accountID, String accountID2, BigDecimal amount,
 			String ISOCode, String transactionName) throws SQLException {
-		System.out.println(type);
-		System.out.println(accountID);
-		if (session != null) {
+		if (session.getAttribute("loggedinuser") != null) {
 			CallableStatement call;
 			switch (type) {
 			case "Deposit":
@@ -276,7 +274,7 @@ public class Database {
 
 	public String register(String cpr, String email, String password, String name, String phone, String address,
 			Date date, String postcode) throws SQLException {
-		if (session != null && session.getAttribute("role").equals("e")) {
+		if (session.getAttribute("loggedinuser") != null && session.getAttribute("role").equals("e")) {
 			if (cpr.length() != 10) {
 				return invalidCPR;
 			}
@@ -338,7 +336,7 @@ public class Database {
 
 	public String editUser(String cpr, String email, String password, String name, String address, String postcode,
 			Date date, String phone) throws SQLException {
-		if (session != null && session.getAttribute("role").equals("e")) {
+		if (session.getAttribute("loggedinuser") != null && session.getAttribute("role").equals("e")) {
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".EditUser(?, ?, ?, ?, ?, ?, ?, ?, ?) }");
 			if (phone.length() != 8) {
 				return invalidPhone;
@@ -362,7 +360,7 @@ public class Database {
 	}
 
 	public String deleteUser(String cpr) throws SQLException {
-		if (session != null && session.getAttribute("role").equals("e")) {
+		if (session.getAttribute("loggedinuser") != null && session.getAttribute("role").equals("e")) {
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".DeleteUser(?, ?) }");
 			call.setString("vCPRNo", cpr);
 			call.registerOutParameter("vOutput", java.sql.Types.VARCHAR);
@@ -382,7 +380,7 @@ public class Database {
 	}
 
 	public String addOwner(String accountID, String newCPR) throws SQLException {
-		if (session != null && session.getAttribute("role").equals("e")) {
+		if (session.getAttribute("loggedinuser") != null && session.getAttribute("role").equals("e")) {
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".AddOwner(?, ?, ?) }");
 			call.setString("vCPRNo", newCPR);
 			call.setString("vAccID", accountID);
@@ -394,7 +392,7 @@ public class Database {
 	}
 
 	public String deleteOwner(String accountID, String newCPR) throws SQLException {
-		if (session != null && session.getAttribute("role").equals("e")) {
+		if (session.getAttribute("loggedinuser") != null && session.getAttribute("role").equals("e")) {
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".RemoveOwner(?, ?, ?) }");
 			call.setString("vCPRNo", newCPR);
 			call.setString("vAccID", accountID);

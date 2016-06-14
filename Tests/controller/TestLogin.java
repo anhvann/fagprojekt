@@ -26,6 +26,7 @@ public class TestLogin {
 		when(request.getSession()).thenReturn(session);
 		when(request.getParameter("cpr")).thenReturn(cpr);
 		when(request.getParameter("password")).thenReturn(password);
+		when(request.getSession().getAttribute("loggedinuser")).thenReturn(cpr);
 		when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
 
 		login.doPost(request, response);

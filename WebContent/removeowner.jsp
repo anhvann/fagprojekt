@@ -20,7 +20,6 @@
 						Remove
 						<br>
 					<%} else {%>
-					<%System.out.println(users); %>
 					<%for (User user : users){%>
 						<%=user.getName()%> (<%=user.getCPR()%>) 
 						<form style="display: inline;"

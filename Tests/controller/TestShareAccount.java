@@ -48,6 +48,7 @@ public class TestShareAccount {
 		when(request.getSession()).thenReturn(session);
 		when(request.getParameter("cpr")).thenReturn(cpr);
 		when(request.getParameter("password")).thenReturn(password);
+		when(request.getSession().getAttribute("loggedinuser")).thenReturn(cpr);
 		when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
 
 		login.doPost(request, response);
@@ -123,14 +124,21 @@ public class TestShareAccount {
 	public void testViewAddOwnerPage() throws Exception {
 		when(request.getParameter("action")).thenReturn("addowner");
 		when(request.getParameter("accountID")).thenReturn(accountID);
-		when(request.getParameter("newCPR")).thenReturn(clientCPR);
+		when(request.getParameter("ID")).thenReturn(clientCPROwner);
+		accountActivityServlet.doPost(request, response);
+	}
+	@Test
+	public void testRemoveOwnerPage() throws Exception {
+		when(request.getParameter("action")).thenReturn("removeowner");
+		when(request.getParameter("accountID")).thenReturn(accountID);
+		when(request.getParameter("ID")).thenReturn(clientCPROwner);
 		accountActivityServlet.doPost(request, response);
 	}
 	
 	//Not possible through user interface
 	@Test
 	public void testAddNotLoggedIn() throws Exception {
-		when(request.getSession()).thenReturn(null);
+		when(request.getSession().getAttribute("loggedinuser")).thenReturn(null);
 		when(request.getParameter("action")).thenReturn("share");
 		when(request.getParameter("accountID")).thenReturn(accountID);
 		when(request.getParameter("newCPR")).thenReturn(clientCPR);
@@ -151,7 +159,7 @@ public class TestShareAccount {
 	
 	@Test
 	public void testRemoveNotLoggedIn() throws Exception {
-		when(request.getSession()).thenReturn(null);
+		when(request.getSession().getAttribute("loggedinuser")).thenReturn(null);
 		when(request.getParameter("action")).thenReturn("deleteowner");
 		when(request.getParameter("accountID")).thenReturn("85327386530339");
 		when(request.getParameter("newCPR")).thenReturn("3112261111");

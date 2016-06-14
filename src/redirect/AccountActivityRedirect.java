@@ -41,7 +41,6 @@ public class AccountActivityRedirect extends HttpServlet {
 			Database db = new Database(request.getSession());
 			User user = db.getUser(cpr);
 			Account account = db.getAccount(accountID);
-			System.out.println("user: " + user + ", account: " + account);
 			switch (action) {
 			case "createaccount":
 				request.setAttribute("message", message);

@@ -50,6 +50,7 @@ public class TestCreateDeleteAccount {
 		when(request.getSession()).thenReturn(session);
 		when(request.getParameter("cpr")).thenReturn(cpr);
 		when(request.getParameter("password")).thenReturn(password);
+		when(request.getSession().getAttribute("loggedinuser")).thenReturn(cpr);
 		when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
 
 		login.doPost(request, response);
@@ -129,7 +130,7 @@ public class TestCreateDeleteAccount {
 
 	@Test
 	public void testCreateNotLoggedIn() throws NullPointerException, ServletException, IOException {
-		when(request.getSession()).thenReturn(null);
+		when(request.getSession().getAttribute("loggedinuser")).thenReturn(null);
 
 		User user = db.getUser(clientCPR);
 		int numberOfAccountsBefore = db.getAccounts(user).size();
@@ -159,7 +160,7 @@ public class TestCreateDeleteAccount {
 		accountID = accountActivityServlet.getAccountID();
 		when(request.getParameter("action")).thenReturn("closeaccount");
 		when(request.getParameter("accountID")).thenReturn("85327386530333");
-		when(request.getSession()).thenReturn(null); //log out
+		when(request.getSession().getAttribute("loggedinuser")).thenReturn(null); //log out
 		accountActivityServlet.doPost(request, response);
 
 		db.getUser(clientCPR); // get updated user
