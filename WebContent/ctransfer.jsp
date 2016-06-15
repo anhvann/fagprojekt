@@ -7,7 +7,7 @@
 	<div class="main">
 		<div class="pagetitle">Transfer money</div>
 		<hr width="95%" noshade>
-			<form class="form-inline" action="TransactionActivity?action=transfer" method="post" target="_self">
+			<form class="form-inline" action="TransactionActivity?ID=${cpr}&action=transfer" method="post" target="_self">
 				<label class="control-label col-sm-5">Transaction name:</label>
 				<div class="col-sm-5"><input type="text" class="form-control" name="transName" placeholder="Enter transaction name" required/></div>
 				<br><br>

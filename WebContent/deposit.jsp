@@ -6,7 +6,7 @@
 		<div class="pagetitle">Deposit money</div>
 		<hr width="95%" noshade>
 			<%String accID = request.getParameter("accountID");%>
-			<form class="form-inline" action="TransactionActivity?action=deposit" method="post" target="_self">
+			<form class="form-inline" action="TransactionActivity?ID=${cpr}&action=deposit" method="post" target="_self">
 				<label class="control-label col-sm-5">Account:</label>
 				<div class="col-sm-5"><input type="number" class="form-control" name="accountID" placeholder="Enter account ID" value="<%=accID%>" required/></div>
 				<br><br>

@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
+
 import model.Database;
 
 @WebServlet("/TransactionActivityRedirect")
@@ -24,6 +26,7 @@ public class TransactionActivityRedirect extends HttpServlet {
 			String accountID = request.getParameter("accountID");
 			String message = request.getParameter("message");
 			String cpr = request.getParameter("ID");
+			request.setAttribute("cpr", cpr);
 			switch (message) {
 		    	case "Deposit Invalid Account" :
 					request.setAttribute("errormessage", "Account does not exist");
