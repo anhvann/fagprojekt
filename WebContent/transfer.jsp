@@ -22,7 +22,7 @@
 				</div>
 				<br><br>
 				<label class="control-label col-sm-5">Amount:</label>
-				<div class="col-sm-5"><input type="text" class="form-control" name="amount" placeholder="Enter amount" min="0" step="0.01" required/>
+				<div class="col-sm-5"><input type="text" class="form-control" name="amount" placeholder="Enter amount" min="0" step="0.01" max="99999999999.99" required/>
 				<select class="form-control" name="ISOCode">
     				<option value="DKK" selected>DKK</option>
     				<option value="USD">USD</option>
