@@ -27,45 +27,48 @@ public class Login extends HttpServlet {
 	private String loggedinuser, role;
 	Database db = null;
 	String message;
-	
+
 	public Login() {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 		String cpr = request.getParameter("cpr");
 		String password = request.getParameter("password");
-		
+
 		if (cpr.length() != 10) {
 			message = "Given CPR number is invalid";
 			request.setAttribute("errormessage", message);
 			request.getRequestDispatcher("login.jsp").forward(request, response);
-			return;
-		}
-		
-		try {
-			db = new Database(request.getSession());
-			String role = db.Login(cpr, password);			
-			if (role == null) {
-				message = "CPR number and password did not match";
-				request.setAttribute("errormessage", message);
-				request.getRequestDispatcher("login.jsp").forward(request, response);
-			} else if (role.equals("e")) {
-				setSession(request, response, cpr, "e");
-			} else {
-				User user = db.getUser(cpr);
-				setSession(request, response, cpr, "c");
+		} else {
+
+			try {
+				db = new Database(request.getSession());
+				String role = db.Login(cpr, password);
+				if (role == null) {
+					message = "CPR number and password did not match";
+					request.setAttribute("errormessage", message);
+					request.getRequestDispatcher("login.jsp").forward(request, response);
+				} else if (role.equals("e")) {
+					setSession(request, response, cpr, "e");
+				} else {
+					User user = db.getUser(cpr);
+					setSession(request, response, cpr, "c");
+				}
+			} catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
 		}
 	}
 
-	private void setSession(HttpServletRequest request, HttpServletResponse response, String cpr, String role) throws ServletException, IOException {
+	private void setSession(HttpServletRequest request, HttpServletResponse response, String cpr, String role)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		this.loggedinuser = cpr;
 		this.role = role;
@@ -80,9 +83,9 @@ public class Login extends HttpServlet {
 
 	protected String getRole() {
 		return role;
-	} 
-	
-	public String getMessage(){
+	}
+
+	public String getMessage() {
 		return message;
 	}
 }
