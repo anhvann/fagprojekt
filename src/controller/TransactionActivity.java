@@ -55,7 +55,6 @@ public class TransactionActivity extends HttpServlet {
 	    } catch (NumberFormatException | ParseException ignore) {
 	    	message = "Invalid amount";
 			request.setAttribute("message", message);
-			request.getRequestDispatcher("deposit.jsp").forward(request, response);
 			return;
 	    }
 		
