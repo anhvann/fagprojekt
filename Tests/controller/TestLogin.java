@@ -17,18 +17,20 @@ public class TestLogin {
 	 * Precondition: Employee CPR: 1234567891, password: anna0207 Client CPR:
 	 * 2309911234, password: daisy2 Non-existent CPR: 1584145477
 	 */
-
+	@Before
+	public void initialization(){
+		when(request.getSession()).thenReturn(session);
+		when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
+	}
 	@Test
 	public void testLoginEmployee() throws Exception {
 		String cpr = "1234567891";
 		String password = "anna0207";
 		Login login = new Login();
-		when(request.getSession()).thenReturn(session);
+		
 		when(request.getParameter("cpr")).thenReturn(cpr);
 		when(request.getParameter("password")).thenReturn(password);
-		when(request.getSession().getAttribute("loggedinuser")).thenReturn(cpr);
-		when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-
+		
 		login.doPost(request, response);
 		assertEquals(cpr, login.getLoggedInUser());
 		assertEquals("e", login.getRole());
@@ -39,10 +41,9 @@ public class TestLogin {
 		String cpr = "2309911234";
 		String password = "daisy2";
 		Login login = new Login();
-		when(request.getSession()).thenReturn(session);
+		
 		when(request.getParameter("cpr")).thenReturn(cpr);
 		when(request.getParameter("password")).thenReturn(password);
-		when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
 
 		login.doPost(request, response);
 		assertEquals(cpr, login.getLoggedInUser());
@@ -54,12 +55,12 @@ public class TestLogin {
 		String cpr = "9876543219";
 		String password = "daisy2";
 		Login login = new Login();
-		when(request.getSession(false)).thenReturn(session);
+		
 		when(request.getParameter("cpr")).thenReturn(cpr);
 		when(request.getParameter("password")).thenReturn(password);
-		when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
 
 		login.doPost(request, response);
+		assertEquals("CPR number and password did not match", login.getMessage());
 		assertNull(login.getLoggedInUser());
 		assertNull(login.getRole());
 	}
@@ -70,12 +71,24 @@ public class TestLogin {
 		String password = "daisy2";
 		Login login = new Login();
 
-		when(request.getSession(false)).thenReturn(session);
 		when(request.getParameter("cpr")).thenReturn(cpr);
 		when(request.getParameter("password")).thenReturn(password);
-		when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
 
 		login.doPost(request, response);
+		assertNull(login.getLoggedInUser());
+		assertNull(login.getRole());
+	}
+	@Test
+	public void testInvalidCPR() throws Exception {
+		String cpr = "23099112345";
+		String password = "daisy2";
+		Login login = new Login();
+
+		when(request.getParameter("cpr")).thenReturn(cpr);
+		when(request.getParameter("password")).thenReturn(password);
+
+		login.doPost(request, response);
+		assertEquals("Given CPR number is invalid", login.getMessage());
 		assertNull(login.getLoggedInUser());
 		assertNull(login.getRole());
 	}

@@ -26,7 +26,8 @@ public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String loggedinuser, role;
 	Database db = null;
-
+	String message;
+	
 	public Login() {
 		super();
 	}
@@ -38,12 +39,20 @@ public class Login extends HttpServlet {
 		doGet(request, response);
 		String cpr = request.getParameter("cpr");
 		String password = request.getParameter("password");
+		
+		if (cpr.length() != 10) {
+			message = "Given CPR number is invalid";
+			request.setAttribute("errormessage", message);
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+			return;
+		}
+		
 		try {
 			db = new Database(request.getSession());
 			String role = db.Login(cpr, password);			
 			if (role == null) {
-				String message = "CPR Number and password did not match";
-				request.setAttribute("message", message);
+				message = "CPR number and password did not match";
+				request.setAttribute("errormessage", message);
 				request.getRequestDispatcher("login.jsp").forward(request, response);
 			} else if (role.equals("e")) {
 				setSession(request, response, cpr, "e");
@@ -72,4 +81,8 @@ public class Login extends HttpServlet {
 	protected String getRole() {
 		return role;
 	} 
+	
+	public String getMessage(){
+		return message;
+	}
 }
