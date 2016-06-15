@@ -13,14 +13,12 @@
 				<div class="item active">
 					<img src="http://i.imgur.com/dqbAEoA.png">
 				</div>
-				<!-- second item -->
 				<div class="item">
 					<img src="http://i.imgur.com/SXeoyIw.png">
 				</div>
-				<!-- third item -->
 				<div class="item">
 					<a href="buysellrate.jsp"><img
-						src="http://i.imgur.com/nUoRVGb.png"></a>
+						src="http://i.imgur.com/Nc3Lygm.png"></a>
 				</div>
 			</div>
 			<a class="left carousel-control" href="#myCarousel" role="button"

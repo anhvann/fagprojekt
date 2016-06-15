@@ -8,23 +8,27 @@
 	<div class="main">
 		<div class="pagetitle">Remove Owner(s)</div>
 		<hr width="95%" noshade>
-			<div align="left">
-				<a href="AccountActivity?ID=${cpr}&action=viewaccount&accountID=${accountID}">Back to
-								account</a>
+					<div align="center">
+			<div class="content">
+				<span style="float: left;"> <a
+					href="AccountActivity?ID=${cpr}&action=viewaccount&accountID=${accountID}">Back
+						to account</a>
+				</span><br><br>
 			</div>
+		</div>
 			<label class="control-label col-sm-5">Owners:</label>
 			<div class="col-sm-5">
 				<%LinkedList<User> users = (LinkedList<User>) request.getAttribute("owners");%>
 					<%if (users.size() == 1) {%>
 						<%=users.get(0).getName()%> (<%=users.get(0).getCPR()%>)
-						Remove
+						<font color=grey>&nbsp;&nbsp;&nbsp;remove</font>
 						<br>
 					<%} else {%>
 					<%for (User user : users){%>
 						<%=user.getName()%> (<%=user.getCPR()%>) 
 						<form style="display: inline;"
 								action="AccountActivity?ID=${cpr}&newCPR=<%=user.getCPR()%>&accountID=${accountID}&action=deleteowner" method="post">
-							<button type="submit" name="remove" class="btn-link">Remove</button>
+							<button type="submit" name="remove" class="btn-link">remove</button>
 						</form>
 						<br>
 					<%}}%>

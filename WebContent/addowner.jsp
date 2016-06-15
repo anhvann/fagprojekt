@@ -3,15 +3,19 @@
 <html>
 <div id="wrap">
 	<%@ page import="java.util.LinkedList"%>
-	<%@ page import="model.User" %>
+	<%@ page import="model.User"%>
 	<%@include file="employeecheck.jsp"%>
 	<div class="main">
 		<div class="pagetitle">Add Owner</div>
 		<hr width="95%" noshade>
-			<div align="left">
-			<a href="AccountActivity?ID=${cpr}&action=viewaccount&accountID=${accountID}">Back to
-								account</a>
+		<div align="center">
+			<div class="content">
+				<span style="float: left;"> <a
+					href="AccountActivity?ID=${cpr}&action=viewaccount&accountID=${accountID}">Back
+						to account</a>
+				</span><br><br>
 			</div>
+		</div>
 		<form
 			action="AccountActivity?ID=${cpr}&action=share&accountID=${accountID}"
 			method="post" target="_self">
