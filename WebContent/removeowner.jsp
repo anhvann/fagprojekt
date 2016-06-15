@@ -21,14 +21,14 @@
 				<%LinkedList<User> users = (LinkedList<User>) request.getAttribute("owners");%>
 					<%if (users.size() == 1) {%>
 						<%=users.get(0).getName()%> (<%=users.get(0).getCPR()%>)
-						Remove
+						<font color=grey>&nbsp;&nbsp;&nbsp;remove</font>
 						<br>
 					<%} else {%>
 					<%for (User user : users){%>
 						<%=user.getName()%> (<%=user.getCPR()%>) 
 						<form style="display: inline;"
 								action="AccountActivity?ID=${cpr}&newCPR=<%=user.getCPR()%>&accountID=${accountID}&action=deleteowner" method="post">
-							<button type="submit" name="remove" class="btn-link">Remove</button>
+							<button type="submit" name="remove" class="btn-link">remove</button>
 						</form>
 						<br>
 					<%}}%>
