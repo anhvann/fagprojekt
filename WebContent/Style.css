@@ -31,22 +31,6 @@
 .navigationarea {
 	margin-left: 120px;
 }
-.dropbtn {
-    background-color: transparent;
-    font-family: Verdana;
-	font-size: 14px;
-    padding: 17px;
-    border: none;
-    cursor: pointer;
-    color: #45a3bb;
-}
-.expand {
-    transition:height 0.5s;
-    -webkit-transition:height 0.5s;
-}
-.expand:hover {
-    height: 150px;
-}
 
 .img-bar {
 	height: 80px;
@@ -69,23 +53,23 @@ html, body {
 }
 .main {
 	z-index: 1;
-	background: #ffffff;
+	background: #eeeeee;
 	overflow: auto;
 	min-height: 300px;
 	padding-bottom: 50px;
 }
 
 .front {
-	background: #ffffff;
+	background: #f8f8f8;
 	height: auto;
 	padding-bottom: 50px;
-	overflow:auto;    
+	overflow:hidden;
 }
+
 
 #wrap {
 	min-height: 100%;
 }
-
 
 .footer {
 	background: url("http://i.imgur.com/Uf3PuDg.png");
@@ -99,10 +83,8 @@ html, body {
 	height: 50px;
 }
 
-
 .carousel-inner img {
 	margin: auto;
-	width: 100%;
 }
 
 .carousel-control {
@@ -110,7 +92,6 @@ html, body {
     top: 350px;
     height: 80px;
     background: none !important;
-
 }
 .carousel .carousel-control {
   visibility: hidden;
