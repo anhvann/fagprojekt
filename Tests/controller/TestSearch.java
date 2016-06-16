@@ -6,11 +6,8 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -60,11 +57,11 @@ public class TestSearch {
 	@Test
 	public void testSearchSuccess() throws Exception {
 		when(request.getParameter("searchfield")).thenReturn("Buzz");	
-	    searchServlet.doPost(request, response);
+	    searchServlet.doGet(request, response);
 	    assertEquals(0, searchServlet.getResults().size());
 	    
 		when(request.getParameter("searchfield")).thenReturn("Marc Jacobs");
-	    searchServlet.doPost(request, response);
+	    searchServlet.doGet(request, response);
 	    assertEquals(1, searchServlet.getResults().size());
 	}
 	
@@ -74,7 +71,7 @@ public class TestSearch {
 		when(request.getSession().getAttribute("loggedinuser")).thenReturn(null);
 		when(request.getParameter("searchfield")).thenReturn("Buzz");
 		
-	    searchServlet.doPost(request, response);
+	    searchServlet.doGet(request, response);
 	    assertNull(searchServlet.getResults());
 	}
 	
@@ -83,7 +80,7 @@ public class TestSearch {
 	    when(request.getSession().getAttribute("role")).thenReturn("c");
 		when(request.getParameter("searchfield")).thenReturn("Buzz");
 		
-	    searchServlet.doPost(request, response);
+	    searchServlet.doGet(request, response);
 	    assertNull(searchServlet.getResults());
 	}
 }

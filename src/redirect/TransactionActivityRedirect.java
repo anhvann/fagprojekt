@@ -2,6 +2,8 @@ package redirect;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import model.Database;
+import model.Transaction;
 
 @WebServlet("/TransactionActivityRedirect")
 public class TransactionActivityRedirect extends HttpServlet {
@@ -66,8 +69,9 @@ public class TransactionActivityRedirect extends HttpServlet {
 					request.setAttribute("cpr", cpr);
 					request.setAttribute("toast", true);
 					request.setAttribute("accountID", accountID);
-					request.setAttribute("transactions", db.getTransactions(accountID));
-					request.setAttribute("balance", db.getTransactions(accountID).getLast().getBalanceString());
+					ArrayList<Transaction> list = db.getTransactions(accountID);
+					request.setAttribute("transactions", list);
+					request.setAttribute("balance", list.get(list.size()-1).getBalanceString());
 					request.setAttribute("accountName", db.getAccount(accountID).getName());
 					request.setAttribute("ISOCode", db.getAccount(accountID).getISOCode());
 					request.getRequestDispatcher("accountoverview.jsp").forward(request, response);

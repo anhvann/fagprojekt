@@ -1,7 +1,7 @@
 <!DOCTYPE HTML><%@page language="java"
 	contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.sql.*"%>
-<%@ page import="java.util.LinkedList"%>
+<%@ page import="java.util.ArrayList"%>
 <%@ page import="model.Transaction"%>
 <%@ page import="java.math.BigDecimal"%>
 <html>
@@ -45,7 +45,6 @@
 						}
 					%>
 					<br>
-					</p>
 				</div>
 
 				<table>
@@ -61,7 +60,7 @@
 					</tr>
 					<%
 						String color;
-						LinkedList<Transaction> trans = (LinkedList<Transaction>) request.getAttribute("transactions");
+						ArrayList<Transaction> trans = (ArrayList<Transaction>) request.getAttribute("transactions");
 						for (int i = trans.size() - 1; i >= 0; i--) {
 							if (trans.get(i).getAmount().compareTo(BigDecimal.ZERO) > 0) {
 								color = "green";

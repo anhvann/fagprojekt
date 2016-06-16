@@ -2,7 +2,7 @@
 <div id="wrap">
 	<%@include file="header.jsp"%>
 	<%@ page import="model.Currency"%>
-	<%@ page import="java.util.ArrayList"%>
+	<%@ page import="java.util.LinkedList"%>
 	<div class="body">
 		<div class="main">
 			<div class="pagetitle">Currency Exchange Rates</div>
@@ -21,7 +21,7 @@
 							<th>Sell Rate</th>
 						</tr>
 						<%
-							ArrayList<Currency> rates = (ArrayList<Currency>) request.getAttribute("rates");
+							LinkedList<Currency> rates = (LinkedList<Currency>) request.getAttribute("rates");
 							for (Currency cur : rates) {
 						%>
 						<tr>

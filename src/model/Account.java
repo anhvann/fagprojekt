@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Locale;
 
@@ -12,15 +13,15 @@ public class Account {
 	private String accountID, ISOCode, name;
 	private LinkedList<String> owners;
 	private BigDecimal balance, interest;
-	private LinkedList<Transaction> transactions;
+	private ArrayList<Transaction> transactions;
 	
-	public Account(LinkedList<String> owners, String accountID, String name, BigDecimal balance, BigDecimal interest, String ISOCode, LinkedList<Transaction> transactions) {
+	public Account(LinkedList<String> owners, String accountID, String name, BigDecimal balance, BigDecimal interest, String ISOCode, ArrayList<Transaction> transactions) {
 		this.owners = owners;
 		this.accountID = accountID;
 		this.name = name;
 		this.interest = interest;
 		this.ISOCode = ISOCode;
-		this.transactions = new LinkedList<>();
+		this.transactions = new ArrayList<>();
 		this.balance = balance;
 		this.transactions = transactions;
 	}
@@ -69,11 +70,11 @@ public class Account {
 		this.ISOCode = ISOCode;
 	}
 	
-	public LinkedList<Transaction> getTransactions() {
+	public ArrayList<Transaction> getTransactions() {
 		return transactions;
 	}
 	
-	public void setTransactions(LinkedList<Transaction> transactions) {
+	public void setTransactions(ArrayList<Transaction> transactions) {
 		this.transactions = transactions;
 	}
 }

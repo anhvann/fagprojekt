@@ -14,7 +14,7 @@
 <div id="wrap">
 	<%@include file="sessioncheck.jsp"%>
 	<%@ page import="java.sql.*"%>
-	<%@ page import="java.util.LinkedList"%>
+	<%@ page import="java.util.ArrayList"%>
 	<%@ page import="model.Account"%>
 	<div class="main">
 		<div class="pagetitle">${name} (${cpr})</div>
@@ -53,7 +53,7 @@
 					<th>Name</th>
 					<th>Balance</th>
 				</tr>
-				<%LinkedList<Account> accounts = (LinkedList<Account>) request.getAttribute("accounts");
+				<%ArrayList<Account> accounts = (ArrayList<Account>) request.getAttribute("accounts");
 					for (Account acc : accounts) {%>
 				<tr
 					onclick="document.location = 'AccountActivity?ID=${cpr}&action=viewaccount&accountID=<%=acc.getAccountID()%>';">

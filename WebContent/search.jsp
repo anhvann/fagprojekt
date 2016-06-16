@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <%@ page import="java.sql.*"%>
-<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.LinkedList"%>
 <%@ page import="model.User"%>
 <link rel="stylesheet" type="text/css" href="Style.css">
 <script>
@@ -27,7 +27,7 @@
 		</div>
 		<br>
 		<%
-			ArrayList<User> users = (ArrayList<User>) request.getAttribute("resultlist");
+			LinkedList<User> users = (LinkedList<User>) request.getAttribute("resultlist");
 			if (users != null) {
 		%>
 		<div align="center">

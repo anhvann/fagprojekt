@@ -3,6 +3,7 @@ package model;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import model.Database;
 
@@ -10,13 +11,13 @@ public class User {
 
 	private String cpr, email, password, name, phone, address, postCode, roleID;
 	private Date dateOfBirth;
-	private LinkedList<Account> accounts;
+	private ArrayList<Account> accounts;
 	private Database bank;
 
 	public User(Database database, String cpr) {
 		this.bank = database;
 		this.cpr = cpr;
-		this.accounts = new LinkedList<>();
+		this.accounts = new ArrayList<>();
 	}
 
 	public void setInfo(String email, String password, String name, String phone, String address, Date dateOfBirth, String postCode, String roleID) {
@@ -30,7 +31,7 @@ public class User {
 		this.roleID = roleID;
 	}
 
-	public LinkedList<Account> getAccounts() {
+	public ArrayList<Account> getAccounts() {
 		return accounts;
 	}
 
@@ -66,7 +67,7 @@ public class User {
 		return roleID;
 	}
 
-	public void setAccounts(LinkedList<Account> accounts) {
+	public void setAccounts(ArrayList<Account> accounts) {
 		this.accounts = accounts;
 	}
 	

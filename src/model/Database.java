@@ -1,8 +1,8 @@
 package model;
 
 import java.math.BigDecimal;
-import java.util.LinkedList;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import javax.servlet.http.HttpSession;
 import model.Currency;
 import java.sql.*;
@@ -29,10 +29,10 @@ public class Database {
 		statement = connection.createStatement();
 	}
 
-	public ArrayList<User> searchFor(String keyword) throws SQLException {
+	public LinkedList<User> searchFor(String keyword) throws SQLException {
 		if (session.getAttribute("loggedinuser") != null && session.getAttribute("role").equals("e")) {
-			ArrayList<String> IDs = new ArrayList<>();
-			ArrayList<User> users = new ArrayList<>();
+			LinkedList<String> IDs = new LinkedList<>();
+			LinkedList<User> users = new LinkedList<>();
 
 			CallableStatement call = connection.prepareCall("{call \"DTUGRP05\".KeywordSearch(?) }");
 			call.setString("vKeyword", keyword);
@@ -63,9 +63,9 @@ public class Database {
 		}
 	}
 
-	public LinkedList<Account> getAccounts(User user) {
+	public ArrayList<Account> getAccounts(User user) {
 		String cpr = user.getCPR();
-		LinkedList<Account> accounts = new LinkedList<>();
+		ArrayList<Account> accounts = new ArrayList<>();
 		LinkedList<String> owners = new LinkedList<>();
 		owners.add(cpr);
 
@@ -91,8 +91,8 @@ public class Database {
 		return accounts;
 	}
 
-	public LinkedList<Transaction> getTransactions(String accountID) {
-		LinkedList<Transaction> transactions = new LinkedList<>();
+	public ArrayList<Transaction> getTransactions(String accountID) {
+		ArrayList<Transaction> transactions = new ArrayList<>();
 
 		try {
 			String query = "select * from \"DTUGRP05\".\"TRANSACTIONS\" WHERE \"AccID\" = ?";
@@ -324,7 +324,7 @@ public class Database {
 				String role = resultset.getString("RoleID");
 				user.setInfo(email, password, name, phone, address, dateOfBirth, postCode, role);
 
-				LinkedList<Account> accounts = getAccounts(user);
+				ArrayList<Account> accounts = getAccounts(user);
 				user.setAccounts(accounts);
 			}
 			resultset.close();
@@ -403,8 +403,8 @@ public class Database {
 		return loginString;
 	}
 
-	public ArrayList<Currency> getExchangeRates() {
-		ArrayList<Currency> rates = new ArrayList<>();
+	public LinkedList<Currency> getExchangeRates() {
+		LinkedList<Currency> rates = new LinkedList<>();
 		String query = "SELECT * FROM \"DTUGRP05\".\"CURRENCIES\" WHERE \"ISOCode\" <> 'DKK';";
 		PreparedStatement stmt;
 		try {

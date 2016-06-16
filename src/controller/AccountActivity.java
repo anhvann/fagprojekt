@@ -3,13 +3,8 @@ package controller;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.LinkedList;
-
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -108,7 +103,7 @@ public class AccountActivity extends HttpServlet {
 				LinkedList<String> owners = new LinkedList<>();
 				owners.add(cpr);
 				account = new Account(owners, accountID, accountName, balance, interest, ISOCode,
-						new LinkedList<Transaction>());
+						new ArrayList<Transaction>());
 				message = user.addAccount(account);
 				response.sendRedirect(
 						"AccountActivityRedirect?action=" + action + "&ID=" + cpr + "&message=" + message);

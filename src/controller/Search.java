@@ -2,7 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +14,7 @@ import model.User;
 @WebServlet("/Search")
 public class Search extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private ArrayList<User> results = new ArrayList<>();
+	private LinkedList<User> results = new LinkedList<>();
 	Database db = null;
 	
 	public Search() {
@@ -48,7 +48,7 @@ public class Search extends HttpServlet {
 		doGet(request, response);
 	}
 
-	public ArrayList<User> getResults(){
+	public LinkedList<User> getResults(){
 		return results;
 	}
 }
