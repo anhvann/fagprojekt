@@ -27,9 +27,9 @@
 					</div>
 					<br><br>
 					
-					<label class="control-label col-sm-5">Interest:</label>
+					<label class="control-label col-sm-5">Interest (%):</label>
 					<div class="col-sm-5">
-						<input type="number" step="0.01" class="form-control" name="interest" placeholder="Enter interest" value="${interest}" required>
+						<input type="number" min="0" max="100" step="0.01" class="form-control" name="interest" placeholder="Enter interest" value="${interest}" required>
 					</div>
 					<br><br>
 					<label class="control-label col-sm-5">Currency:</label>

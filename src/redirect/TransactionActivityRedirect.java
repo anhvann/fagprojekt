@@ -46,6 +46,7 @@ public class TransactionActivityRedirect extends HttpServlet {
 		    		break;
 		    	case "Transfer Invalid Account" :
 		    		if (request.getSession().getAttribute("role").equals("c")){
+		    			request.setAttribute("accounts", db.getUser(cpr).getAccounts());
 		    			request.setAttribute("errormessage", "Receiving account does not exist");
 		    			request.getRequestDispatcher("ctransfer.jsp").forward(request, response);
 		    		} else {
