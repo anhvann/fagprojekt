@@ -31,6 +31,22 @@
 .navigationarea {
 	margin-left: 120px;
 }
+.dropbtn {
+    background-color: transparent;
+    font-family: Verdana;
+	font-size: 14px;
+    padding: 17px;
+    border: none;
+    cursor: pointer;
+    color: #45a3bb;
+}
+.expand {
+    transition:height 0.5s;
+    -webkit-transition:height 0.5s;
+}
+.expand:hover {
+    height: 150px;
+}
 
 .img-bar {
 	height: 80px;
@@ -58,12 +74,14 @@ html, body {
 	min-height: 300px;
 	padding-bottom: 50px;
 }
+
 .front {
-	background: #e9e9e9;
+	background: #ffffff;
 	height: auto;
-	padding-bottom: 34px;
-	overflow:auto;
+	padding-bottom: 50px;
+	overflow:auto;    
 }
+
 #wrap {
 	min-height: 100%;
 }
@@ -81,25 +99,10 @@ html, body {
 	height: 50px;
 }
 
-/*Reference: http://stackoverflow.com/questions/14654902/twitter-bootstrap-carousel-vertically-center-image-in-definded-height-viewport*/
-.item {
-height: 500px;
-}
-
-.item img {
-max-height: 100%;  
-max-width: 100%; 
-position: absolute;  
-top: 0;  
-bottom: 0;  
-left: 0;  
-right: 0;  
-margin: auto;
-
-}
 
 .carousel-inner img {
 	margin: auto;
+	width: 100%;
 }
 
 .carousel-control {
