@@ -9,7 +9,7 @@
 				<label class="control-label col-sm-5">Name:</label>
 				<div class="col-sm-5"><input type="text" class="form-control" name="accountName" placeholder="Enter name" required/></div>
 				<br><br>
-				<label class="control-label col-sm-5">Interest:</label>
+				<label class="control-label col-sm-5">Interest (%):</label>
 				<div class="col-sm-5"><input type="number" step="0.01"  min="0" max="100" class="form-control" name="interest" placeholder="Enter interest" required/></div>
 				<br><br>
 				<label class="control-label col-sm-5">Currency:</label>

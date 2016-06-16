@@ -19,7 +19,7 @@
 		<form id=searchbar action="Search" method="get" target="_self">
 			<div style="overflow: hidden">
 				<input id="searchfield" type="text" name="searchfield"
-					placeholder="Search by name, cpr or phone" style="width: 100%" />
+					placeholder="Search users by name, cpr or phone" style="width: 100%" />
 			</div>
 		</form>
 		<div class="pagetitle">
