@@ -29,6 +29,7 @@ public class Transaction {
 		return amount;
 	}
 	
+	//Convert BigDecimal to String
 	public String getAmountString(){
 		DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
 		symbols.setGroupingSeparator(',');

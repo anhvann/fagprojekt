@@ -18,6 +18,8 @@ public class TestCurrency {
 	private HttpSession session = mock(HttpSession.class);
 	private CurrencyExchangeRates currencyServlet = new CurrencyExchangeRates();
 
+	/*Retrieve registered ISO codes from the database
+	 * The database should return 26 ISO codes*/
 	@Test
 	public void testGetCurrencies() throws Exception {
 		when(request.getSession()).thenReturn(session);

@@ -1,12 +1,9 @@
 package model;
-
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Locale;
 
 public class Account {
 
@@ -30,6 +27,7 @@ public class Account {
 		 return balance;
 	}
 	
+	//Convert BigDecimal to String
 	public String getBalanceString(){
 		DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
 		symbols.setGroupingSeparator(',');

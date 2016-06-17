@@ -54,6 +54,9 @@ public class TestSearch {
 		
 	    db = new Database(session);
 	}
+	/*A logged in employee searches successfully
+	 * Searching for "Buzz" should return no results
+	 * Searching for "Marc Jacobs" should return one result*/
 	@Test
 	public void testSearchSuccess() throws Exception {
 		when(request.getParameter("searchfield")).thenReturn("Buzz");	
@@ -65,7 +68,10 @@ public class TestSearch {
 	    assertEquals(1, searchServlet.getResults().size());
 	}
 	
-	//Not possible through interface
+	//The following scenarios cannot occur with the current interface but has been covered for security reasons
+	
+	/*An employee not logged in cannot use the search function
+	 * Searching for "Buzz" should return a null list*/
 	@Test
 	public void testSearchNotLoggedIn() throws Exception {
 		when(request.getSession().getAttribute("loggedinuser")).thenReturn(null);
@@ -75,6 +81,8 @@ public class TestSearch {
 	    assertNull(searchServlet.getResults());
 	}
 	
+	/*A client cannot use the search function
+	 * Searching for "Buzz" should return a null list*/
 	@Test
 	public void testSearchAsClient() throws Exception {
 	    when(request.getSession().getAttribute("role")).thenReturn("c");

@@ -75,6 +75,10 @@ public class TestEditAccount {
 		assertEquals(interestBD, account.getInterest());
 	}
 
+	/*Employee is logged in and successfully edits an
+	 * The account's new name should be "Transportation"
+	 * The account's new interest should be 0.020
+	 * The returned message from the database should be "Account Edited"*/
 	@Test
 	public void testEditAccount() throws Exception {
 		accountName = "Transportation";
@@ -91,6 +95,12 @@ public class TestEditAccount {
 		assertEquals(new BigDecimal(interest), account.getInterest());
 	}
 	
+	//The following scenarios cannot occur with the current interface but has been covered for security reasons
+	
+	/*An employee not logged in cannot edit an account
+	 * The account's name after the attempt should be the same as before: "Shopping"
+	 * The account's interest after the attempt should be the same as before: 0.010
+	 * The returned message should be "Illegal action"*/
 	@Test
 	public void testNotLoggedIn() throws Exception {
 		String newaccountName = "Transportation";
@@ -107,6 +117,10 @@ public class TestEditAccount {
 		assertEquals(new BigDecimal(interest), account.getInterest());
 	}
 	
+	/*A client cannot edit an account
+	 * The account's name after the attempt should be the same as before: "Shopping"
+	 * The account's interest after the attempt should be the same as before: 0.010
+	 * The returned message should be "Illegal action"*/
 	@Test
 	public void testEditAsClient() throws Exception {
 		String newaccountName = "Transportation";
@@ -121,20 +135,5 @@ public class TestEditAccount {
 		assertEquals("Illegal action", accountActivityServlet.getMessage());
 		assertEquals(accountName, account.getName());
 		assertEquals(new BigDecimal(interest), account.getInterest());
-	}
-	
-	//For user interface
-	@Test
-	public void testViewAccount() throws ServletException, IOException{
-		action = "viewaccount";
-		when(request.getParameter("action")).thenReturn(action);
-		accountActivityServlet.doPost(request, response);
-	}
-	
-	@Test
-	public void testViewEditPage() throws ServletException, IOException{
-		action = "editaccount";
-		when(request.getParameter("action")).thenReturn(action);
-		accountActivityServlet.doPost(request, response);
 	}
 }

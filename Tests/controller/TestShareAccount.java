@@ -58,6 +58,14 @@ public class TestShareAccount {
 		db = new Database(session);
 	}
 
+	/* A logged in employee successfully adds and removes an owner from a shared account 
+	 * 	Add:
+	 * 		The message returned from the database should be "Ownership added"
+	 * 		The number of owners of the account should be increased by one
+	 * 	Remove:
+	 * 		The message returned from the database should be "Ownership removed"
+	 * 		The number of owners on this account should be decreased by one
+	 */
 	@Test
 	public void testAddRemoveOwnerSuccess() throws Exception {
 		// Add
@@ -86,10 +94,13 @@ public class TestShareAccount {
 		assertEquals(-1, ownersFinal - ownersAfter);
 		assertEquals(-1, accountFinal - accountsAfter);
 	}
-
+	
+	/* It is impossible to add an owner to an account if this ownership already exists 
+	 * 	The number of owners of the account should be the same as before the attempt
+	 * 	The message returned from the database should be "Ownership already exists"
+	 */
 	@Test
 	public void testAddOwnerWhoIsAlreadyOwner() throws Exception {
-		// Add
 		int ownersBefore = db.getOwners(accountID).size();
 		int accountsBefore = db.getAccounts(db.getUser(clientCPROwner)).size();
 		when(request.getParameter("action")).thenReturn("share");
@@ -104,10 +115,13 @@ public class TestShareAccount {
 		assertEquals(0, ownersAfter - ownersBefore);
 		assertEquals(0, accountsAfter - accountsBefore);
 	}
-
+	
+	/* The given CPR number does not exist in the database
+	 * 	The number of owners of the account should be the same as before the attempt
+	 * 	The message from the database should be "Invalid User"
+	 */
 	@Test
 	public void testAddNonExistentOwner() throws Exception {
-		// Add
 		int ownersBefore = db.getOwners(accountID).size();
 		when(request.getParameter("action")).thenReturn("share");
 		when(request.getParameter("accountID")).thenReturn(accountID);
@@ -119,23 +133,11 @@ public class TestShareAccount {
 		assertEquals(0, ownersAfter - ownersBefore);
 	}
 	
-	// For interface
-	@Test
-	public void testViewAddOwnerPage() throws Exception {
-		when(request.getParameter("action")).thenReturn("addowner");
-		when(request.getParameter("accountID")).thenReturn(accountID);
-		when(request.getParameter("ID")).thenReturn(clientCPROwner);
-		accountActivityServlet.doPost(request, response);
-	}
-	@Test
-	public void testRemoveOwnerPage() throws Exception {
-		when(request.getParameter("action")).thenReturn("removeowner");
-		when(request.getParameter("accountID")).thenReturn(accountID);
-		when(request.getParameter("ID")).thenReturn(clientCPROwner);
-		accountActivityServlet.doPost(request, response);
-	}
+	//The following scenarios cannot occur with the current interface but has been covered for security reasons
 	
-	//Not possible through user interface
+	/*An employee not logged in cannot add an owner to an account
+	 * The message returned should be "Illegal action"
+	 */
 	@Test
 	public void testAddNotLoggedIn() throws Exception {
 		when(request.getSession().getAttribute("loggedinuser")).thenReturn(null);
@@ -146,6 +148,10 @@ public class TestShareAccount {
 
 		assertEquals("Illegal action", accountActivityServlet.getMessage());
 	}
+	
+	/*A client cannot add an owner to an account
+	 * The message returned should be "Illegal action"
+	 */
 	@Test
 	public void testAddAsClient() throws Exception {
 		when(request.getSession().getAttribute("role")).thenReturn("c");
@@ -157,6 +163,9 @@ public class TestShareAccount {
 		assertEquals("Illegal action", accountActivityServlet.getMessage());
 	}
 	
+	/*An employee not logged in cannot remove an owner from an account
+	 * The message returned should be "Illegal action"
+	 */
 	@Test
 	public void testRemoveNotLoggedIn() throws Exception {
 		when(request.getSession().getAttribute("loggedinuser")).thenReturn(null);
@@ -167,6 +176,10 @@ public class TestShareAccount {
 
 		assertEquals("Illegal action", accountActivityServlet.getMessage());
 	}
+	
+	/*A client cannot remove an owner from an account
+	 * The message returned should be "Illegal action"
+	 */
 	@Test
 	public void testRemoveAsClient() throws Exception {
 		when(request.getSession().getAttribute("role")).thenReturn("c");
