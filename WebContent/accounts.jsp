@@ -53,7 +53,7 @@
 					<th>Name</th>
 					<th>Balance</th>
 				</tr>
-				<%ArrayList<Account> accounts = (ArrayList<Account>) request.getAttribute("accounts");
+				<%	ArrayList<Account> accounts = (ArrayList<Account>) request.getAttribute("accounts");
 					for (Account acc : accounts) {%>
 				<tr
 					onclick="document.location = 'AccountActivity?ID=${cpr}&action=viewaccount&accountID=<%=acc.getAccountID()%>';">
