@@ -60,7 +60,6 @@ public class TransactionActivity extends HttpServlet {
 		
 		try {
 			Database db = new Database(request.getSession());
-			
 		    switch (action) {
 		    	case "deposit" :
 					message = db.processTransaction("Deposit", accountID, accountID2, amount, ISOCode, transactionName);					
