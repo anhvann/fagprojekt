@@ -66,6 +66,15 @@ public class TestCreateDeleteAccount {
 	}
 
 	@Test
+	/*Employee is logged in and successfully creates and deletes an account
+	 * Create:
+	 * Getting the account from the database should not return null
+	 * The client should have one more account
+	 * The returned message from the database should be "Success in Creating Account"
+	 * Delete:
+	 * Getting the account from the database should return null
+	 * The client should have one account less
+	 * The returned message from the database should be "Account deleted"*/
 	public void testCreateDeleteAccountSuccess() throws Exception {
 		// Create
 		User user = db.getUser(clientCPR);
@@ -90,17 +99,28 @@ public class TestCreateDeleteAccount {
 		assertEquals("Account deleted", accountActivityServlet.getMessage());
 	}
 
+	/*Account 85327386530333 has balance = 0, so attempting to delete it results in failure
+	 * The number of accounts of the client should be the same before and after the attempt
+	 * The returned message from the database should be "Cannot delete because account has money"*/
 	@Test
 	public void testDeleteAccountWithMoney() throws NullPointerException, ServletException, IOException {
 		action = "closeaccount";
 		accountID = "85327386530327";
+
+		User user = db.getUser(clientCPR);
+		int numberOfAccountsBefore = db.getAccounts(user).size();
 		when(request.getParameter("action")).thenReturn(action);
 		when(request.getParameter("accountID")).thenReturn(accountID);
 		accountActivityServlet.doPost(request, response);
 
+		user = db.getUser(clientCPR); // get updated user
+		int numberOfAccountsAfter = db.getAccounts(user).size();
+		assertEquals(0, numberOfAccountsAfter - numberOfAccountsBefore);
 		assertEquals("Cannot delete because account has money", accountActivityServlet.getMessage());
 	}
 
+	/*Account 00000000000000 does not exist, so attempting to delete it results in failure
+	 * The returned message from the database should be "Invalid account"*/
 	@Test
 	public void testDeleteNonExistentAccount() throws NullPointerException, ServletException, IOException {
 		action = "closeaccount";
@@ -109,10 +129,15 @@ public class TestCreateDeleteAccount {
 		when(request.getParameter("action")).thenReturn(action);
 		when(request.getParameter("accountID")).thenReturn(accountID);
 		accountActivityServlet.doPost(request, response);
+		
 		assertEquals("Invalid account", accountActivityServlet.getMessage());
 	}
 
-	// Not possible through user interface
+	// The following scenarios cannot occur with the current interface but has been covered for security reasons
+	
+	/*The ISO code is not registered in the database so no acconut can be created with it as default currency
+	 * The number of accounts of the client should be the same before and after the attempt
+	 * The returned message from the database should be "Invalid ISO-Code"*/
 	@Test
 	public void testCreateInvalidISOCode() throws NullPointerException, ServletException, IOException {
 		String currency = "DKR";
@@ -128,6 +153,9 @@ public class TestCreateDeleteAccount {
 		assertEquals("Invalid ISO-Code", accountActivityServlet.getMessage());
 	}
 
+	/*Employees who are not logged in cannot create an account
+	 * The number of accounts of the client should be the same before and after the attempt
+	 * The returned message should be "Illegal action"*/
 	@Test
 	public void testCreateNotLoggedIn() throws NullPointerException, ServletException, IOException {
 		when(request.getSession().getAttribute("loggedinuser")).thenReturn(null);
@@ -142,6 +170,9 @@ public class TestCreateDeleteAccount {
 		assertEquals("Illegal action", accountActivityServlet.getMessage());
 	}
 
+	/*A client cannot create an account
+	 * The number of accounts of the client should be the same before and after the attempt
+	 * The returned message should be "Illegal action"*/
 	@Test
 	public void testCreateLoggedInClient() throws NullPointerException, ServletException, IOException {
 		when(request.getSession().getAttribute("role")).thenReturn("c");
@@ -155,6 +186,10 @@ public class TestCreateDeleteAccount {
 		assertEquals(0, numberOfAccountsAfter - numberOfAccountsBefore);
 		assertEquals("Illegal action", accountActivityServlet.getMessage());
 	}
+	
+	/*Employees who are not logged in cannot delete an account
+	 * * The number of accounts of the client should be the same before and after the attempt
+	 * The returned message should be "Illegal action"*/
 	@Test
 	public void testDeleteNotLoggedIn() throws Exception {
 		accountID = accountActivityServlet.getAccountID();
@@ -167,22 +202,23 @@ public class TestCreateDeleteAccount {
 		assertEquals("Illegal action", accountActivityServlet.getMessage());
 	}
 	
+	/*A client cannot delete an account
+	 * The number of accounts of the client should be the same before and after the attempt
+	 * The returned message should be "Illegal action"*/
 	@Test
 	public void testDeleteAsClient() throws Exception {
 		when(request.getParameter("action")).thenReturn("closeaccount");
 		when(request.getParameter("accountID")).thenReturn("85327386530333");
 		when(request.getSession().getAttribute("role")).thenReturn("c"); //log in as client
 		accountActivityServlet.doPost(request, response);
-
-		db.getUser(clientCPR); // get updated user
-		assertEquals("Illegal action", accountActivityServlet.getMessage());
-	}
-	
-	// For user interface
-	@Test
-	public void testViewNewAccountPage() throws Exception {
-		action = "newaccount";
-		when(request.getParameter("action")).thenReturn(action);
+		
+		User user = db.getUser(clientCPR);
+		int numberOfAccountsBefore = db.getAccounts(user).size();
 		accountActivityServlet.doPost(request, response);
+
+		user = db.getUser(clientCPR); // get updated user
+		int numberOfAccountsAfter = db.getAccounts(user).size();
+		assertEquals(0, numberOfAccountsAfter - numberOfAccountsBefore);
+		assertEquals("Illegal action", accountActivityServlet.getMessage());
 	}
 }

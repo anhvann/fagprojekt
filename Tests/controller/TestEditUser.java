@@ -80,15 +80,16 @@ public class TestEditUser {
 		userActivity.doPost(request, response);
 		
 	}
+	/*A logged in employee successfully edits a user
+	 * The user's new e-mail address should be "voldemort@gmail.com"
+	 * The user's new name should be "Voldemort" 
+	 * The returned message from the database should be "User Edit completed"*/
 	@Test
 	public void testEditUserSuccess() throws Exception {
 		String email = "voldemort@gmail.com";
 		String name = "Voldemort";
 		
 		User user = db.getUser(clientCpr);
-		assertEquals("tomriddle@gmail.com", user.getEmail());
-		assertEquals("Tom Marvolo Riddle", user.getName());
-		
 	    when(request.getParameter("email")).thenReturn(email);
 	    when(request.getParameter("name")).thenReturn(name);
 		userActivity.doPost(request, response);
@@ -100,6 +101,9 @@ public class TestEditUser {
 		
 	}
 	
+	/*The postal code is changed to an unregistered postal code: 0000
+	 * The user's postal code after the attempt is the same as before: 2800 
+	 * The returned message from the database should be "Invalid Postal Code"*/
 	@Test
 	public void testEditInvalidPostCode() throws Exception {
 		String newpostcode = "0000";
@@ -110,7 +114,10 @@ public class TestEditUser {
 		assertEquals(postcode, db.getUser(clientCpr).getPostCode());
 		assertEquals("Invalid Postal Code", userActivity.getMessage());
 	}
-	
+
+	/*The postal code is changed to a postal code not accepted by the edit procedure because of its length: 28000
+	 * The user's postal code after the attempt is the same as before: 2800 
+	 * The returned message should be "Invalid Postal Code"*/
 	@Test
 	public void testEditInvalidPostCode2() throws Exception {
 		String newPostCode = "28000"; //five digits
@@ -122,9 +129,12 @@ public class TestEditUser {
 		assertEquals("Invalid postal code", userActivity.getMessage());
 	}
 	
+	/*The phone number is changed to a phone number not accepted by the edit procedure because of its length: 125488693
+	 * The user's phone number after the attempt is the same as before: 02059811   
+	 * The returned message should be "Invalid phone number"*/
 	@Test
 	public void testInvalidPhoneNumber() throws Exception {
-		String newpPhoneNumber = "125488693"; //nine digits
+		String newpPhoneNumber = "125488693";
  		
 	    when(request.getParameter("phone")).thenReturn(newpPhoneNumber);
 		userActivity.doPost(request, response);
@@ -133,43 +143,12 @@ public class TestEditUser {
 		assertEquals("Invalid phone number", userActivity.getMessage());
 	}
 	
-	//View pages
-	@Test
-	public void testViewEditPage() throws Exception {
-		String action = "edit";
-		String email = "voldemort@gmail.com";
-		String name = "Voldemort";
-		
-		when(request.getParameter("ID")).thenReturn(clientCpr);
-	    when(request.getParameter("action")).thenReturn(action);
-	    when(request.getParameter("email")).thenReturn(email);
-	    when(request.getParameter("password")).thenReturn(clientPassword);
-	    when(request.getParameter("name")).thenReturn(name);
-	    when(request.getParameter("address")).thenReturn(address);
-	    when(request.getParameter("postcode")).thenReturn(postcode);
-	    when(request.getParameter("date")).thenReturn(date);
-	    when(request.getParameter("phone")).thenReturn(phone);
-		userActivity.doPost(request, response);
-	}
-	@Test
-	public void testViewUser() throws Exception {
-		String action = "viewuser";
-		String email = "voldemort@gmail.com";
-		String name = "Voldemort";
-		
-		when(request.getParameter("ID")).thenReturn(clientCpr);
-	    when(request.getParameter("action")).thenReturn(action);
-	    when(request.getParameter("email")).thenReturn(email);
-	    when(request.getParameter("password")).thenReturn(clientPassword);
-	    when(request.getParameter("name")).thenReturn(name);
-	    when(request.getParameter("address")).thenReturn(address);
-	    when(request.getParameter("postcode")).thenReturn(postcode);
-	    when(request.getParameter("date")).thenReturn(date);
-	    when(request.getParameter("phone")).thenReturn(phone);
-		userActivity.doPost(request, response);
-	}
+	//The following scenarios cannot occur with the current interface but has been covered for security reasons
 	
-	//Not possible through user interface
+	/*An employee not logged in cannot edit a user
+	 * The user's e-mail address after the attempt is the same as before: "tomriddle@gmail.com"
+	 * The user's name after the attempt is the same as before: "Tom Marvolo Riddle"   
+	 * The returned message should be "Illegal action"*/
 	@Test
 	public void testNotLoggedIn() throws Exception {
 		when(request.getSession().getAttribute("loggedinuser")).thenReturn(null);
@@ -190,6 +169,10 @@ public class TestEditUser {
 		assertEquals(name, user.getName());
 	}
 	
+	/*A client cannot edit a user
+	 * The user's e-mail address after the attempt is the same as before: "tomriddle@gmail.com"
+	 * The user's name after the attempt is the same as before: "Tom Marvolo Riddle"   
+	 * The returned message should be "Illegal action"*/
 	@Test
 	public void testEditAsClient() throws Exception {
 		when(request.getSession().getAttribute("role")).thenReturn("c");
