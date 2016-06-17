@@ -2,7 +2,7 @@
 <html>
 <div id="wrap">
 	<%@include file="clientcheck.jsp" %>
-	<%@ page import="java.util.LinkedList"%>
+	<%@ page import="java.util.ArrayList"%>
 	<%@ page import="model.Account" %>
 	<div class="main">
 		<div class="pagetitle">Transfer money</div>
@@ -13,7 +13,7 @@
 				<br><br>
 				<label class="control-label col-sm-5">Sending Account:</label>
 				<div class="col-sm-5"><select class="form-control" name="accountID">
-				<%LinkedList<Account> accounts = (LinkedList<Account>) request.getAttribute("accounts");%>
+				<%ArrayList<Account> accounts = (ArrayList<Account>) request.getAttribute("accounts");%>
 					<%for (Account acc : accounts){%>
 						<option value="<%=acc.getAccountID()%>"><%=acc.getAccountID()%></option>
 				<%}%>

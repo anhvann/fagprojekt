@@ -61,12 +61,27 @@ public class UserActivityRedirect extends HttpServlet {
 				}
 				break;
 			case "change":
-				request.setAttribute("message", message);
-				request.setAttribute("toast", true);
-				request.setAttribute("accounts", user.getAccounts());
-				request.setAttribute("name", user.getName());
-				request.setAttribute("cpr", cpr);
-				request.getRequestDispatcher("accounts.jsp").forward(request, response);
+				if(message.equals("User Edit completed")){
+					request.setAttribute("message", message);
+					request.setAttribute("toast", true);
+					request.setAttribute("accounts", user.getAccounts());
+					request.setAttribute("name", user.getName());
+					request.setAttribute("cpr", cpr);
+					request.getRequestDispatcher("accounts.jsp").forward(request, response);
+				} else {
+					request.setAttribute("cpr", cpr);
+					request.setAttribute("email", user.getEmail());
+					request.setAttribute("password", user.getPassword());
+					request.setAttribute("name", user.getName());
+					request.setAttribute("phone", user.getPhone());
+					request.setAttribute("address", user.getAddress());
+					request.setAttribute("city", db.getCity(user.getPostCode()));
+					request.setAttribute("date", user.getDateOfBirth());
+					request.setAttribute("postcode", user.getPostCode());
+					request.setAttribute("errormessage", message);
+					request.getRequestDispatcher("userInfo.jsp").forward(request, response);
+				}
+				
 				break;
 			case "delete":
 				if (message.equals("User deleted")) {

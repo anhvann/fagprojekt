@@ -39,9 +39,9 @@ if ((session.getAttribute("loggedinuser") == null) || (session.getAttribute("log
 	<div class="navigationarea">
 		<ul class="nav navbar-nav">
 			<li><a href="search.jsp">Search</a></li>
-			<li><a href="deposit.jsp?accountID=${accountID}&accountName=${accountName}">Deposit</a></li>
-			<li><a href="withdraw.jsp?accountID=${accountID}&accountName=${accountName}">Withdraw</a></li>
-			<li><a href="transfer.jsp?accountID=${accountID}&accountName=${accountName}">Transfer</a></li>
+			<li><a href="deposit.jsp?ID=${cpr}&accountID=${accountID}&accountName=${accountName}">Deposit</a></li>
+			<li><a href="withdraw.jsp?ID=${cpr}&accountID=${accountID}&accountName=${accountName}">Withdraw</a></li>
+			<li><a href="transfer.jsp?ID=${cpr}&accountID=${accountID}&accountName=${accountName}">Transfer</a></li>
 			<li><a href="register.jsp?">Register User</a></li>
 		</ul>
 	</div>

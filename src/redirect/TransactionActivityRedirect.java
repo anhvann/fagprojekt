@@ -67,7 +67,6 @@ public class TransactionActivityRedirect extends HttpServlet {
 		    		break;
 		    	default :
 		    		request.setAttribute("message", message);
-					request.setAttribute("cpr", cpr);
 					request.setAttribute("toast", true);
 					request.setAttribute("accountID", accountID);
 					ArrayList<Transaction> list = db.getTransactions(accountID);
