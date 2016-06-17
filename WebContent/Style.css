@@ -53,14 +53,14 @@ html, body {
 }
 .main {
 	z-index: 1;
-	background: #eeeeee;
+	background: #ffffff;
 	overflow: auto;
 	min-height: 300px;
 	padding-bottom: 50px;
 }
 
 .front {
-	background: #f8f8f8;
+	background: #ffffff;
 	height: auto;
 	padding-bottom: 50px;
 	overflow:hidden;

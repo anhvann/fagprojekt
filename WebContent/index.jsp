@@ -2,7 +2,7 @@
 <html>
 <div id="wrap">
 	<%@include file="header.jsp"%>
-	<br><br><br>
+	<br>
 	<div class="front">
 			<div id="myCarousel" class="carousel slide" data-ride="carousel">
 				<ol class="carousel-indicators">

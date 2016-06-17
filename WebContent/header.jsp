@@ -1,9 +1,12 @@
 <!DOCTYPE HTML><%@page language="java"contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html>
+<!-- Clear cache -->
 <%response.setHeader("Cache-Control","no-cache");
 response.setHeader("Cache-Control","no-store");
 response.setDateHeader("Expires", 0);
 response.setHeader("Pragma","no-cache");%>
+
+<!-- Layout -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -17,6 +20,8 @@ response.setHeader("Pragma","no-cache");%>
 			<li><img class="img-bar" src="http://i.imgur.com/Uf3PuDg.png"></li>
 		</ul>
 	</div>
+	
+<!-- Login check -->
 <%String role = (String)session.getAttribute("role");
 if ((session.getAttribute("loggedinuser") == null) || (session.getAttribute("loggedinuser") == "")) {%>
 	<div class="navigationarea">
