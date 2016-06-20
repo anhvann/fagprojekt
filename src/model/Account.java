@@ -77,7 +77,7 @@ public class Account {
 	
 	public void setTransactions(ArrayList<Transaction> transactions) {
 		this.transactions = transactions;
-		if (transactions != null && transactions.size() > 0) {
+		if (transactions.size() > 0) {
 			this.balance = transactions.get(transactions.size() - 1).getBalance();
 		}
 	}

@@ -56,10 +56,6 @@ public class TestTransactions {
 		db = new Database(session);
 	}
 	
-	/*A logged in employee successfully deposits in an account
-	 * The message returned from the database should be "Deposit completed"
-	 * The value of the account's new balance should have increased with 400
-	 */
 	@Test
 	public void testDepositSuccess() throws Exception {
 		BigDecimal balanceOld = db.getAccount(accountID1).getBalance();
@@ -75,10 +71,6 @@ public class TestTransactions {
 	    assertEquals(balanceOld.add(amount), balanceNew);
 	}
 
-	/*A logged in employee successfully deposits in an account
-	 * The message returned from the database should be "Deposit completed"
-	 * The value of the account's new balance should have increased with 50
-	 */
 	@Test
 	public void testDepositSuccess2() throws Exception {
 		BigDecimal balanceOld = db.getAccount(accountID3).getBalance();
@@ -91,13 +83,11 @@ public class TestTransactions {
 	    BigDecimal balanceNew = db.getAccount(accountID3).getBalance();
 	    assertEquals("Deposit completed", transactionServlet.getMessage());
 	    BigDecimal amount = new BigDecimal("50");
-	    assertEquals(balanceOld.add(amount), balanceNew);	    
+	    assertEquals(balanceOld.add(amount), balanceNew);
+	    
+	    
 	}
 	
-	/*A logged in employee successfully deposits in a currency different from the account's default currency
-	 * The message returned from the database should be "Deposit completed"
-	 * The value of the account's new balance should have increased with 10 EUR = 73.30 DKK
-	 */
 	@Test
 	public void testDepositDifferentCurrency() throws Exception {
 		BigDecimal balanceOld = db.getAccount(accountID1).getBalance();
@@ -115,10 +105,6 @@ public class TestTransactions {
 	    assertEquals(balanceOld.add(amount), balanceNew);
 	}
 	
-	/*The account ID does not exist
-	 * The message returned from the database should be "Deposit Invalid Account"
-	 * The value of the account's balance after the attempt is the same as before
-	 */
 	@Test
 	public void testDepositInvalidAccount() throws Exception {
 		BigDecimal balanceOld = db.getAccount(accountID1).getBalance();
@@ -133,10 +119,6 @@ public class TestTransactions {
 	    assertEquals(balanceOld, balanceNew);
 	}
 	
-	/*A logged in employee successfully withdraws from an account
-	 * The message returned from the database should be "Withdraw completed"
-	 * The value of the account's new balance should have decreased by 100
-	 */
 	@Test
 	public void testWithdrawSuccess() throws Exception {
 		BigDecimal balanceOld = db.getAccount(accountID1).getBalance();
@@ -152,10 +134,6 @@ public class TestTransactions {
 	    assertEquals(balanceOld.subtract(amount), balanceNew);
 	}
 	
-	/*A logged in employee successfully withdraws money in a currency different from the account's default currency 
-	 * The message returned from the database should be "Withdraw completed"
-	 * The value of the account's new balance should have decreased by 10 EUR = 75.70 DKK
-	 */
 	@Test
 	public void testWithdrawDifferentCurrency() throws Exception {
 		BigDecimal balanceOld = db.getAccount(accountID1).getBalance();
@@ -171,10 +149,6 @@ public class TestTransactions {
 	    assertEquals(balanceOld.subtract(amount), balanceNew);
 	}
 	
-	/*A The account ID does not exist
-	 * The message returned from the database should be "Withdraw Invalid Account"
-	 * The value of the account's balance after the attempt should be the same as before
-	 */
 	@Test
 	public void testWithdrawInvalidAccount() throws Exception {
 		BigDecimal balanceOld = db.getAccount(accountID1).getBalance();
@@ -189,10 +163,6 @@ public class TestTransactions {
 	    assertEquals(balanceOld, balanceNew);
 	}
 	
-	/*The account's balance is not sufficient for the amount wanted to withdraw
-	 * The message returned from the database should be "Withdraw Insufficient Balance"
-	 * The value of the account's balance after the attempt should be the same
-	 */
 	@Test
 	public void testWithdrawInvalidAmount() throws Exception {
 	    when(request.getParameter("action")).thenReturn("withdraw");
@@ -204,11 +174,6 @@ public class TestTransactions {
 	    assertEquals("Withdraw Insufficient Balance", transactionServlet.getMessage());
 	}
 	
-	/*A logged in employee successfully transfers money from one account to another
-	 * The message returned from the database should be "Transfer completed"
-	 * The value of account1's balance after the transfer should have decreased by 100 DKK
-	 * The value of account2's balance after the transfer should have increased by 100 DKK
-	 */
 	@Test
 	public void testTransferSuccess() throws Exception {
 		BigDecimal balanceOld1 = db.getAccount(accountID1).getBalance();
@@ -228,12 +193,6 @@ public class TestTransactions {
 	    assertEquals(balanceOld1.subtract(amount), balanceNew1);
 	    assertEquals(balanceOld2.add(amount), balanceNew2);
 	}
-	
-	/*A logged in employee successfully transfers money from one account to another
-	 * The message returned from the database should be "Transfer completed"
-	 * The value of account1's balance after the transfer should have decreased by 100 DKK
-	 * The value of account2's balance after the transfer should have increased by 100 DKK
-	 */
 	@Test
 	public void testTransferSuccess2() throws Exception {
 		BigDecimal balanceOld = db.getAccount(accountID2).getBalance();
@@ -265,12 +224,6 @@ public class TestTransactions {
 	    BigDecimal amount = new BigDecimal("30");
 	    assertEquals(balanceOld.add(amount), balanceNew);
 	}
-	
-	/*A logged in employee successfully transfers money in a different currency than the sending and receiving account
-	 * The message returned from the database should be "Transfer completed"
-	 * The value of account1's balance after the transfer should have decreased by 10 EUR = 75.70 DKK
-	 * The value of account2's balance after the transfer should have increased by 10 EUR = 7.80 GBP
-	 */
 	@Test
 	public void testTransferDifferentCurrency() throws Exception {
 		BigDecimal balanceOld1 = db.getAccount(accountID1).getBalance();
@@ -292,10 +245,6 @@ public class TestTransactions {
 	    assertEquals(balanceOld2.add(amount2), balanceNew2);
 	}
 	
-	/*The receiving account does not exist
-	 * The message returned from the database should be "Transfer Invalid Account"
-	 * The sending account's balance after the attempt is the same as before
-	 */
 	@Test
 	public void testTransferInvalidAccount() throws Exception {
 		BigDecimal balanceOld = db.getAccount(accountID1).getBalance();
@@ -312,10 +261,6 @@ public class TestTransactions {
 	    assertEquals(balanceOld, balanceNew);
 	}
 	
-	/*The sending account does not exist
-	 * The message returned from the database should be "Transfer Invalid Account"
-	 * The receiving account's balance after the attempt is the same as before
-	 */
 	@Test
 	public void testTransferInvalidAccount2() throws Exception {
 		BigDecimal balanceOld = db.getAccount(accountID2).getBalance();
@@ -331,12 +276,6 @@ public class TestTransactions {
 	    assertEquals("Transfer Invalid Account", transactionServlet.getMessage()); //Missing message
 	    assertEquals(balanceOld, balanceNew);
 	}
-	
-	/*The sending account does not have a sufficient balance compared to the amount wanted to transfer
-	 * The message returned from the database should be "Transfer Insufficient Balance"
-	 * The value of account1's balance after the attempt should be the same as before
-	 * The value of account2's balance after the attempt should be the same as before
-	 */
 	@Test
 	public void testTransferInvalidAmount() throws Exception {
 		BigDecimal balanceOld1 = db.getAccount(accountID1).getBalance();
@@ -356,10 +295,7 @@ public class TestTransactions {
 	    assertEquals(balanceOld2, balanceNew2);
 	}
 	
-	//The following scenarios cannot occur with the current interface but has been covered for security reasons
-	/*The amount is not an number
-	 * The message returned should be "Invalid amount"
-	 * The value of the account's balance after the attempt is the same as before*/
+	//Not possible through user interface
 	@Test
 	public void testInvalidAmount() throws Exception {
 		BigDecimal balanceOld = db.getAccount(accountID1).getBalance();
@@ -374,10 +310,6 @@ public class TestTransactions {
 	    assertEquals(balanceOld, balanceNew);
 	}
 	
-	/*A user not logged in cannot perform a deposit
-	 * The message returned should be "Illegal action"
-	 * The value of the account's balance after the attempt is the same as before
-	 */
 	@Test
 	public void testNotLoggedIn() throws Exception {
 		when(request.getSession().getAttribute("loggedinuser")).thenReturn(null);
@@ -392,11 +324,6 @@ public class TestTransactions {
 	    assertEquals("Illegal action", transactionServlet.getMessage());
 	    assertEquals(balanceOld, balanceNew);
 	}
-	
-	/*A client cannot deposit money in an account
-	 * The message returned should be "Illegal action"
-	 * The value of the account's balance after the attempt is the same as before
-	 */
 	@Test
 	public void testDepositAsClient() throws Exception {
 	    when(request.getSession().getAttribute("role")).thenReturn("c");
@@ -411,11 +338,6 @@ public class TestTransactions {
 	    assertEquals("Illegal action", transactionServlet.getMessage());
 	    assertEquals(balanceOld, balanceNew);
 	}
-	
-	/*A client cannot withdraw money from an account
-	 * The message returned should be "Illegal action"
-	 * The value of the account's balance after the attempt is the same as before
-	 */
 	@Test
 	public void testWithdrawAsClient() throws Exception {
 	    when(request.getSession().getAttribute("role")).thenReturn("c");
@@ -430,4 +352,5 @@ public class TestTransactions {
 	    assertEquals("Illegal action", transactionServlet.getMessage());
 	    assertEquals(balanceOld, balanceNew);
 	}
+	
 }
