@@ -38,7 +38,7 @@
 	  				</div>
 					<br><br>
 					<div class="col-sm-offset-5 col-sm-5">
-						<font size="2"><font color="red">${errormessage}</font></font><br>
+						<font size="2"><font color="red">${errormessage}</font></font><br><br>
 						<input type="submit" class="btn btn-default" name="saveChanges" value="Save Changes">
 					</div>
 				</form>

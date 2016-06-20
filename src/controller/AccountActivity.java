@@ -81,7 +81,8 @@ public class AccountActivity extends HttpServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 		String cpr = request.getParameter("ID");
 		String action = request.getParameter("action");
@@ -136,7 +137,8 @@ public class AccountActivity extends HttpServlet {
 				break;
 			case "deleteowner":
 				message = db.deleteOwner(accountID, newCPR);
-				response.sendRedirect("AccountActivityRedirect?ID="+cpr+"&action="+action+"&newCPR="+cpr+"&accountID="+accountID+"&message="+message);
+				response.sendRedirect("AccountActivityRedirect?ID=" + cpr + "&action=" + action + "&newCPR=" + cpr
+						+ "&accountID=" + accountID + "&message=" + message);
 				break;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
